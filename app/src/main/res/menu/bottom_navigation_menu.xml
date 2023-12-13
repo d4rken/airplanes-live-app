@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/page_alerts"
+        android:enabled="true"
+        android:icon="@drawable/ic_crisis_alert_24"
+        android:title="@string/alerts_page_label" />
+    <item
+        android:id="@+id/page_feeder"
+        android:enabled="true"
+        android:icon="@drawable/ic_settings_input_antenna_24"
+        android:title="@string/feeder_page_label" />
+</menu>

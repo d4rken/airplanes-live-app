@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="56dp"
+    android:orientation="vertical">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?colorSurfaceVariant"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingVertical="8dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_hexagon_multiple_24"
+            app:layout_constraintBottom_toBottomOf="@id/tertiary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/primary" />
+
+        <TextView
+            android:id="@+id/primary"
+            style="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textIsSelectable="true"
+            app:layout_constraintBottom_toTopOf="@id/secondary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="ATC-ABC" />
+
+        <TextView
+            android:id="@+id/secondary"
+            style="@style/TextAppearance.Material3.LabelSmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textIsSelectable="true"
+            app:layout_constraintBottom_toTopOf="@id/tertiary"
+            app:layout_constraintEnd_toEndOf="@id/primary"
+            app:layout_constraintStart_toStartOf="@id/primary"
+            app:layout_constraintTop_toBottomOf="@id/primary"
+            tools:text="f042c667-7193-4db6-9112-4eb2f5902951" />
+
+        <TextView
+            android:id="@+id/tertiary"
+            style="@style/TextAppearance.Material3.BodySmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/primary"
+            app:layout_constraintStart_toStartOf="@id/primary"
+            app:layout_constraintTop_toBottomOf="@id/secondary"
+            tools:text="-" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="?colorSurfaceVariant" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:paddingBottom="16dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/show_feed_action"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/alerts_show_map_action" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/remove_feeder_action"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/alerts_remove_action"
+            android:textColor="?colorOnError"
+            app:backgroundTint="@color/error" />
+
+    </LinearLayout>
+</LinearLayout>

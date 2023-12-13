@@ -1,0 +1,2 @@
+rootProject.name = "airplanes.live App"
+include ':app'

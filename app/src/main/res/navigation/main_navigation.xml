@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="eu.darken.apl.main.ui.main.MainFragment"
+        tools:layout="@layout/main_fragment">
+        <action
+            android:id="@+id/action_mainFragment_to_settingsContainerFragment"
+            app:destination="@id/settingsContainerFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_onboardingFragment"
+            app:destination="@id/onboardingFragment"
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsContainerFragment"
+        android:name="eu.darken.apl.main.ui.settings.SettingsFragment"
+        tools:layout="@layout/settings_fragment" />
+
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="eu.darken.apl.main.ui.onboarding.OnboardingFragment"
+        tools:layout="@layout/onboarding_fragment">
+        <action
+            android:id="@+id/action_onboardingFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/main_navigation" />
+    </fragment>
+
+</navigation>

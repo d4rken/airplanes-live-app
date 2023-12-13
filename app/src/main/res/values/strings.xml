@@ -1,0 +1,135 @@
+<resources>
+    <string name="app_name">airplanes.live App</string>
+    <string name="label_settings">Settings</string>
+    <string name="label_help">Help</string>
+    <string name="action_show_another_fragment">Show another fragment</string>
+    <string name="msg_what_up_this_is_another_fragment">What up! This is another fragment!</string>
+    <string name="general_error_label">Error</string>
+
+    <string name="general_accept_action">Accept</string>
+    <string name="general_share_action">Share</string>
+    <string name="general_done_action">Done</string>
+    <string name="general_copy_action">Copy</string>
+    <string name="general_continue_action">Continue</string>
+    <string name="general_cancel_action">Cancel</string>
+    <string name="general_refresh_action">Refresh</string>
+    <string name="general_add_action">Add</string>
+    <string name="general_remove_action">Remove</string>
+    <string name="general_sponsor_action">Sponsor development</string>
+
+    <string name="generic_loading_label_0">Soon™</string>
+    <string name="generic_loading_label_1">Passing the butter</string>
+    <string name="generic_loading_label_2">Downloading more RAM</string>
+    <string name="generic_loading_label_3">Still faster than an iPhone</string>
+    <string name="generic_loading_label_4">What\'s that behind you?</string>
+    <string name="generic_loading_label_5">The CPU is on a coffee break</string>
+    <string name="generic_loading_label_6">Awaiting data from Pepe Silvia</string>
+    <string name="generic_loading_label_7">Turbo encabulator is initiating</string>
+
+    <string name="debug_debuglog_size_label">Size</string>
+    <string name="debug_debuglog_size_compressed_label">Compressed size</string>
+    <string name="debug_notification_channel_label">Debug notifications</string>
+    <string name="debug_debuglog_file_label">Recorded log file</string>
+    <string name="debug_debuglog_recording_progress">Recording debug log</string>
+    <string name="debug_debuglog_record_action">Record debug log</string>
+    <string name="debug_debuglog_stop_action">Stop recording</string>
+    <string name="debug_debuglog_sensitive_information_message">The generated file contains sensitive information. Only share it with trusted parties.</string>
+    <string name="settings_debuglog_explanation">This feature records everything the app is doing into a shareable file. The generated file may contain sensitive information. Only share it with trusted parties (e.g. a developer that is troubleshooting an issue).</string>
+
+    <string name="settings_privacy_policy_label">Privacy policy</string>
+    <string name="settings_privacy_policy_desc">Handling data responsibly.</string>
+    <string name="settings_licenses_label">Licenses</string>
+    <string name="general_thank_you_label">Thank you</string>
+    <string name="settings_category_other_label">Other</string>
+
+    <string name="general_settings_label">General</string>
+    <string name="general_settings_desc">General tweaks that affect the whole app.</string>
+
+    <string name="settings_category_ui_label">User interface</string>
+
+    <string name="ui_theme_mode_setting_label">Theme mod</string>
+    <string name="ui_theme_mode_setting_explanation">The mode used when theming the app (e.g. night or day).</string>
+    <string name="ui_theme_mode_dark_label">Dark</string>
+    <string name="ui_theme_mode_light_label">Light</string>
+    <string name="ui_theme_mode_system_label">System</string>
+
+    <string name="ui_theme_style_setting_label">Theme style</string>
+    <string name="ui_theme_style_setting_explanation">The color style used when theming the app.</string>
+    <string name="ui_theme_style_default_label">Default</string>
+    <string name="ui_theme_style_materialyou_label">Material You</string>
+
+    <string name="settings_support_label">Support</string>
+
+    <string name="documentation_label">Documentation</string>
+    <string name="discord_label">Discord</string>
+    <string name="discord_description">A place to hang out in and ask questions.</string>
+    <string name="issue_tracker_label">Issue tracker</string>
+    <string name="issue_tracker_description">A public issue tracker for bug reports and feature requests.</string>
+
+    <string name="support_debuglog_label">Debug log</string>
+    <string name="support_debuglog_desc">Record everything the app is doing into a text file that you can share.</string>
+
+    <string name="changelog_label">Changelog</string>
+    <string name="settings_acknowledgements_label">Acknowledgements</string>
+
+    <string name="onboarding_body1">This is a companion app for airplanes.live community members!</string>
+    <string name="onboarding_body2">airplanes.live is a community-driven flight tracker with feeders around the world. It provides open and unfiltered access to worldwide air traffic data.</string>
+    <string name="onboarding_body3">This app has no ads and doesn\'t sell your data (just like airplanes.live).</string>
+
+
+    <string name="feeder_page_label">Feeder</string>
+    <plurals name="feeder_yours_x_active_msg">
+        <item quantity="one">You have %d active feeder</item>
+        <item quantity="other">You have %d active feeders</item>
+    </plurals>
+    <string name="feeder_list_add_yours_now_msg">Add your first feeder now!</string>
+    <string name="feeder_list_add_your_feeder_action">Add feeder</string>
+    <string name="feeder_list_add_title">New feeder</string>
+    <string name="feeder_list_add_message">Enter your feeders UUID (comma sepparated lists are supported).</string>
+    <string name="feeder_beast_stats_label">Beast stats</string>
+    <string name="feeder_mlat_stats_label">MLAT stats</string>
+    <string name="feeder_monitor_offline_label">Notify when offline</string>
+    <string name="feeder_remove_action">Remove feeder</string>
+    <string name="feeder_show_map_action">Show feed on map</string>
+
+    <string name="feeder_remove_confirmation_title">Confirmation</string>
+    <string name="feeder_remove_confirmation_message">Remove this feeder from the app?</string>
+    <string name="feeder_notification_channel_title">Feeder monitor</string>
+    <string name="feeder_monitor_offline_title">Offline feeders detected</string>
+    <string name="feeder_monitor_offline_message">Some of your airplanes.live feeders are offline: %s</string>
+    <string name="feeder_options_label">Options</string>
+    <string name="feeder_startfeeding_msg">Not feeding airplanes.live yet? Start now, it\'s not rocket science 🚀.</string>
+    <string name="feeder_startfeeding_action">Start feeding</string>
+
+    <string name="alerts_page_label">Alerts</string>
+    <string name="alerts_list_add_title">Add new alert</string>
+    <plurals name="alerts_yours_x_active_msg">
+        <item quantity="one">You have %d alerts</item>
+        <item quantity="other">You have %d alerts</item>
+    </plurals>
+    <plurals name="alerts_yours_x_triggered_msg">
+        <item quantity="one">You have %d triggered alerts</item>
+        <item quantity="other">You have %d triggered alerts</item>
+    </plurals>
+    <string name="alerts_list_addnew_msg">Create your first aircraft alert now!</string>
+    <string name="alerts_add_alert_type_title">New alert type</string>
+    <string name="alerts_add_alert_type_label_hexcode">Aircraft hex code </string>
+    <string name="alerts_add_alert_type_label_squawk">Transponder code</string>
+    <string name="alerts_add_hexcode_title">New hexcode alert</string>
+    <string name="alerts_add_hexcode_msg">Enter the hexcode of the aircraft you want alerts for.</string>
+    <string name="alerts_add_squawk_title">New squawk alert</string>
+    <string name="alerts_add_squawk_msg">Enter the transpoder code you want to be alert of.</string>
+    <string name="alerts_squawk_error_notallowed_label">Unsupported squawk</string>
+    <string name="alerts_squawk_error_notallowed_message">Provided squawk not allowed. Supported are %s</string>
+    <string name="alerts_item_squawk_subtitle">Transponder code</string>
+    <string name="alerts_item_hexcode_subtitle">ICAO 24-bit address</string>
+    <string name="alerts_hexcode_notfound_message">Aircraft has not been spotted.</string>
+    <string name="alerts_show_map_action">Show on map</string>
+    <string name="alerts_remove_action">Delete alert</string>
+    <string name="alerts_remove_confirmation_title">Confirmation</string>
+    <string name="alerts_remove_confirmation_message">Delete this alert?</string>
+    <plurals name="alerts_squawk_matches_msg">
+        <item quantity="one">%1$d aircraft is squawking %1$s</item>
+        <item quantity="other">%1$d aircraft are squawking %1$s</item>
+    </plurals>
+</resources>
