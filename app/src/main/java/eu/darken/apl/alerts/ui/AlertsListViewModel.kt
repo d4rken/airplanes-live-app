@@ -3,7 +3,6 @@ package eu.darken.apl.alerts.ui
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.darken.apl.alerts.core.AlertsRepo
-import eu.darken.apl.alerts.core.SquawkCode
 import eu.darken.apl.alerts.core.types.HexAlert
 import eu.darken.apl.alerts.core.types.NewHexAlert
 import eu.darken.apl.alerts.core.types.SquawkAlert
@@ -15,6 +14,7 @@ import eu.darken.apl.common.debug.logging.Logging.Priority.WARN
 import eu.darken.apl.common.debug.logging.asLog
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.uix.ViewModel3
+import eu.darken.apl.main.core.aircraft.SquawkCode
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.callbackFlow

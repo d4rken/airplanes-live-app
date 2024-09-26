@@ -1,4 +1,4 @@
-package eu.darken.apl.alerts.core.api
+package eu.darken.apl.main.core.api
 
 import eu.darken.apl.common.http.HttpModule
 import eu.darken.apl.common.serialization.SerializationModule
@@ -9,12 +9,12 @@ import org.junit.jupiter.api.Test
 import testhelper.BaseTest
 import testhelper.coroutine.TestDispatcherProvider
 
-class AlertsEndpointTest : BaseTest() {
-    private lateinit var endpoint: AlertsEndpoint
+class AplEndpointTest : BaseTest() {
+    private lateinit var endpoint: AplEndpoint
 
     @BeforeEach
     fun setup() {
-        endpoint = AlertsEndpoint(
+        endpoint = AplEndpoint(
             baseClient = HttpModule().baseHttpClient(),
             dispatcherProvider = TestDispatcherProvider(),
             moshiConverterFactory = HttpModule().moshiConverter(SerializationModule().moshi())
@@ -22,14 +22,23 @@ class AlertsEndpointTest : BaseTest() {
     }
 
     @Test
-    fun `de-serialization of squawks`() = runTest {
-        val squawks = endpoint.getSquawkAlerts(setOf("7700,7600,7500"))
-        squawks shouldNotBe null
+    fun `aircraft by squawks`() = runTest {
+        endpoint.getBySquawks(setOf("3532,1200,0420")).apply {
+            this shouldNotBe null
+        }
     }
 
     @Test
-    fun `de-serialization of hexes`() = runTest {
-        val hexes = endpoint.getHexAlerts(setOf(""))
-        hexes shouldNotBe null
+    fun `aircraft by hexes `() = runTest {
+        endpoint.getByHexes(setOf("A213BD,A4FBAC")).apply {
+            this shouldNotBe null
+        }
+    }
+
+    @Test
+    fun `aircraft by callsigns`() = runTest {
+        endpoint.getByCallsigns(setOf("AAL1002,AAL1328")).apply {
+            this shouldNotBe null
+        }
     }
 }

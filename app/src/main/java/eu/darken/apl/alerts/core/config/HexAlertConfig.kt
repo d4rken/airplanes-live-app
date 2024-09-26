@@ -2,9 +2,9 @@ package eu.darken.apl.alerts.core.config
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import eu.darken.apl.alerts.core.AircraftHex
 import eu.darken.apl.alerts.core.AlertId
 import eu.darken.apl.alerts.core.types.AircraftAlert
+import eu.darken.apl.main.core.aircraft.AircraftHex
 
 @JsonClass(generateAdapter = true)
 data class HexAlertConfig(

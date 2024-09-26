@@ -36,11 +36,6 @@ class AlertsListFragment : Fragment3(R.layout.alerts_list_fragment) {
                         true
                     }
 
-                    R.id.action_sponsor_development -> {
-                        (requireActivity() as MainActivity).goSponsor()
-                        true
-                    }
-
                     R.id.action_settings -> {
                         (requireActivity() as MainActivity).goToSettings()
                         true

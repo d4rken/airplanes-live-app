@@ -1,6 +1,5 @@
 package eu.darken.apl.alerts.core
 
-import eu.darken.apl.alerts.core.api.AlertsEndpoint
 import eu.darken.apl.alerts.core.config.AlertSettings
 import eu.darken.apl.alerts.core.config.HexAlertConfig
 import eu.darken.apl.alerts.core.config.SquawkAlertConfig
@@ -11,6 +10,7 @@ import eu.darken.apl.alerts.core.types.SquawkAlert
 import eu.darken.apl.common.debug.logging.Logging.Priority.WARN
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
+import eu.darken.apl.main.core.aircraft.SquawkCode
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +24,6 @@ import javax.inject.Singleton
 
 @Singleton
 class AlertsRepo @Inject constructor(
-    private val endpoint: AlertsEndpoint,
     private val settings: AlertSettings,
 ) {
 
@@ -38,24 +37,25 @@ class AlertsRepo @Inject constructor(
         settings.hexAlerts.flow,
         settings.squawkAlerts.flow,
     ) { _, hexConfigs, squawkConfigs ->
-        val hexInfos = endpoint.getHexAlerts(hexConfigs.configs.map { it.hexCode }.toSet())
-        val squawkInfos = endpoint.getSquawkAlerts(squawkConfigs.configs.map { it.code }.toSet())
-
-        val hexAlerts = hexConfigs.configs
-            .map { config ->
-                HexAlert(
-                    config = config,
-                    infos = hexInfos.hexes.filter { config.matches(it.hex) }.toSet()
-                )
-            }
-        val squawkAlerts = squawkConfigs.configs
-            .map { config ->
-                SquawkAlert(
-                    config = config,
-                    infos = squawkInfos.squawks.filter { it.squawk == config.code }.toSet()
-                )
-            }
-        hexAlerts + squawkAlerts
+//        val hexInfos = endpoint.getHexAlerts(hexConfigs.configs.map { it.hexCode }.toSet())
+//        val squawkInfos = endpoint.getSquawkAlerts(squawkConfigs.configs.map { it.code }.toSet())
+//
+//        val hexAlerts = hexConfigs.configs
+//            .map { config ->
+//                HexAlert(
+//                    config = config,
+//                    infos = hexInfos.hexes.filter { config.matches(it.hex) }.toSet()
+//                )
+//            }
+//        val squawkAlerts = squawkConfigs.configs
+//            .map { config ->
+//                SquawkAlert(
+//                    config = config,
+//                    infos = squawkInfos.squawks.filter { it.squawk == config.code }.toSet()
+//                )
+//            }
+//        hexAlerts + squawkAlerts
+        emptySet()
     }
 
     suspend fun refresh() {
@@ -90,7 +90,7 @@ class AlertsRepo @Inject constructor(
 
     suspend fun checkSquawk(squawk: SquawkCode) {
         log(TAG) { "checkSquawk($squawk)" }
-        endpoint.getSquawkAlerts(setOf(squawk))
+//        endpoint.getSquawkAlerts(setOf(squawk))
     }
 
     suspend fun addSquawkAlert(squawk: SquawkCode) {

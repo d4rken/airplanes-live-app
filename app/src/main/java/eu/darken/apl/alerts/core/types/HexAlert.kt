@@ -1,12 +1,12 @@
 package eu.darken.apl.alerts.core.types
 
-import eu.darken.apl.alerts.core.AircraftHex
-import eu.darken.apl.alerts.core.api.AlertsApi
 import eu.darken.apl.alerts.core.config.HexAlertConfig
+import eu.darken.apl.main.core.aircraft.AircraftHex
+import eu.darken.apl.main.core.api.AplApi
 
 data class HexAlert(
     val config: HexAlertConfig,
-    val infos: Set<AlertsApi.Alerts.Hex>,
+    val infos: Set<AplApi.Aircraft>,
 ) : AircraftAlert {
     val hex: AircraftHex
         get() = config.hexCode

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottom_navigation"
-    app:startDestination="@id/alerts">
+    app:startDestination="@id/search">
 
     <action
         android:id="@+id/action_global_feeder"
@@ -45,5 +45,21 @@
             android:name="alertId"
             app:argType="string" />
     </dialog>
+    <action
+        android:id="@+id/action_global_search"
+        app:destination="@id/search"
+        app:popUpTo="@id/bottom_navigation" />
+    <fragment
+        android:id="@+id/search"
+        android:name="eu.darken.apl.search.ui.SearchFragment"
+        tools:layout="@layout/search_fragment" />
+    <action
+        android:id="@+id/action_global_map"
+        app:destination="@id/map"
+        app:popUpTo="@id/bottom_navigation" />
+    <fragment
+        android:id="@+id/map"
+        android:name="eu.darken.apl.map.ui.MapFragment"
+        tools:layout="@layout/map_fragment" />
 
 </navigation>

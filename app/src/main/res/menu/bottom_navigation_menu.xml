@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/page_map"
+        android:enabled="true"
+        android:icon="@drawable/ic_map_24"
+        android:title="@string/map_page_label" />
+    <item
+        android:id="@+id/page_search"
+        android:enabled="true"
+        android:icon="@drawable/ic_airplane_search_24"
+        android:title="@string/search_page_label" />
+    <item
         android:id="@+id/page_alerts"
         android:enabled="true"
         android:icon="@drawable/ic_crisis_alert_24"

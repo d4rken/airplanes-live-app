@@ -23,6 +23,9 @@ sealed class Permission(
     object POST_NOTIFICATIONS
         : Permission("android.permission.POST_NOTIFICATIONS"), RuntimePermission
 
+    object ACCESS_FINE_LOCATION
+        : Permission("android.permission.ACCESS_FINE_LOCATION"), RuntimePermission
+
     @SuppressLint("BatteryLife")
     object IGNORE_BATTERY_OPTIMIZATION
         : Permission("android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"), Specialpermission {

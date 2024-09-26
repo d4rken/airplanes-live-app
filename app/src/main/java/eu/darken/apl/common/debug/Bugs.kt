@@ -1,6 +1,5 @@
 package eu.darken.apl.common.debug
 
-import com.bugsnag.android.Bugsnag
 import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
 import eu.darken.apl.common.debug.logging.Logging.Priority.WARN
 import eu.darken.apl.common.debug.logging.log
@@ -14,7 +13,6 @@ object Bugs {
             log(TAG, WARN) { "Bug tracking not initialized yet." }
             return
         }
-        Bugsnag.notify(exception)
     }
 
     private val TAG = logTag("Debug", "Bugs")

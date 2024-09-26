@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
+import com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_LABELED
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import eu.darken.apl.R
@@ -55,10 +56,21 @@ class MainFragment : Fragment3(R.layout.main_fragment) {
         ui.bottomNavigation.apply {
             setupWithNavController(this, navController)
             if (savedInstanceState == null) {
-                menu.findItem(R.id.page_alerts).isChecked = true
+                menu.findItem(R.id.page_search).isChecked = true
             }
+            labelVisibilityMode = LABEL_VISIBILITY_LABELED
             setOnItemSelectedListener { item ->
                 when (item.itemId) {
+                    R.id.page_map -> {
+                        navController.navigate(R.id.action_global_map)
+                        true
+                    }
+
+                    R.id.page_search -> {
+                        navController.navigate(R.id.action_global_search)
+                        true
+                    }
+
                     R.id.page_alerts -> {
                         navController.navigate(R.id.action_global_alerts)
                         true

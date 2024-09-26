@@ -27,7 +27,7 @@ class FeederEndpoint @Inject constructor(
 
         Retrofit.Builder()
             .client(configHttpClient)
-            .baseUrl("https://api.airplanes.live/v1/")
+            .baseUrl("https://api.airplanes.live/v2/")
             .addConverterFactory(moshiConverterFactory)
             .build()
             .create(FeederApi::class.java)

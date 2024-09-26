@@ -27,13 +27,13 @@ private fun DependencyHandler.`debugImplementation`(dependencyNotation: Any): De
     add("debugImplementation", dependencyNotation)
 
 fun DependencyHandlerScope.addBase() {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.8.22")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.25")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 
-    testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.8.22")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
-    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.9.25")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
 
     val daggerVersion = "2.47"
     implementation("com.google.dagger:dagger:$daggerVersion")
@@ -96,15 +96,10 @@ fun DependencyHandlerScope.addHttp() {
 }
 
 fun DependencyHandlerScope.addIO() {
-    implementation("com.squareup.moshi:moshi:1.14.0")
-    implementation("com.squareup.moshi:moshi-adapters:1.14.0")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
+    implementation("com.squareup.moshi:moshi:1.15.1")
+    implementation("com.squareup.moshi:moshi-adapters:1.15.1")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.15.1")
     implementation("com.squareup.okio:okio:3.3.0")
-}
-
-fun DependencyHandlerScope.addErrorTracking() {
-    implementation("com.bugsnag:bugsnag-android:5.9.2")
-    implementation("com.getkeepsafe.relinker:relinker:1.4.3")
 }
 
 fun DependencyHandlerScope.addTesting() {

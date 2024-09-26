@@ -4,7 +4,6 @@ import android.app.Application
 import android.util.Log.VERBOSE
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import com.getkeepsafe.relinker.ReLinker
 import dagger.hilt.android.HiltAndroidApp
 import eu.darken.apl.common.BuildConfigWrap
 import eu.darken.apl.common.debug.autoreport.AutoReporting
@@ -31,10 +30,6 @@ open class App : Application(), Configuration.Provider {
             Logging.install(LogCatLogger())
             log(TAG) { "BuildConfig.DEBUG=true" }
         }
-
-        ReLinker
-            .log { message -> log(TAG) { "ReLinker: $message" } }
-            .loadLibrary(this, "bugsnag-plugin-android-anr")
 
         bugReporter.setup()
 

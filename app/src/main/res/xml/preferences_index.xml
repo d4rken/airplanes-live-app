@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <Preference
         android:icon="@drawable/ic_settings_24"
         app:fragment="eu.darken.apl.main.ui.settings.general.GeneralSettingsFragment"
@@ -8,6 +9,11 @@
         app:title="@string/general_settings_label" />
 
     <PreferenceCategory android:title="@string/settings_category_other_label">
+        <Preference
+            android:icon="@drawable/ic_heart_24"
+            android:key="core.sponsor"
+            app:summary="@string/general_sponsor_description"
+            app:title="@string/general_sponsor_action" />
 
         <eu.darken.apl.common.preferences.IntentPreference
             android:icon="@drawable/ic_changelog_24"

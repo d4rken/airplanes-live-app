@@ -144,17 +144,16 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.2")
 
     addBase()
     addBaseUI()
     addIO()
     addWorker()
     addHttp()
-    addErrorTracking()
     addTesting()
 
-    implementation("io.coil-kt:coil:2.4.0")
+    implementation("io.coil-kt:coil:2.7.0")
 
     implementation("net.swiftzer.semver:semver:1.3.0")
 
@@ -162,9 +161,8 @@ dependencies {
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
-
-    implementation("androidx.room:room-runtime:2.5.2")
-    implementation("androidx.room:room-ktx:2.5.2")
-    annotationProcessor("androidx.room:room-compiler:2.5.2")
-    kapt("androidx.room:room-compiler:2.5.2")
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
 }

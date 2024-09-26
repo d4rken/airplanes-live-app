@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">airplanes.live App</string>
+    <string name="app_name">airplanes.live</string>
     <string name="label_settings">Settings</string>
     <string name="label_help">Help</string>
     <string name="action_show_another_fragment">Show another fragment</string>
@@ -15,7 +15,9 @@
     <string name="general_refresh_action">Refresh</string>
     <string name="general_add_action">Add</string>
     <string name="general_remove_action">Remove</string>
+
     <string name="general_sponsor_action">Sponsor development</string>
+    <string name="general_sponsor_description">Say thanks incentivize further app development.</string>
 
     <string name="generic_loading_label_0">Soon™</string>
     <string name="generic_loading_label_1">Passing the butter</string>
@@ -74,7 +76,7 @@
 
     <string name="onboarding_body1">This is a companion app for airplanes.live community members!</string>
     <string name="onboarding_body2">airplanes.live is a community-driven flight tracker with feeders around the world. It provides open and unfiltered access to worldwide air traffic data.</string>
-    <string name="onboarding_body3">This app has no ads and doesn\'t sell your data (just like airplanes.live).</string>
+    <string name="onboarding_body3">Consider contributing data :)</string>
 
 
     <string name="feeder_page_label">Feeder</string>
@@ -98,8 +100,17 @@
     <string name="feeder_monitor_offline_title">Offline feeders detected</string>
     <string name="feeder_monitor_offline_message">Some of your airplanes.live feeders are offline: %s</string>
     <string name="feeder_options_label">Options</string>
-    <string name="feeder_startfeeding_msg">Not feeding airplanes.live yet? Start now, it\'s not rocket science 🚀.</string>
+    <string name="feeder_startfeeding_msg">Not feeding airplanes.live yet?\nStart now, it\'s not rocket science 🚀.</string>
     <string name="feeder_startfeeding_action">Start feeding</string>
+
+    <string name="map_page_label">Map</string>
+
+
+    <string name="search_page_label">Search</string>
+    <plurals name="search_found_x_aircraft">
+        <item quantity="one">Found %d aircraft</item>
+        <item quantity="other">Found %d aircraft</item>
+    </plurals>
 
     <string name="alerts_page_label">Alerts</string>
     <string name="alerts_list_add_title">Add new alert</string>
@@ -128,6 +139,8 @@
     <string name="alerts_remove_action">Delete alert</string>
     <string name="alerts_remove_confirmation_title">Confirmation</string>
     <string name="alerts_remove_confirmation_message">Delete this alert?</string>
+    <string name="search_supported_types_hint">Supported: Registration, aircraft types, HEX and SQUAWK codes</string>
+    <string name="search_aircraft_search_label">Aircraft search</string>
     <plurals name="alerts_squawk_matches_msg">
         <item quantity="one">%1$d aircraft is squawking %1$s</item>
         <item quantity="other">%1$d aircraft are squawking %1$s</item>

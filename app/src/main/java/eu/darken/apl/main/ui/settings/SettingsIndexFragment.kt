@@ -11,6 +11,7 @@ import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.datastore.PreferenceScreenData
 import eu.darken.apl.common.uix.PreferenceFragment2
 import eu.darken.apl.main.core.GeneralSettings
+import eu.darken.apl.main.ui.MainActivity
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -38,6 +39,10 @@ class SettingsIndexFragment : PreferenceFragment2() {
         findPreference<Preference>("core.changelog")!!.summary = BuildConfigWrap.VERSION_DESCRIPTION
         findPreference<Preference>("core.privacy")!!.setOnPreferenceClickListener {
             webpageTool.open(PrivacyPolicy.URL)
+            true
+        }
+        findPreference<Preference>("core.sponsor")!!.setOnPreferenceClickListener {
+            (requireActivity() as MainActivity).goSponsor()
             true
         }
         super.onPreferencesCreated()
