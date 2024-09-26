@@ -10,13 +10,14 @@
 An Android app for https://airplanes.live
 
 Current features:
+¯\\\_(ツ)_/¯
+
+
+Planned features:
 
 * View stats for your airplanes.live feeders
 * Get notifications if a feeder goes offline
 * Shortcuts to show the map from the POV of a specific feeder
-
-Planned features:
-
 * SQUAWK alerts: Notifications if specific SQUAWK codes are transmitted by aircraft
 * ICAO alerts: Notifications if an aircraft with a specific ICAO identifier is airborne
 
