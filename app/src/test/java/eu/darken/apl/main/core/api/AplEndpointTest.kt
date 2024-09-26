@@ -23,21 +23,35 @@ class AplEndpointTest : BaseTest() {
 
     @Test
     fun `aircraft by squawks`() = runTest {
-        endpoint.getBySquawks(setOf("3532,1200,0420")).apply {
+        endpoint.getBySquawk(setOf("3532,1200,0420")).apply {
             this shouldNotBe null
         }
     }
 
     @Test
     fun `aircraft by hexes `() = runTest {
-        endpoint.getByHexes(setOf("A213BD,A4FBAC")).apply {
+        endpoint.getByHex(setOf("A213BD,A4FBAC")).apply {
             this shouldNotBe null
         }
     }
 
     @Test
     fun `aircraft by callsigns`() = runTest {
-        endpoint.getByCallsigns(setOf("AAL1002,AAL1328")).apply {
+        endpoint.getByCallsign(setOf("AAL1002,AAL1328")).apply {
+            this shouldNotBe null
+        }
+    }
+
+    @Test
+    fun `aircraft by registration`() = runTest {
+        endpoint.getByRegistration(setOf("N656NK")).apply {
+            this shouldNotBe null
+        }
+    }
+
+    @Test
+    fun `aircraft by airframe`() = runTest {
+        endpoint.getByAirframe(setOf("F16")).apply {
             this shouldNotBe null
         }
     }

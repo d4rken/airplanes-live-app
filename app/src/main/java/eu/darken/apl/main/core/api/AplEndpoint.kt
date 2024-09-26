@@ -4,8 +4,10 @@ import dagger.Reusable
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
-import eu.darken.apl.main.core.Callsign
 import eu.darken.apl.main.core.aircraft.AircraftHex
+import eu.darken.apl.main.core.aircraft.Airframe
+import eu.darken.apl.main.core.aircraft.Callsign
+import eu.darken.apl.main.core.aircraft.Registration
 import eu.darken.apl.main.core.aircraft.SquawkCode
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -35,42 +37,70 @@ class AplEndpoint @Inject constructor(
             .create(AplApi::class.java)
     }
 
-    suspend fun getByHexes(
+    suspend fun getByHex(
         hexes: Set<AircraftHex>,
     ): Collection<AplApi.Aircraft> = withContext(dispatcherProvider.IO) {
         log(TAG) { "getByHexes(hexes=$hexes)" }
-
+        if (hexes.isEmpty()) return@withContext emptySet()
         hexes
             .chunkToCommaArgs()
-            .map { api.getAircraftByHexes(it).throwForErrors() }
+            .map { api.getAircraftByHex(it).throwForErrors() }
             .toList()
             .let { responses ->
                 responses.flatMap { it.ac }
             }
     }
 
-    suspend fun getBySquawks(
+    suspend fun getBySquawk(
         squawks: Set<SquawkCode>
     ): Collection<AplApi.Aircraft> = withContext(dispatcherProvider.IO) {
         log(TAG) { "getBySquawks(squawks=$squawks)" }
-
+        if (squawks.isEmpty()) return@withContext emptySet()
         squawks
             .chunkToCommaArgs()
-            .map { api.getAircraftBySquawks(it).throwForErrors() }
+            .map { api.getAircraftBySquawk(it).throwForErrors() }
             .toList()
             .let { responses ->
                 responses.flatMap { it.ac }
             }
     }
 
-    suspend fun getByCallsigns(
+    suspend fun getByCallsign(
         callsigns: Set<Callsign>
     ): Collection<AplApi.Aircraft> = withContext(dispatcherProvider.IO) {
-        log(TAG) { "getByCallsigns(squawks=$callsigns)" }
-
+        log(TAG) { "getByCallsigns(callsigns=$callsigns)" }
+        if (callsigns.isEmpty()) return@withContext emptySet()
         callsigns
             .chunkToCommaArgs()
-            .map { api.getAircraftByCallsigns(it).throwForErrors() }
+            .map { api.getAircraftByCallsign(it).throwForErrors() }
+            .toList()
+            .let { responses ->
+                responses.flatMap { it.ac }
+            }
+    }
+
+    suspend fun getByRegistration(
+        registrations: Set<Registration>
+    ): Collection<AplApi.Aircraft> = withContext(dispatcherProvider.IO) {
+        log(TAG) { "getByRegistration(registrations=$registrations)" }
+        if (registrations.isEmpty()) return@withContext emptySet()
+        registrations
+            .chunkToCommaArgs()
+            .map { api.getAircraftByRegistration(it).throwForErrors() }
+            .toList()
+            .let { responses ->
+                responses.flatMap { it.ac }
+            }
+    }
+
+    suspend fun getByAirframe(
+        airframes: Set<Airframe>
+    ): Collection<AplApi.Aircraft> = withContext(dispatcherProvider.IO) {
+        log(TAG) { "getByAirframe(squawks=$airframes)" }
+        if (airframes.isEmpty()) return@withContext emptySet()
+        airframes
+            .chunkToCommaArgs()
+            .map { api.getAircraftByAirframe(it).throwForErrors() }
             .toList()
             .let { responses ->
                 responses.flatMap { it.ac }

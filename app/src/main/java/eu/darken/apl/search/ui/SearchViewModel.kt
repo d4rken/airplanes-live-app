@@ -33,12 +33,18 @@ class SearchViewModel @Inject constructor(
     ) { query, result ->
         val items = mutableListOf<SearchAdapter.Item>()
 
-        result?.aircraft
-            ?.mapNotNull {
-                null
-            }
-            ?.run { items.addAll(this) }
+        result?.aircraft?.map { ac ->
+            SearchResultVH.Item(
+                aircraft = ac,
+                distanceInMeter = 123 * 1000L,
+                onTap = {
 
+                },
+                onLongPress = {
+
+                },
+            )
+        }?.run { items.addAll(this) }
 
         State(
             query = query,
@@ -52,10 +58,6 @@ class SearchViewModel @Inject constructor(
         currentQuery.value = term
             ?.takeIf { it.isNotBlank() }
             ?.let { SearchRepo.Query(it) }
-    }
-
-    fun cancelSearch() {
-        currentQuery.value = null
     }
 
     data class State(

@@ -33,7 +33,7 @@ class HexAlertVH(parent: ViewGroup) :
             alertStatus.text = getString(R.string.alerts_hexcode_notfound_message)
         } else {
             val aircraft = alert.infos.first()
-            flightValue.text = aircraft.flight
+            flightValue.text = aircraft.callsign
             registrationValue.text = aircraft.registration
             squawkValue.text = aircraft.squawk
             descriptionValue.text = "${aircraft.description} @ ${aircraft.altitude} ft"

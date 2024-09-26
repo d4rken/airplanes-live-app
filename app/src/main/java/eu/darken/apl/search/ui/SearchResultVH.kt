@@ -17,18 +17,19 @@ class SearchResultVH(parent: ViewGroup) :
 
     override val onBindData: SearchListResultItemBinding.(
         item: Item,
-        payloads: List<Any>
+        payloads: List<Any>,
     ) -> Unit = { item, _ ->
         val aircraft = item.aircraft
 
-        title.text = aircraft.label
-        subtitle.text = aircraft.hex
+        title.text = "${aircraft.label} (${aircraft.hex.uppercase()})"
+        subtitle.apply {
+            text = aircraft.description
+            aircraft.operator?.let { append(" from $it") }
+        }
+        distance.text = "${(item.distanceInMeter / 1000).toInt()} km from you"
 
-
-        flightValue.text = aircraft.flight
-        registrationValue.text = aircraft.registration
-        squawkValue.text = aircraft.squawk
-        descriptionValue.text = "${aircraft.description} @ ${aircraft.altitude} ft"
+        flightValue.text = aircraft.callsign ?: "?"
+        squawkValue.text = aircraft.squawk ?: "?"
 
         root.apply {
             setOnClickListener { item.onTap(item) }
@@ -41,6 +42,7 @@ class SearchResultVH(parent: ViewGroup) :
 
     data class Item(
         val aircraft: Aircraft,
+        val distanceInMeter: Long,
         val onTap: (Item) -> Unit,
         val onLongPress: (Item) -> Unit,
     ) : SearchAdapter.Item {

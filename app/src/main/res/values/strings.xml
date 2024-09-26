@@ -139,7 +139,7 @@
     <string name="alerts_remove_action">Delete alert</string>
     <string name="alerts_remove_confirmation_title">Confirmation</string>
     <string name="alerts_remove_confirmation_message">Delete this alert?</string>
-    <string name="search_supported_types_hint">Supported: Registration, aircraft types, HEX and SQUAWK codes</string>
+    <string name="search_supported_types_hint">Supported: Registration, airframes, HEX and SQUAWK codes</string>
     <string name="search_aircraft_search_label">Aircraft search</string>
     <plurals name="alerts_squawk_matches_msg">
         <item quantity="one">%1$d aircraft is squawking %1$s</item>

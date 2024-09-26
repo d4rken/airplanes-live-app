@@ -46,12 +46,13 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
                 }
             }
             searchLayout.setEndIconOnClickListener {
+                searchInput.setText("")
                 vm.search(null)
             }
         }
 
         val adapter = SearchAdapter()
-        ui.list.setupDefaults(adapter)
+        ui.list.setupDefaults(adapter, dividers = false)
 
         vm.state.observe2(ui) { state ->
             adapter.update(state.items)
@@ -59,6 +60,11 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
                 resources.getQuantityString(R.plurals.search_found_x_aircraft, 0, state.items.size)
             } else {
                 getString(R.string.search_page_label)
+            }
+            searchInput.apply {
+                if (text.toString() != state.query?.term) {
+                    setText(state.query?.term ?: "")
+                }
             }
         }
 
