@@ -9,6 +9,7 @@ import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.feeder.core.FeederRepo
 import eu.darken.apl.feeder.core.ReceiverId
 import eu.darken.apl.feeder.ui.types.DefaultFeederVH
+import eu.darken.apl.map.core.AirplanesLive
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.callbackFlow
@@ -68,7 +69,7 @@ class FeederListViewModel @Inject constructor(
     }
 
     fun startFeeding() = launch {
-        webpageTool.open("https://github.com/airplanes-live/feed")
+        webpageTool.open(AirplanesLive.URL_START_FEEDING)
     }
 
     data class State(

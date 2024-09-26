@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import eu.darken.apl.R
+import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.uix.Fragment3
@@ -29,6 +30,7 @@ class MapFragment : Fragment3(R.layout.map_fragment) {
     override val ui: MapFragmentBinding by viewBinding()
 
     @Inject lateinit var webMapClientFactory: WebMapClient.Factory
+    @Inject lateinit var webpageTool: WebpageTool
 
     private lateinit var locationPermissionLauncher: ActivityResultLauncher<String>
 
@@ -67,6 +69,7 @@ class MapFragment : Fragment3(R.layout.map_fragment) {
                 .onEach { event ->
                     when (event) {
                         WebMapClient.AppInterface.Event.HomePressed -> vm.checkLocationPermission()
+                        is WebMapClient.AppInterface.Event.OpenUrl -> webpageTool.open(event.url)
                     }
                 }
                 .launchIn(viewLifecycleOwner.lifecycleScope)

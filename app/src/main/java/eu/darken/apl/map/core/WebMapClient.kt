@@ -11,6 +11,7 @@ import dagger.Reusable
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import eu.darken.apl.common.debug.logging.Logging.Priority.INFO
 import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
 import eu.darken.apl.common.debug.logging.Logging.Priority.WARN
 import eu.darken.apl.common.debug.logging.log
@@ -48,6 +49,7 @@ class WebMapClient @AssistedInject constructor(
         }
     }
 
+
     val events = appInterface.events
         .onEach { log(TAG) { "event: $it" } }
 
@@ -63,10 +65,18 @@ class WebMapClient @AssistedInject constructor(
     }
 
     override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
-        val url = request.url?.toString()
-        val allowed = url?.startsWith("https://globe.airplanes.live") == true
-        log(TAG, VERBOSE) { "Is URL allowed? $allowed -> $url" }
-        return !allowed
+        val url = request.url?.toString() ?: return true
+
+        val isInternal = url.startsWith("https://globe.airplanes.live")
+
+        if (isInternal) {
+            log(TAG, VERBOSE) { "Allowing internal URL: $url" }
+        } else {
+            log(TAG, INFO) { "Not an allowed internal URL, opening external: $url" }
+            appInterface.sendEvent(AppInterface.Event.OpenUrl(url))
+        }
+
+        return !isInternal
     }
 
     fun clickHome() {
@@ -105,13 +115,14 @@ class WebMapClient @AssistedInject constructor(
             onBufferOverflow = BufferOverflow.DROP_OLDEST,
         )
 
-        private fun sendEvent(event: Event) {
+        internal fun sendEvent(event: Event) {
             val success = events.tryEmit(event)
             log(TAG) { "Sending $event = $success" }
         }
 
         sealed interface Event {
             data object HomePressed : Event
+            data class OpenUrl(val url: String) : Event
         }
 
         @JavascriptInterface
