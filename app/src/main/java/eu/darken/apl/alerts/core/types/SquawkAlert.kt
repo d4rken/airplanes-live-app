@@ -2,11 +2,11 @@ package eu.darken.apl.alerts.core.types
 
 import eu.darken.apl.alerts.core.config.SquawkAlertConfig
 import eu.darken.apl.main.core.aircraft.SquawkCode
-import eu.darken.apl.main.core.api.AplApi
+import eu.darken.apl.main.core.api.AirplanesLiveApi
 
 data class SquawkAlert(
     val config: SquawkAlertConfig,
-    val infos: Set<AplApi.Aircraft>,
+    val infos: Set<AirplanesLiveApi.Aircraft>,
 ) : AircraftAlert {
     override val id: String
         get() = squawk

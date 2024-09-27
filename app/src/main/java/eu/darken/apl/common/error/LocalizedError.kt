@@ -2,6 +2,8 @@ package eu.darken.apl.common.error
 
 import android.content.Context
 import eu.darken.apl.R
+import eu.darken.apl.common.ca.CaString
+import eu.darken.apl.common.ca.caString
 
 interface HasLocalizedError {
     fun getLocalizedError(context: Context): LocalizedError
@@ -9,8 +11,8 @@ interface HasLocalizedError {
 
 data class LocalizedError(
     val throwable: Throwable,
-    val label: String,
-    val description: String
+    val label: CaString,
+    val description: CaString,
 ) {
     fun asText() = "$label:\n$description"
 }
@@ -19,14 +21,14 @@ fun Throwable.localized(c: Context): LocalizedError = when {
     this is HasLocalizedError -> this.getLocalizedError(c)
     localizedMessage != null -> LocalizedError(
         throwable = this,
-        label = "${c.getString(R.string.general_error_label)}: ${this::class.simpleName!!}",
-        description = localizedMessage ?: getStackTracePeek()
+        label = caString { "${c.getString(R.string.general_error_label)}: ${this::class.simpleName!!}" },
+        description = caString { localizedMessage ?: getStackTracePeek() },
     )
 
     else -> LocalizedError(
         throwable = this,
-        label = "${c.getString(R.string.general_error_label)}: ${this::class.simpleName!!}",
-        description = getStackTracePeek()
+        label = caString { "${c.getString(R.string.general_error_label)}: ${this::class.simpleName!!}" },
+        description = caString { getStackTracePeek() },
     )
 }
 

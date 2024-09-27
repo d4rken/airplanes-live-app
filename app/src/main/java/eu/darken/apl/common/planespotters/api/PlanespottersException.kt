@@ -1,17 +1,17 @@
-package eu.darken.apl.alerts.core.types
+package eu.darken.apl.common.planespotters.api
 
 import android.content.Context
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
-import eu.darken.apl.R
 import eu.darken.apl.common.ca.caString
 import eu.darken.apl.common.error.HasLocalizedError
 import eu.darken.apl.common.error.LocalizedError
 import retrofit2.HttpException
 
-class UnsupportedSquawkError(
+class PlanespottersException(
+    val identifier: String,
     private val error: HttpException,
-) : IllegalArgumentException("Provided squawk not allowed"), HasLocalizedError {
+) : Exception("Planespotters.net error for $identifier: $error"), HasLocalizedError {
 
     private val adapter by lazy {
         val moshi = Moshi.Builder().build()
@@ -25,12 +25,7 @@ class UnsupportedSquawkError(
 
     override fun getLocalizedError(context: Context): LocalizedError = LocalizedError(
         throwable = this,
-        label = caString { context.getString(R.string.alerts_squawk_error_notallowed_label) },
-        description = caString {
-            context.getString(
-                R.string.alerts_squawk_error_notallowed_message,
-                errorMap["allowed"]
-            )
-        },
+        label = caString { "Planespotters.net error" },
+        description = caString { errorMap["error"]?.toString() ?: error.toString() }
     )
 }

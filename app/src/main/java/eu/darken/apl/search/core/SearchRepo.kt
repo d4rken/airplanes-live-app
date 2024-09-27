@@ -9,7 +9,7 @@ import eu.darken.apl.main.core.aircraft.Airframe
 import eu.darken.apl.main.core.aircraft.Callsign
 import eu.darken.apl.main.core.aircraft.Registration
 import eu.darken.apl.main.core.aircraft.SquawkCode
-import eu.darken.apl.main.core.api.AplEndpoint
+import eu.darken.apl.main.core.api.AirplanesLiveEndpoint
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
@@ -20,7 +20,7 @@ import javax.inject.Singleton
 
 @Singleton
 class SearchRepo @Inject constructor(
-    private val endpoint: AplEndpoint,
+    private val endpoint: AirplanesLiveEndpoint,
 ) {
 
     data class Query(

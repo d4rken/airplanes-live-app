@@ -10,11 +10,11 @@ import testhelper.BaseTest
 import testhelper.coroutine.TestDispatcherProvider
 
 class AplEndpointTest : BaseTest() {
-    private lateinit var endpoint: AplEndpoint
+    private lateinit var endpoint: AirplanesLiveEndpoint
 
     @BeforeEach
     fun setup() {
-        endpoint = AplEndpoint(
+        endpoint = AirplanesLiveEndpoint(
             baseClient = HttpModule().baseHttpClient(),
             dispatcherProvider = TestDispatcherProvider(),
             moshiConverterFactory = HttpModule().moshiConverter(SerializationModule().moshi())

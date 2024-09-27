@@ -18,13 +18,13 @@ import javax.inject.Inject
 
 
 @Reusable
-class AplEndpoint @Inject constructor(
+class AirplanesLiveEndpoint @Inject constructor(
     private val baseClient: OkHttpClient,
     private val moshiConverterFactory: MoshiConverterFactory,
     private val dispatcherProvider: DispatcherProvider,
 ) {
 
-    private val api: AplApi by lazy {
+    private val api: AirplanesLiveApi by lazy {
         val configHttpClient = baseClient.newBuilder().apply {
 
         }.build()
@@ -34,12 +34,12 @@ class AplEndpoint @Inject constructor(
             .baseUrl("https://api.airplanes.live/v2/")
             .addConverterFactory(moshiConverterFactory)
             .build()
-            .create(AplApi::class.java)
+            .create(AirplanesLiveApi::class.java)
     }
 
     suspend fun getByHex(
         hexes: Set<AircraftHex>,
-    ): Collection<AplApi.Aircraft> = withContext(dispatcherProvider.IO) {
+    ): Collection<AirplanesLiveApi.Aircraft> = withContext(dispatcherProvider.IO) {
         log(TAG) { "getByHexes(hexes=$hexes)" }
         if (hexes.isEmpty()) return@withContext emptySet()
         hexes
@@ -53,7 +53,7 @@ class AplEndpoint @Inject constructor(
 
     suspend fun getBySquawk(
         squawks: Set<SquawkCode>
-    ): Collection<AplApi.Aircraft> = withContext(dispatcherProvider.IO) {
+    ): Collection<AirplanesLiveApi.Aircraft> = withContext(dispatcherProvider.IO) {
         log(TAG) { "getBySquawks(squawks=$squawks)" }
         if (squawks.isEmpty()) return@withContext emptySet()
         squawks
@@ -67,7 +67,7 @@ class AplEndpoint @Inject constructor(
 
     suspend fun getByCallsign(
         callsigns: Set<Callsign>
-    ): Collection<AplApi.Aircraft> = withContext(dispatcherProvider.IO) {
+    ): Collection<AirplanesLiveApi.Aircraft> = withContext(dispatcherProvider.IO) {
         log(TAG) { "getByCallsigns(callsigns=$callsigns)" }
         if (callsigns.isEmpty()) return@withContext emptySet()
         callsigns
@@ -81,7 +81,7 @@ class AplEndpoint @Inject constructor(
 
     suspend fun getByRegistration(
         registrations: Set<Registration>
-    ): Collection<AplApi.Aircraft> = withContext(dispatcherProvider.IO) {
+    ): Collection<AirplanesLiveApi.Aircraft> = withContext(dispatcherProvider.IO) {
         log(TAG) { "getByRegistration(registrations=$registrations)" }
         if (registrations.isEmpty()) return@withContext emptySet()
         registrations
@@ -95,7 +95,7 @@ class AplEndpoint @Inject constructor(
 
     suspend fun getByAirframe(
         airframes: Set<Airframe>
-    ): Collection<AplApi.Aircraft> = withContext(dispatcherProvider.IO) {
+    ): Collection<AirplanesLiveApi.Aircraft> = withContext(dispatcherProvider.IO) {
         log(TAG) { "getByAirframe(squawks=$airframes)" }
         if (airframes.isEmpty()) return@withContext emptySet()
         airframes
@@ -107,8 +107,8 @@ class AplEndpoint @Inject constructor(
             }
     }
 
-    private fun <T : AplApi.BaseResponse> T.throwForErrors(): T = this.also {
-        if (it.message != "No error") throw AplApiError(it.message)
+    private fun <T : AirplanesLiveApi.BaseResponse> T.throwForErrors(): T = this.also {
+        if (it.message != "No error") throw AirplanesLiveApiException(it.message)
     }
 
     private fun Collection<String>.chunkToCommaArgs(size: Int = 30) = this

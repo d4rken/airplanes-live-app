@@ -10,7 +10,7 @@ import eu.darken.apl.main.core.aircraft.SquawkCode
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-interface AplApi {
+interface AirplanesLiveApi {
 
     interface BaseResponse {
         val message: String
