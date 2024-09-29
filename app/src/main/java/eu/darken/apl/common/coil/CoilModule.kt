@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import coil.ImageLoader
 import coil.ImageLoaderFactory
-import coil.request.CachePolicy
 import coil.util.Logger
 import dagger.Module
 import dagger.Provides
@@ -52,10 +51,6 @@ class CoilModule {
                 (Runtime.getRuntime().availableProcessors() - 1).coerceAtLeast(2)
             )
         )
-        memoryCache(null)
-        memoryCachePolicy(CachePolicy.DISABLED)
-        diskCache(null)
-        diskCachePolicy(CachePolicy.DISABLED)
     }.build()
 
     @Singleton
