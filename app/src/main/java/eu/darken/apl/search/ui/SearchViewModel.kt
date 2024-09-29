@@ -2,6 +2,7 @@ package eu.darken.apl.search.ui
 
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
+import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
@@ -19,7 +20,8 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     @Suppress("UNUSED_PARAMETER") handle: SavedStateHandle,
     dispatcherProvider: DispatcherProvider,
-    private val searchRepo: SearchRepo
+    private val searchRepo: SearchRepo,
+    private val webpageTool: WebpageTool,
 ) : ViewModel3(dispatcherProvider) {
 
     private val currentQuery = MutableStateFlow<SearchRepo.Query?>(null)
@@ -43,6 +45,9 @@ class SearchViewModel @Inject constructor(
                 onLongPress = {
 
                 },
+                onThumbnail = {
+                    launch { webpageTool.open(it.link) }
+                }
             )
         }?.run { items.addAll(this) }
 

@@ -46,26 +46,28 @@
             app:layout_constraintBottom_toBottomOf="@id/title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/title"
-            tools:text="700km from you" />
+            tools:text="999km from you" />
 
         <eu.darken.apl.common.planespotters.PlanespottersThumbnailView
             android:id="@+id/thumbnail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="72dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="420:280"
+            app:layout_constraintEnd_toStartOf="@id/info_container"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/subtitle" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/aircraft_container"
+            android:id="@+id/info_container"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/thumbnail"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/thumbnail"
-            app:layout_constraintTop_toBottomOf="@id/subtitle">
+            app:layout_constraintTop_toTopOf="@id/thumbnail">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/flight_value"
@@ -92,7 +94,7 @@
                 style="@style/TextAppearance.Material3.BodyLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toStartOf="@id/extra_value"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/flight_value"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="7700" />
@@ -106,27 +108,6 @@
                 app:layout_constraintEnd_toEndOf="@id/squawk_value"
                 app:layout_constraintStart_toStartOf="@id/squawk_value"
                 app:layout_constraintTop_toBottomOf="@id/squawk_value" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/extra_value"
-                style="@style/TextAppearance.Material3.BodyLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toEndOf="@id/squawk_value"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/extra_label"
-                style="@style/TextAppearance.Material3.LabelSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                app:layout_constraintEnd_toEndOf="@id/extra_value"
-                app:layout_constraintStart_toStartOf="@id/extra_value"
-                app:layout_constraintTop_toBottomOf="@id/extra_value" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

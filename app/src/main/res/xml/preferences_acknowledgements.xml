@@ -15,7 +15,7 @@
     <eu.darken.apl.common.preferences.IntentPreference
         android:key="thanks.planespotters"
         android:summary="Thanks for providing the aircraft imagse."
-        android:title="planespotters.net/"
+        android:title="planespotters.net"
         app:iconSpaceReserved="false">
         <intent
             android:action="android.intent.action.VIEW"

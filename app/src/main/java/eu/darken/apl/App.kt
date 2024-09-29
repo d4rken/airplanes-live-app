@@ -4,6 +4,8 @@ import android.app.Application
 import android.util.Log.VERBOSE
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
+import coil.Coil
+import coil.ImageLoaderFactory
 import dagger.hilt.android.HiltAndroidApp
 import eu.darken.apl.common.BuildConfigWrap
 import eu.darken.apl.common.debug.autoreport.AutoReporting
@@ -23,6 +25,7 @@ open class App : Application(), Configuration.Provider {
     @Inject lateinit var bugReporter: AutoReporting
     @Inject lateinit var theming: Theming
     @Inject lateinit var feederMonitorService: FeederMonitorService
+    @Inject lateinit var imageLoaderFactory: ImageLoaderFactory
 
     override fun onCreate() {
         super.onCreate()
@@ -34,6 +37,9 @@ open class App : Application(), Configuration.Provider {
         bugReporter.setup()
 
         theming.setup()
+
+        Coil.setImageLoader(imageLoaderFactory)
+
         feederMonitorService.setup()
 
         log(TAG) { "onCreate() done! ${Exception().asLog()}" }

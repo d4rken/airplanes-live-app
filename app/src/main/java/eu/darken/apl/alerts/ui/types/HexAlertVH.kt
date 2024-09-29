@@ -27,7 +27,7 @@ class HexAlertVH(parent: ViewGroup) :
         subtitle.text = alert.hex
 
         notfoundContainer.isVisible = alert.infos.isEmpty()
-        aircraftContainer.isVisible = alert.infos.isNotEmpty()
+        infoContainer.isVisible = alert.infos.isNotEmpty()
 
         if (alert.infos.isEmpty()) {
             alertStatus.text = getString(R.string.alerts_hexcode_notfound_message)

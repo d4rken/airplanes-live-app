@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import coil.ImageLoader
 import coil.ImageLoaderFactory
+import coil.request.CachePolicy
 import coil.util.Logger
 import dagger.Module
 import dagger.Provides
@@ -11,10 +12,14 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import eu.darken.apl.common.BuildConfigWrap
+import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.Logging
 import eu.darken.apl.common.debug.logging.asLog
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
+import eu.darken.apl.common.planespotters.coil.PlanespottersFetcher
+import eu.darken.apl.common.planespotters.coil.PlanespottersInterceptor
+import eu.darken.apl.common.planespotters.coil.PlanespottersKeyer
 import javax.inject.Provider
 import javax.inject.Singleton
 
@@ -23,8 +28,11 @@ import javax.inject.Singleton
 class CoilModule {
 
     @Provides
-    fun imageLoader(@ApplicationContext context: Context): ImageLoader = ImageLoader.Builder(context).apply {
-
+    fun imageLoader(
+        @ApplicationContext context: Context,
+        dispatcherProvider: DispatcherProvider,
+        planespottersFetcherFactory: PlanespottersFetcher.Factory,
+    ): ImageLoader = ImageLoader.Builder(context).apply {
         if (BuildConfigWrap.DEBUG) {
             val logger = object : Logger {
                 override var level: Int = Log.VERBOSE
@@ -34,7 +42,20 @@ class CoilModule {
             }
             logger(logger)
         }
-
+        components {
+            add(planespottersFetcherFactory)
+            add(PlanespottersKeyer())
+            add(PlanespottersInterceptor())
+        }
+        dispatcher(
+            dispatcherProvider.Default.limitedParallelism(
+                (Runtime.getRuntime().availableProcessors() - 1).coerceAtLeast(2)
+            )
+        )
+        memoryCache(null)
+        memoryCachePolicy(CachePolicy.DISABLED)
+        diskCache(null)
+        diskCachePolicy(CachePolicy.DISABLED)
     }.build()
 
     @Singleton

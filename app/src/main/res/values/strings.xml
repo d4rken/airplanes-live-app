@@ -15,6 +15,7 @@
     <string name="general_refresh_action">Refresh</string>
     <string name="general_add_action">Add</string>
     <string name="general_remove_action">Remove</string>
+    <string name="general_photo_author_label">by %s</string>
 
     <string name="general_sponsor_action">Sponsor development</string>
     <string name="general_sponsor_description">Say thanks incentivize further app development.</string>
@@ -76,8 +77,7 @@
 
     <string name="onboarding_body1">This is a companion app for airplanes.live community members!</string>
     <string name="onboarding_body2">airplanes.live is a community-driven flight tracker with feeders around the world. It provides open and unfiltered access to worldwide air traffic data.</string>
-    <string name="onboarding_body3">Consider contributing data :)</string>
-
+    <string name="onboarding_body3">Consider contributing data.</string>
 
     <string name="feeder_page_label">Feeder</string>
     <plurals name="feeder_yours_x_active_msg">
@@ -104,7 +104,6 @@
     <string name="feeder_startfeeding_action">Start feeding</string>
 
     <string name="map_page_label">Map</string>
-
 
     <string name="search_page_label">Search</string>
     <plurals name="search_found_x_aircraft">

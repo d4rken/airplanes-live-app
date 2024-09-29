@@ -1,8 +1,10 @@
 package eu.darken.apl.search.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import eu.darken.apl.R
@@ -39,6 +41,8 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
                 when (actionId) {
                     EditorInfo.IME_ACTION_SEARCH -> {
                         vm.search(view.text.toString())
+                        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        imm.hideSoftInputFromWindow(view.windowToken, 0)
                         true
                     }
 

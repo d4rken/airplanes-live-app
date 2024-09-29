@@ -125,6 +125,10 @@ interface AirplanesLiveApi {
             @Json(name = "rc") val rc: Int,
             @Json(name = "seen_pos") val lastSeen: Double
         )
+
+        override fun toString(): String {
+            return "Aircraft($hex, $registration, $type)"
+        }
     }
 
 }
