@@ -23,6 +23,9 @@ sealed class Permission(
     object POST_NOTIFICATIONS
         : Permission("android.permission.POST_NOTIFICATIONS"), RuntimePermission
 
+    object ACCESS_COARSE_LOCATION
+        : Permission("android.permission.ACCESS_COARSE_LOCATION"), RuntimePermission
+
     object ACCESS_FINE_LOCATION
         : Permission("android.permission.ACCESS_FINE_LOCATION"), RuntimePermission
 

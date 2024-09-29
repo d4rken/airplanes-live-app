@@ -1,23 +1,25 @@
-package eu.darken.apl.search.ui
+package eu.darken.apl.search.ui.items
 
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import eu.darken.apl.R
 import eu.darken.apl.common.lists.BindableVH
 import eu.darken.apl.common.planespotters.PlanespottersMeta
 import eu.darken.apl.common.planespotters.load
-import eu.darken.apl.databinding.SearchListResultItemBinding
+import eu.darken.apl.databinding.SearchListAircraftItemBinding
 import eu.darken.apl.main.core.aircraft.Aircraft
+import eu.darken.apl.search.ui.SearchAdapter
 
 
-class SearchResultVH(parent: ViewGroup) :
-    SearchAdapter.BaseVH<SearchResultVH.Item, SearchListResultItemBinding>(
-        R.layout.search_list_result_item,
+class AircraftResultVH(parent: ViewGroup) :
+    SearchAdapter.BaseVH<AircraftResultVH.Item, SearchListAircraftItemBinding>(
+        R.layout.search_list_aircraft_item,
         parent
-    ), BindableVH<SearchResultVH.Item, SearchListResultItemBinding> {
+    ), BindableVH<AircraftResultVH.Item, SearchListAircraftItemBinding> {
 
-    override val viewBinding = lazy { SearchListResultItemBinding.bind(itemView) }
+    override val viewBinding = lazy { SearchListAircraftItemBinding.bind(itemView) }
 
-    override val onBindData: SearchListResultItemBinding.(
+    override val onBindData: SearchListAircraftItemBinding.(
         item: Item,
         payloads: List<Any>,
     ) -> Unit = { item, _ ->
@@ -28,7 +30,12 @@ class SearchResultVH(parent: ViewGroup) :
             text = aircraft.description
             aircraft.operator?.let { append(" from $it") }
         }
-        distance.text = "${(item.distanceInMeter / 1000).toInt()} km from you"
+        distance.apply {
+            text = item?.distanceInMeter?.let {
+                getString(R.string.general_xdistance_away_label, "${(it / 1000).toInt()}km")
+            }
+            isGone = item.distanceInMeter == null
+        }
 
         flightValue.text = aircraft.callsign ?: "?"
         squawkValue.text = aircraft.squawk ?: "?"
@@ -49,7 +56,7 @@ class SearchResultVH(parent: ViewGroup) :
 
     data class Item(
         val aircraft: Aircraft,
-        val distanceInMeter: Long,
+        val distanceInMeter: Float?,
         val onTap: () -> Unit,
         val onLongPress: () -> Unit,
         val onThumbnail: (PlanespottersMeta) -> Unit,

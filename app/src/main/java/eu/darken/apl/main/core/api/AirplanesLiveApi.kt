@@ -1,5 +1,6 @@
 package eu.darken.apl.main.core.api
 
+import android.location.Location
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import eu.darken.apl.main.core.aircraft.AircraftHex
@@ -94,6 +95,8 @@ interface AirplanesLiveApi {
         @Json(name = "desc") override val description: String?,
         @Json(name = "ownOp") override val operator: String?,
         @Json(name = "alt_baro") override val altitude: String?, // Altitude in feet or "ground"
+        @Json(name = "lat") val latitude: String?,
+        @Json(name = "lon") val longitude: String?,
         @Json(name = "baro_rate") val rateBaro: Int?,
         @Json(name = "geom_rate") val rateGeometric: Int?,
         @Json(name = "gs") val groundSpeed: Float?, // ground speed in knots
@@ -117,6 +120,17 @@ interface AirplanesLiveApi {
         @Json(name = "rssi") val rssi: Double
     ) : eu.darken.apl.main.core.aircraft.Aircraft {
 
+        override val location: Location?
+            get() {
+                val convLat = this@Aircraft.latitude?.toDouble() ?: return null
+                val convLong = this@Aircraft.longitude?.toDouble() ?: return null
+
+                return Location("manual").apply {
+                    latitude = convLat
+                    longitude = convLong
+                }
+            }
+
         @JsonClass(generateAdapter = true)
         data class LastPosition(
             @Json(name = "lat") val lat: Double,
@@ -127,7 +141,7 @@ interface AirplanesLiveApi {
         )
 
         override fun toString(): String {
-            return "Aircraft($hex, $registration, $type)"
+            return "Aircraft($hex, $registration, $type, $location)"
         }
     }
 

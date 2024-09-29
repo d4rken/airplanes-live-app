@@ -16,7 +16,8 @@
     <string name="general_add_action">Add</string>
     <string name="general_remove_action">Remove</string>
     <string name="general_photo_author_label">by %s</string>
-
+    <string name="general_grant_permission_action">Grant permission</string>
+    <string name="general_dismiss_action">Dismiss</string>
     <string name="general_internet_unavailable_message">Internet is not available.</string>
 
     <string name="general_sponsor_action">Sponsor development</string>
@@ -107,12 +108,6 @@
 
     <string name="map_page_label">Map</string>
 
-    <string name="search_page_label">Search</string>
-    <plurals name="search_found_x_aircraft">
-        <item quantity="one">Found %d aircraft</item>
-        <item quantity="other">Found %d aircraft</item>
-    </plurals>
-
     <string name="alerts_page_label">Alerts</string>
     <string name="alerts_list_add_title">Add new alert</string>
     <plurals name="alerts_yours_x_active_msg">
@@ -140,10 +135,20 @@
     <string name="alerts_remove_action">Delete alert</string>
     <string name="alerts_remove_confirmation_title">Confirmation</string>
     <string name="alerts_remove_confirmation_message">Delete this alert?</string>
-    <string name="search_supported_types_hint">Supported: Registration, airframes, HEX and SQUAWK codes</string>
-    <string name="search_aircraft_search_label">Aircraft search</string>
     <plurals name="alerts_squawk_matches_msg">
         <item quantity="one">%1$d aircraft is squawking %1$s</item>
         <item quantity="other">%1$d aircraft are squawking %1$s</item>
     </plurals>
+
+    <string name="search_page_label">Search</string>
+    <string name="search_supported_types_hint">Supported: Registration, airframes, HEX and SQUAWK codes</string>
+    <string name="search_aircraft_search_label">Aircraft search</string>
+    <plurals name="search_found_x_aircraft">
+        <item quantity="one">Found %d aircraft</item>
+        <item quantity="other">Found %d aircraft</item>
+    </plurals>
+    <string name="search_location_prompt_title">Airplance distance</string>
+    <string name="search_location_prompt_body">Results will be sorted by their distance from you if you grant location permission.</string>
+    <string name="general_xdistance_away_label">%s away</string>
+
 </resources>

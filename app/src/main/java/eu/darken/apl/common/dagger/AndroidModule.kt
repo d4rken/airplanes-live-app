@@ -3,6 +3,7 @@ package eu.darken.apl.common.dagger
 import android.app.Application
 import android.app.NotificationManager
 import android.content.Context
+import android.location.LocationManager
 import androidx.work.WorkManager
 import dagger.Module
 import dagger.Provides
@@ -27,4 +28,9 @@ class AndroidModule {
     @Provides
     @Singleton
     fun workmanager(@ApplicationContext context: Context): WorkManager = WorkManager.getInstance(context)
+
+    @Provides
+    @Singleton
+    fun locationManager(context: Context): LocationManager =
+        context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 }

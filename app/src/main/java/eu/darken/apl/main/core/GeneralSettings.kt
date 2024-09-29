@@ -36,6 +36,8 @@ class GeneralSettings @Inject constructor(
     val themeMode = dataStore.createValue("core.ui.theme.mode", ThemeMode.SYSTEM, moshi)
     val themeStyle = dataStore.createValue("core.ui.theme.style", ThemeStyle.DEFAULT, moshi)
 
+    val searchLocationDismissed = dataStore.createValue("search.location.dismissed", false)
+
     override val mapper = PreferenceStoreMapper(
         isAutoReportingEnabled,
         deviceLabel,

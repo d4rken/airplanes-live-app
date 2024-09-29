@@ -1,5 +1,7 @@
 package eu.darken.apl.main.core.aircraft
 
+import android.location.Location
+
 interface Aircraft {
     val hex: String
     val airframe: Airframe?
@@ -15,4 +17,6 @@ interface Aircraft {
 
     val label: String
         get() = registration ?: hex
+
+    val location: Location?
 }
