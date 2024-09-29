@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -84,6 +85,10 @@ class MainFragment : Fragment3(R.layout.main_fragment) {
                     else -> false
                 }
             }
+        }
+
+        vm.isInternetAvailable.observe2(ui) {
+            offlineContainer.isGone = it
         }
 
         super.onViewCreated(view, savedInstanceState)

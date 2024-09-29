@@ -9,11 +9,13 @@ import eu.darken.apl.common.debug.logging.Logging.Priority.ERROR
 import eu.darken.apl.common.debug.logging.asLog
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.github.GithubReleaseCheck
+import eu.darken.apl.common.network.NetworkStateProvider
 import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.main.core.GeneralSettings
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import net.swiftzer.semver.SemVer
 import javax.inject.Inject
 
@@ -23,6 +25,7 @@ class MainViewModel @Inject constructor(
     dispatcherProvider: DispatcherProvider,
     githubReleaseCheck: GithubReleaseCheck,
     private val generalSettings: GeneralSettings,
+    private val networkStateProvider: NetworkStateProvider,
 ) : ViewModel3(dispatcherProvider = dispatcherProvider) {
 
     init {
@@ -30,6 +33,10 @@ class MainViewModel @Inject constructor(
             MainFragmentDirections.actionMainFragmentToOnboardingFragment().navigate()
         }
     }
+
+    val isInternetAvailable = networkStateProvider.networkState
+        .map { it.isInternetAvailable }
+        .asLiveData2()
 
     val newRelease = flow {
         val latestRelease = try {
