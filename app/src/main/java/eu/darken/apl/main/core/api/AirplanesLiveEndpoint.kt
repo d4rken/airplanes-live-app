@@ -13,7 +13,6 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.stream.Collectors
 import javax.inject.Inject
 
 
@@ -43,12 +42,10 @@ class AirplanesLiveEndpoint @Inject constructor(
         log(TAG) { "getByHexes(hexes=$hexes)" }
         if (hexes.isEmpty()) return@withContext emptySet()
         hexes
-            .chunkToCommaArgs()
             .map { api.getAircraftByHex(it).throwForErrors() }
             .toList()
-            .let { responses ->
-                responses.flatMap { it.ac }
-            }
+            .map { it.ac }
+            .flatten()
     }
 
     suspend fun getBySquawk(
@@ -57,12 +54,10 @@ class AirplanesLiveEndpoint @Inject constructor(
         log(TAG) { "getBySquawks(squawks=$squawks)" }
         if (squawks.isEmpty()) return@withContext emptySet()
         squawks
-            .chunkToCommaArgs()
             .map { api.getAircraftBySquawk(it).throwForErrors() }
             .toList()
-            .let { responses ->
-                responses.flatMap { it.ac }
-            }
+            .map { it.ac }
+            .flatten()
     }
 
     suspend fun getByCallsign(
@@ -71,12 +66,10 @@ class AirplanesLiveEndpoint @Inject constructor(
         log(TAG) { "getByCallsigns(callsigns=$callsigns)" }
         if (callsigns.isEmpty()) return@withContext emptySet()
         callsigns
-            .chunkToCommaArgs()
             .map { api.getAircraftByCallsign(it).throwForErrors() }
             .toList()
-            .let { responses ->
-                responses.flatMap { it.ac }
-            }
+            .map { it.ac }
+            .flatten()
     }
 
     suspend fun getByRegistration(
@@ -85,12 +78,10 @@ class AirplanesLiveEndpoint @Inject constructor(
         log(TAG) { "getByRegistration(registrations=$registrations)" }
         if (registrations.isEmpty()) return@withContext emptySet()
         registrations
-            .chunkToCommaArgs()
             .map { api.getAircraftByRegistration(it).throwForErrors() }
             .toList()
-            .let { responses ->
-                responses.flatMap { it.ac }
-            }
+            .map { it.ac }
+            .flatten()
     }
 
     suspend fun getByAirframe(
@@ -99,25 +90,44 @@ class AirplanesLiveEndpoint @Inject constructor(
         log(TAG) { "getByAirframe(squawks=$airframes)" }
         if (airframes.isEmpty()) return@withContext emptySet()
         airframes
-            .chunkToCommaArgs()
             .map { api.getAircraftByAirframe(it).throwForErrors() }
             .toList()
-            .let { responses ->
-                responses.flatMap { it.ac }
-            }
+            .map { it.ac }
+            .flatten()
+    }
+
+    suspend fun getMilitary(): Collection<AirplanesLiveApi.Aircraft> = withContext(dispatcherProvider.IO) {
+        log(TAG) { "getMilitary()" }
+        api.getMilitary().throwForErrors().ac
+    }
+
+    suspend fun getLADD(): Collection<AirplanesLiveApi.Aircraft> = withContext(dispatcherProvider.IO) {
+        log(TAG) { "getLADD()" }
+        api.getLADD().throwForErrors().ac
+    }
+
+    suspend fun getPIA(): Collection<AirplanesLiveApi.Aircraft> = withContext(dispatcherProvider.IO) {
+        log(TAG) { "getPIA()" }
+        api.getPIA().throwForErrors().ac
+    }
+
+    suspend fun getByLocation(
+        latitude: Double,
+        longitude: Double,
+        radius: Float,
+    ): Collection<AirplanesLiveApi.Aircraft> = withContext(dispatcherProvider.IO) {
+        log(TAG) { "getByLocation($latitude,$longitude,$radius)" }
+
+        api.getAircraftsByLocation(
+            latitude = latitude,
+            longitude = longitude,
+            radius = radius.toInt()
+        ).ac
     }
 
     private fun <T : AirplanesLiveApi.BaseResponse> T.throwForErrors(): T = this.also {
         if (it.message != "No error") throw AirplanesLiveApiException(it.message)
     }
-
-    private fun Collection<String>.chunkToCommaArgs(size: Int = 30) = this
-        .chunked(size)
-        .map { chunk ->
-            chunk.stream()
-                .map { it.toString() }
-                .collect(Collectors.joining(","))
-        }
 
     companion object {
         private val TAG = logTag("Core", "Endpoint")

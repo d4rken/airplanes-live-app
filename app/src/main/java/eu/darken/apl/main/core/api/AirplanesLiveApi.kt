@@ -86,6 +86,52 @@ interface AirplanesLiveApi {
     suspend fun getAircraftByAirframe(@Path("types", encoded = true) types: String): AirframesResponse
 
     @JsonClass(generateAdapter = true)
+    data class MilitaryResponse(
+        @Json(name = "ac") val ac: List<Aircraft>,
+        @Json(name = "total") val total: Int,
+        @Json(name = "msg") override val message: String,
+        @Json(name = "now") override val now: Long,
+        @Json(name = "ctime") override val ctime: Long,
+        @Json(name = "ptime") override val ptime: Int
+    ) : BaseResponse
+
+    @GET("mil")
+    suspend fun getMilitary(): MilitaryResponse
+
+    @JsonClass(generateAdapter = true)
+    data class LADDResponse(
+        @Json(name = "ac") val ac: List<Aircraft>,
+        @Json(name = "total") val total: Int,
+        @Json(name = "msg") override val message: String,
+        @Json(name = "now") override val now: Long,
+        @Json(name = "ctime") override val ctime: Long,
+        @Json(name = "ptime") override val ptime: Int
+    ) : BaseResponse
+
+    @GET("ladd")
+    suspend fun getLADD(): LADDResponse
+
+    @JsonClass(generateAdapter = true)
+    data class PIAResponse(
+        @Json(name = "ac") val ac: List<Aircraft>,
+        @Json(name = "total") val total: Int,
+        @Json(name = "msg") override val message: String,
+        @Json(name = "now") override val now: Long,
+        @Json(name = "ctime") override val ctime: Long,
+        @Json(name = "ptime") override val ptime: Int
+    ) : BaseResponse
+
+    @GET("pia")
+    suspend fun getPIA(): PIAResponse
+
+    @GET("point/{lat}/{lon}/{radius}")
+    suspend fun getAircraftsByLocation(
+        @Path("lat") latitude: Double,
+        @Path("lon") longitude: Double,
+        @Path("radius") radius: Int
+    ): AirframesResponse
+
+    @JsonClass(generateAdapter = true)
     data class Aircraft(
         @Json(name = "hex") override val hex: AircraftHex,
         @Json(name = "type") val type: String?,
@@ -141,7 +187,7 @@ interface AirplanesLiveApi {
         )
 
         override fun toString(): String {
-            return "Aircraft($hex, $registration, $type, $location)"
+            return "Aircraft($hex, $registration, $type)"
         }
     }
 

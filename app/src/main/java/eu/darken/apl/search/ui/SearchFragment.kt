@@ -3,6 +3,7 @@ package eu.darken.apl.search.ui
 import android.Manifest
 import android.content.Context
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -53,21 +54,38 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
         }
 
         ui.apply {
-            searchInput.setOnEditorActionListener { view, actionId, _ ->
-                when (actionId) {
-                    EditorInfo.IME_ACTION_SEARCH -> {
-                        vm.search(view.text.toString())
-                        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                        imm.hideSoftInputFromWindow(view.windowToken, 0)
-                        true
-                    }
+            searchInput.apply {
+                setOnEditorActionListener { view, actionId, _ ->
+                    when (actionId) {
+                        EditorInfo.IME_ACTION_SEARCH -> {
+                            vm.updateSearchText(view.text.toString())
+                            val imm =
+                                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                            imm.hideSoftInputFromWindow(view.windowToken, 0)
+                            true
+                        }
 
-                    else -> false
+                        else -> false
+                    }
                 }
             }
             searchLayout.setEndIconOnClickListener {
                 searchInput.setText("")
-                vm.search(null)
+                vm.updateSearchText("")
+            }
+        }
+
+        ui.searchOptionContainer.addOnButtonCheckedListener { view, checkedId, isChecked ->
+            if (!isChecked) return@addOnButtonCheckedListener
+            when (checkedId) {
+                ui.searchOptionAll.id -> vm.updateMode(SearchViewModel.State.Mode.ALL)
+                ui.searchOptionHex.id -> vm.updateMode(SearchViewModel.State.Mode.HEX)
+                ui.searchOptionCallsign.id -> vm.updateMode(SearchViewModel.State.Mode.CALLSIGN)
+                ui.searchOptionRegistration.id -> vm.updateMode(SearchViewModel.State.Mode.REGISTRATION)
+                ui.searchOptionSquawk.id -> vm.updateMode(SearchViewModel.State.Mode.SQUAWK)
+                ui.searchOptionAirframe.id -> vm.updateMode(SearchViewModel.State.Mode.AIRFRAME)
+                ui.searchOptionMilitary.id -> vm.updateMode(SearchViewModel.State.Mode.INTERESTING)
+                ui.searchOptionLocation.id -> vm.updateMode(SearchViewModel.State.Mode.POSITION)
             }
         }
 
@@ -76,14 +94,66 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
 
         vm.state.observe2(ui) { state ->
             adapter.update(state.items)
-            toolbar.subtitle = if (state.query != null) {
-                resources.getQuantityString(R.plurals.search_found_x_aircraft, 0, state.items.size)
-            } else {
-                getString(R.string.search_page_label)
+
+            if (searchInput.text.toString() != state.input.raw) {
+                searchInput.setText(state.input.raw)
             }
-            searchInput.apply {
-                if (text.toString() != state.query?.term) {
-                    setText(state.query?.term ?: "")
+
+            when (state.input.mode) {
+                SearchViewModel.State.Mode.ALL -> {
+                    searchOptionContainer.check(ui.searchOptionAll.id)
+                    searchLayout.setHint(R.string.search_mode_all_hint)
+                    searchInput.inputType = InputType.TYPE_CLASS_TEXT
+                    searchLayout.isEnabled = true
+                }
+
+                SearchViewModel.State.Mode.HEX -> {
+                    searchOptionContainer.check(ui.searchOptionHex.id)
+                    searchLayout.setHint(R.string.search_mode_hex_hint)
+                    searchInput.inputType = InputType.TYPE_CLASS_TEXT
+                    searchLayout.isEnabled = true
+                }
+
+                SearchViewModel.State.Mode.CALLSIGN -> {
+                    searchOptionContainer.check(ui.searchOptionCallsign.id)
+                    searchLayout.setHint(R.string.search_mode_callsign_hint)
+                    searchInput.inputType = InputType.TYPE_CLASS_TEXT
+                    searchLayout.isEnabled = true
+                }
+
+                SearchViewModel.State.Mode.REGISTRATION -> {
+                    searchOptionContainer.check(ui.searchOptionRegistration.id)
+                    searchLayout.setHint(R.string.search_mode_registration_hint)
+                    searchInput.inputType = InputType.TYPE_CLASS_TEXT
+                    searchLayout.isEnabled = true
+                }
+
+                SearchViewModel.State.Mode.SQUAWK -> {
+                    searchOptionContainer.check(ui.searchOptionSquawk.id)
+                    searchLayout.setHint(R.string.search_mode_squawk_hint)
+                    searchInput.inputType = InputType.TYPE_CLASS_TEXT
+                    searchLayout.isEnabled = true
+                }
+
+                SearchViewModel.State.Mode.AIRFRAME -> {
+                    searchOptionContainer.check(ui.searchOptionAirframe.id)
+                    searchLayout.setHint(R.string.search_mode_airframe_hint)
+                    searchInput.inputType = InputType.TYPE_CLASS_TEXT
+                    searchLayout.isEnabled = true
+                }
+
+                SearchViewModel.State.Mode.INTERESTING -> {
+                    searchOptionContainer.check(ui.searchOptionMilitary.id)
+                    searchLayout.setHint(R.string.search_mode_military_hint)
+                    searchInput.inputType = InputType.TYPE_CLASS_TEXT
+                    searchLayout.isEnabled = true
+                }
+
+                SearchViewModel.State.Mode.POSITION -> {
+                    searchOptionContainer.check(ui.searchOptionLocation.id)
+                    searchLayout.setHint(R.string.search_mode_location_hint)
+                    searchInput.inputType = InputType.TYPE_CLASS_TEXT
+                    searchLayout.isEnabled = true
                 }
             }
         }

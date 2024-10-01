@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 import testhelper.BaseTest
 import testhelper.coroutine.TestDispatcherProvider
 
-class AplEndpointTest : BaseTest() {
+class AirplanesLiveEndpointTest : BaseTest() {
     private lateinit var endpoint: AirplanesLiveEndpoint
 
     @BeforeEach
@@ -52,6 +52,13 @@ class AplEndpointTest : BaseTest() {
     @Test
     fun `aircraft by airframe`() = runTest {
         endpoint.getByAirframe(setOf("F16")).apply {
+            this shouldNotBe null
+        }
+    }
+
+    @Test
+    fun `aircraft by location`() = runTest {
+        endpoint.getByLocation(51.473419, -0.491683, 100f).apply {
             this shouldNotBe null
         }
     }
