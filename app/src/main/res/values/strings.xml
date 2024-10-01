@@ -158,5 +158,10 @@
     <string name="search_mode_airframe_hint">Search airframe types, e.g. A320</string>
     <string name="search_mode_military_hint">Show interesting aircraft</string>
     <string name="search_mode_location_hint">Search via location</string>
+    <string name="search_empty_title">No aircraft found</string>
+    <string name="search_empty_body">No aircraft that matched your arguments are currently tracked.</string>
+    <string name="search_progress_title">Searching</string>
+    <string name="search_progress_body">Found %d so far. Still searching...</string>
+    <string name="search_summary_x_aircraft">%d aircraft found</string>
 
 </resources>

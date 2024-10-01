@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
+import com.google.android.material.button.MaterialButtonToggleGroup
 import dagger.hilt.android.AndroidEntryPoint
 import eu.darken.apl.R
 import eu.darken.apl.common.debug.logging.log
@@ -75,19 +76,23 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
             }
         }
 
-        ui.searchOptionContainer.addOnButtonCheckedListener { view, checkedId, isChecked ->
-            if (!isChecked) return@addOnButtonCheckedListener
-            when (checkedId) {
-                ui.searchOptionAll.id -> vm.updateMode(SearchViewModel.State.Mode.ALL)
-                ui.searchOptionHex.id -> vm.updateMode(SearchViewModel.State.Mode.HEX)
-                ui.searchOptionCallsign.id -> vm.updateMode(SearchViewModel.State.Mode.CALLSIGN)
-                ui.searchOptionRegistration.id -> vm.updateMode(SearchViewModel.State.Mode.REGISTRATION)
-                ui.searchOptionSquawk.id -> vm.updateMode(SearchViewModel.State.Mode.SQUAWK)
-                ui.searchOptionAirframe.id -> vm.updateMode(SearchViewModel.State.Mode.AIRFRAME)
-                ui.searchOptionMilitary.id -> vm.updateMode(SearchViewModel.State.Mode.INTERESTING)
-                ui.searchOptionLocation.id -> vm.updateMode(SearchViewModel.State.Mode.POSITION)
+        val modeListener = object : MaterialButtonToggleGroup.OnButtonCheckedListener {
+            override fun onButtonChecked(view: MaterialButtonToggleGroup, checkedId: Int, isChecked: Boolean) {
+                if (!isChecked) return
+                when (checkedId) {
+                    ui.searchOptionAll.id -> vm.updateMode(SearchViewModel.State.Mode.ALL)
+                    ui.searchOptionHex.id -> vm.updateMode(SearchViewModel.State.Mode.HEX)
+                    ui.searchOptionCallsign.id -> vm.updateMode(SearchViewModel.State.Mode.CALLSIGN)
+                    ui.searchOptionRegistration.id -> vm.updateMode(SearchViewModel.State.Mode.REGISTRATION)
+                    ui.searchOptionSquawk.id -> vm.updateMode(SearchViewModel.State.Mode.SQUAWK)
+                    ui.searchOptionAirframe.id -> vm.updateMode(SearchViewModel.State.Mode.AIRFRAME)
+                    ui.searchOptionMilitary.id -> vm.updateMode(SearchViewModel.State.Mode.INTERESTING)
+                    ui.searchOptionLocation.id -> vm.updateMode(SearchViewModel.State.Mode.POSITION)
+                }
             }
+
         }
+        ui.searchOptionContainer.addOnButtonCheckedListener(modeListener)
 
         val adapter = SearchAdapter()
         ui.list.setupDefaults(adapter, dividers = false)
@@ -99,6 +104,7 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
                 searchInput.setText(state.input.raw)
             }
 
+            searchOptionContainer.removeOnButtonCheckedListener(modeListener)
             when (state.input.mode) {
                 SearchViewModel.State.Mode.ALL -> {
                     searchOptionContainer.check(ui.searchOptionAll.id)
@@ -156,6 +162,7 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
                     searchLayout.isEnabled = true
                 }
             }
+            ui.searchOptionContainer.addOnButtonCheckedListener(modeListener)
         }
 
         vm.events.observe2 { event ->

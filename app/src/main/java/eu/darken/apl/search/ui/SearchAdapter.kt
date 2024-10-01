@@ -13,6 +13,9 @@ import eu.darken.apl.common.lists.modular.mods.DataBinderMod
 import eu.darken.apl.common.lists.modular.mods.TypedVHCreatorMod
 import eu.darken.apl.search.ui.items.AircraftResultVH
 import eu.darken.apl.search.ui.items.LocationPromptVH
+import eu.darken.apl.search.ui.items.NoAircraftVH
+import eu.darken.apl.search.ui.items.SearchingAircraftVH
+import eu.darken.apl.search.ui.items.SummaryVH
 import javax.inject.Inject
 
 
@@ -27,7 +30,10 @@ class SearchAdapter @Inject constructor() :
     init {
         modules.add(DataBinderMod(data))
         modules.add(TypedVHCreatorMod({ data[it] is LocationPromptVH.Item }) { LocationPromptVH(it) })
+        modules.add(TypedVHCreatorMod({ data[it] is SearchingAircraftVH.Item }) { SearchingAircraftVH(it) })
+        modules.add(TypedVHCreatorMod({ data[it] is NoAircraftVH.Item }) { NoAircraftVH(it) })
         modules.add(TypedVHCreatorMod({ data[it] is AircraftResultVH.Item }) { AircraftResultVH(it) })
+        modules.add(TypedVHCreatorMod({ data[it] is SummaryVH.Item }) { SummaryVH(it) })
     }
 
     abstract class BaseVH<Item : SearchAdapter.Item, VB : ViewBinding>(

@@ -9,6 +9,7 @@ import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.datastore.valueBlocking
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.flow.combine
+import eu.darken.apl.common.flow.throttleLatest
 import eu.darken.apl.common.livedata.SingleLiveEvent
 import eu.darken.apl.common.location.LocationManager2
 import eu.darken.apl.common.uix.ViewModel3
@@ -18,6 +19,9 @@ import eu.darken.apl.search.core.SearchQuery
 import eu.darken.apl.search.core.SearchRepo
 import eu.darken.apl.search.ui.items.AircraftResultVH
 import eu.darken.apl.search.ui.items.LocationPromptVH
+import eu.darken.apl.search.ui.items.NoAircraftVH
+import eu.darken.apl.search.ui.items.SearchingAircraftVH
+import eu.darken.apl.search.ui.items.SummaryVH
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
@@ -83,7 +87,7 @@ class SearchViewModel @Inject constructor(
 
     val state: LiveData<State> = combine(
         currentInput,
-        currentSearch,
+        currentSearch.throttleLatest(500),
         generalSettings.searchLocationDismissed.flow,
         locationManager2.state,
     ) { input, result, locationDismissed, locationState ->
@@ -130,6 +134,16 @@ class SearchViewModel @Inject constructor(
             ?.sortedBy { it.distanceInMeter ?: Float.MAX_VALUE }
             ?.run { items.addAll(this) }
 
+        if (result?.aircraft != null) {
+            if (result.searching) {
+                items.add(SearchingAircraftVH.Item(input, result.aircraft.size))
+            } else if (result.aircraft.isEmpty()) {
+                items.add(NoAircraftVH.Item(input))
+            } else {
+                items.add(0, SummaryVH.Item(result.aircraft.size))
+            }
+        }
+
         State(
             input = input,
             isSearching = result?.searching ?: false,
@@ -137,7 +151,7 @@ class SearchViewModel @Inject constructor(
         )
     }.catch { }.asLiveData2()
 
-    fun search(input: Input) = launch {
+    fun search(input: Input) {
         log(TAG) { "search($input)" }
         if (currentInput.value == input) {
             searchTrigger.value = UUID.randomUUID()
