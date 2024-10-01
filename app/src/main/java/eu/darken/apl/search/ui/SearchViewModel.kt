@@ -3,6 +3,7 @@ package eu.darken.apl.search.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
+import eu.darken.apl.BottomNavigationDirections
 import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.datastore.valueBlocking
@@ -12,6 +13,7 @@ import eu.darken.apl.common.livedata.SingleLiveEvent
 import eu.darken.apl.common.location.LocationManager2
 import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.main.core.GeneralSettings
+import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.search.core.SearchQuery
 import eu.darken.apl.search.core.SearchRepo
 import eu.darken.apl.search.ui.items.AircraftResultVH
@@ -112,7 +114,13 @@ class SearchViewModel @Inject constructor(
 
                     },
                     onLongPress = {
-
+                        BottomNavigationDirections.actionGlobalMap(
+                            mapOptions = MapOptions(
+                                filter = MapOptions.Filter(
+                                    icaos = setOf(ac.hex),
+                                )
+                            )
+                        ).navigate()
                     },
                     onThumbnail = {
                         launch { webpageTool.open(it.link) }
@@ -157,7 +165,7 @@ class SearchViewModel @Inject constructor(
                     mode == State.Mode.INTERESTING -> "military,ladd,pia"
                     mode == State.Mode.POSITION -> "" // TODO
                     oldInput.mode == State.Mode.INTERESTING -> ""
-                    else -> currentInput.value.raw
+                    else -> ""
                 },
                 mode = mode,
             )

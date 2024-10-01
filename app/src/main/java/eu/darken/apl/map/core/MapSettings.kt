@@ -24,10 +24,10 @@ class MapSettings @Inject constructor(
     override val dataStore: DataStore<Preferences>
         get() = context.dataStore
 
-    val globeUrl = dataStore.createValue("map.globe.url", "https://globe.airplanes.live/")
+    val lastUrl = dataStore.createValue("map.last.url", null as String?)
 
     override val mapper = PreferenceStoreMapper(
-        globeUrl,
+        lastUrl,
     )
 
     companion object {

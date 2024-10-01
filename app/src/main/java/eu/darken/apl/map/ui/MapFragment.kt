@@ -10,14 +10,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import eu.darken.apl.R
-import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.uix.Fragment3
 import eu.darken.apl.common.viewbinding.viewBinding
 import eu.darken.apl.databinding.MapFragmentBinding
 import eu.darken.apl.main.ui.MainActivity
-import eu.darken.apl.map.core.WebMapClient
+import eu.darken.apl.map.core.MapHandler
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -29,8 +28,7 @@ class MapFragment : Fragment3(R.layout.map_fragment) {
     override val vm: MapViewModel by viewModels()
     override val ui: MapFragmentBinding by viewBinding()
 
-    @Inject lateinit var webMapClientFactory: WebMapClient.Factory
-    @Inject lateinit var webpageTool: WebpageTool
+    @Inject lateinit var mapHandlerFactory: MapHandler.Factory
 
     private lateinit var locationPermissionLauncher: ActivityResultLauncher<String>
 
@@ -64,19 +62,20 @@ class MapFragment : Fragment3(R.layout.map_fragment) {
             }
         }
 
-        val webMapClient = webMapClientFactory.create(ui.webview).apply {
+        val mapHandler = mapHandlerFactory.create(ui.webview).apply {
             events
                 .onEach { event ->
                     when (event) {
-                        WebMapClient.AppInterface.Event.HomePressed -> vm.checkLocationPermission()
-                        is WebMapClient.AppInterface.Event.OpenUrl -> webpageTool.open(event.url)
+                        MapHandler.Event.HomePressed -> vm.checkLocationPermission()
+                        is MapHandler.Event.OpenUrl -> vm.onOpenUrl(event.url)
+                        is MapHandler.Event.OptionsChanged -> vm.onOptionsUpdated(event.options)
                     }
                 }
                 .launchIn(viewLifecycleOwner.lifecycleScope)
         }
 
         vm.state.observe2(ui) { state ->
-            webview.loadUrl(state.url)
+            mapHandler.loadMap(state.options)
         }
 
         vm.events.observe2 { event ->
@@ -86,7 +85,7 @@ class MapFragment : Fragment3(R.layout.map_fragment) {
                 }
 
                 MapEvents.HomeMap -> {
-                    webMapClient.clickHome()
+                    mapHandler.clickHome()
                 }
             }
         }

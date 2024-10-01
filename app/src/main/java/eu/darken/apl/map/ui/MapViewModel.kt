@@ -11,8 +11,12 @@ import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.livedata.SingleLiveEvent
 import eu.darken.apl.common.permissions.Permission
 import eu.darken.apl.common.uix.ViewModel3
+import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.map.core.MapSettings
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onEach
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,13 +28,20 @@ class MapViewModel @Inject constructor(
     private val webpageTool: WebpageTool,
 ) : ViewModel3(dispatcherProvider = dispatcherProvider) {
 
+    private val args = MapFragmentArgs.fromSavedStateHandle(handle)
+    private val currentOptions = MutableStateFlow(args.mapOptions ?: MapOptions())
+
     val events = SingleLiveEvent<MapEvents>()
+    private val refreshTrigger = MutableStateFlow(UUID.randomUUID())
 
-    val state = mapSettings.globeUrl.flow.map {
+    val state = combine(
+        refreshTrigger,
+        currentOptions.onEach { log(TAG, INFO) { "New MapOptions: $it" } },
+    ) { _, options ->
+
         State(
-            url = it,
-
-            )
+            options = options,
+        )
     }.asLiveData2()
 
     fun checkLocationPermission() {
@@ -47,7 +58,17 @@ class MapViewModel @Inject constructor(
         events.postValue(MapEvents.HomeMap)
     }
 
+    fun onOpenUrl(url: String) {
+        log(TAG) { "onOpenUrl($url)" }
+        webpageTool.open(url)
+    }
+
+    fun onOptionsUpdated(options: MapOptions) {
+        log(TAG) { "onUrlUpdated($options)" }
+        currentOptions.value = options
+    }
+
     data class State(
-        val url: String,
+        val options: MapOptions,
     )
 }

@@ -60,6 +60,12 @@
     <fragment
         android:id="@+id/map"
         android:name="eu.darken.apl.map.ui.MapFragment"
-        tools:layout="@layout/map_fragment" />
+        tools:layout="@layout/map_fragment">
+        <argument
+            android:name="mapOptions"
+            app:argType="eu.darken.apl.map.core.MapOptions"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 
 </navigation>
