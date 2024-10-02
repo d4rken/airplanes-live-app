@@ -10,7 +10,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/aircraft_count"
-        style="@style/TextAppearance.Material3.BodyMedium"
+        style="@style/TextAppearance.Material3.LabelMedium"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="end"

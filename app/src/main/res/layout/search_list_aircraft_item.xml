@@ -40,12 +40,11 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/distance"
-            style="@style/TextAppearance.Material3.LabelMedium"
+            style="@style/TextAppearance.Material3.LabelLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/title"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/title"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="999km from you" />
 
         <eu.darken.apl.common.planespotters.PlanespottersThumbnailView
