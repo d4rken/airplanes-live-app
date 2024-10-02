@@ -56,20 +56,36 @@ class MainFragment : Fragment3(R.layout.main_fragment) {
         val navController: NavController = ui.bottomNavHost.getFragment<NavHostFragment>().navController
         ui.bottomNavigation.apply {
             setupWithNavController(navController)
-
             labelVisibilityMode = LABEL_VISIBILITY_LABELED
             setOnItemSelectedListener { item ->
-                val destinationId = item.itemId
-                with(navController) {
-                    if (currentDestination?.id != destinationId) {
-                        popBackStack(destinationId, false)
-                    }
-                    if (currentDestination?.id != destinationId) {
-                        navigate(destinationId)
-                    }
+                if (navController.currentDestination?.id == item.itemId) {
+                    return@setOnItemSelectedListener true
                 }
+                when (item.itemId) {
+                    R.id.search -> {
+                        if (!navController.popBackStack(R.id.search, false)) {
+                            navController.navigate(R.id.search)
+                        }
+                        true
+                    }
 
-                true
+                    R.id.map -> {
+                        navController.navigate(R.id.map)
+                        true
+                    }
+
+                    R.id.alerts -> {
+                        navController.navigate(R.id.alerts)
+                        true
+                    }
+
+                    R.id.feeder -> {
+                        navController.navigate(R.id.alerts)
+                        true
+                    }
+
+                    else -> false
+                }
             }
         }
 

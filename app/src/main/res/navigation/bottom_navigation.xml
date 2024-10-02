@@ -54,6 +54,9 @@
             app:argType="eu.darken.apl.map.core.MapOptions"
             app:nullable="true"
             android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_map_to_search"
+            app:destination="@id/search" />
     </fragment>
 
 </navigation>
