@@ -15,6 +15,7 @@ import eu.darken.apl.common.livedata.SingleLiveEvent
 import eu.darken.apl.common.location.LocationManager2
 import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.main.core.GeneralSettings
+import eu.darken.apl.map.core.AirplanesLive
 import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.search.core.SearchQuery
 import eu.darken.apl.search.core.SearchRepo
@@ -140,7 +141,12 @@ class SearchViewModel @Inject constructor(
             if (result.searching) {
                 items.add(SearchingAircraftVH.Item(input, result.aircraft.size))
             } else if (result.aircraft.isEmpty()) {
-                items.add(NoAircraftVH.Item(input))
+                NoAircraftVH.Item(
+                    input,
+                    onStartFeeding = {
+                        webpageTool.open(AirplanesLive.URL_START_FEEDING)
+                    }
+                ).run { items.add(this) }
             } else {
                 items.add(0, SummaryVH.Item(result.aircraft.size))
             }

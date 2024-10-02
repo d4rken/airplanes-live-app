@@ -83,7 +83,7 @@
                 style="@style/TextAppearance.Material3.LabelSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/general_callsign_label"
+                android:text="@string/common_callsign_label"
                 app:layout_constraintEnd_toEndOf="@id/flight_value"
                 app:layout_constraintStart_toStartOf="@id/flight_value"
                 app:layout_constraintTop_toBottomOf="@id/flight_value" />
@@ -103,7 +103,7 @@
                 style="@style/TextAppearance.Material3.LabelSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/general_squawk_label"
+                android:text="@string/common_squawk_label"
                 app:layout_constraintEnd_toEndOf="@id/squawk_value"
                 app:layout_constraintStart_toStartOf="@id/squawk_value"
                 app:layout_constraintTop_toBottomOf="@id/squawk_value" />

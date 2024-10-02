@@ -20,10 +20,12 @@ class NoAircraftVH(parent: ViewGroup) :
         item: Item,
         payloads: List<Any>,
     ) -> Unit = { item, _ ->
+        startFeedingAction.setOnClickListener { item.onStartFeeding() }
     }
 
     data class Item(
         val query: SearchViewModel.Input,
+        val onStartFeeding: () -> Unit,
     ) : SearchAdapter.Item {
         override val stableId: Long
             get() = Item::class.hashCode().toLong()

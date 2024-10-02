@@ -20,11 +20,12 @@
     <string name="general_dismiss_action">Dismiss</string>
     <string name="general_internet_unavailable_message">Internet is not available.</string>
 
-    <string name="general_sponsor_action">Sponsor development</string>
-    <string name="general_sponsor_description">Say thanks and incentivize further app development.</string>
+    <string name="common_sponsor_action">Sponsor development</string>
+    <string name="common_sponsor_description">Say thanks and incentivize further app development.</string>
 
-    <string name="general_callsign_label">Callsign</string>
-    <string name="general_squawk_label">Squawk</string>
+    <string name="common_callsign_label">Callsign</string>
+    <string name="common_squawk_label">Squawk</string>
+    <string name="common_start_feeding_action">Start feeding</string>
 
     <string name="generic_loading_label_0">Soon™</string>
     <string name="generic_loading_label_1">Passing the butter</string>
@@ -107,7 +108,6 @@
     <string name="feeder_monitor_offline_message">Some of your airplanes.live feeders are offline: %s</string>
     <string name="feeder_options_label">Options</string>
     <string name="feeder_startfeeding_msg">Not feeding airplanes.live yet?\nStart now, it\'s not rocket science 🚀.</string>
-    <string name="feeder_startfeeding_action">Start feeding</string>
 
     <string name="map_page_label">Map</string>
 
@@ -162,8 +162,8 @@
     <string name="search_mode_military_hint">Show interesting aircraft</string>
     <string name="search_mode_location_hint">Search via location</string>
     <string name="search_empty_title">No aircraft found</string>
-    <string name="search_empty_body">No aircraft that matched your arguments are currently tracked.</string>
+    <string name="search_empty_body">No aircraft that match your search are currently tracked. Want to see more planes? Contribute data and help the skies fill up!</string>
     <string name="search_progress_title">Searching</string>
-    <string name="search_progress_body">Found %d so far. Still searching...</string>
+    <string name="search_progress_body">Found %d so far. Still searching…</string>
     <string name="search_summary_x_aircraft">%d aircraft found</string>
 </resources>

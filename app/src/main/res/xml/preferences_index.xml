@@ -12,8 +12,8 @@
         <Preference
             android:icon="@drawable/ic_heart_24"
             android:key="core.sponsor"
-            app:summary="@string/general_sponsor_description"
-            app:title="@string/general_sponsor_action" />
+            app:summary="@string/common_sponsor_description"
+            app:title="@string/common_sponsor_action" />
 
         <eu.darken.apl.common.preferences.IntentPreference
             android:icon="@drawable/ic_changelog_24"

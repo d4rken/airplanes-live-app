@@ -80,7 +80,7 @@ class MainFragment : Fragment3(R.layout.main_fragment) {
                     }
 
                     R.id.feeder -> {
-                        navController.navigate(R.id.alerts)
+                        navController.navigate(R.id.feeder)
                         true
                     }
 

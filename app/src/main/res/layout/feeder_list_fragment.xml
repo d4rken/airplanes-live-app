@@ -82,7 +82,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/feeder_startfeeding_action"
+                android:text="@string/common_start_feeding_action"
                 app:icon="@drawable/ic_heart_24" />
         </LinearLayout>
 
