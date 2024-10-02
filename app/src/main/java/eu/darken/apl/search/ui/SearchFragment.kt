@@ -99,8 +99,11 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
         vm.state.observe2(ui) { state ->
             adapter.update(state.items)
 
-            if (searchInput.text.toString() != state.input.raw) {
-                searchInput.setText(state.input.raw)
+            searchInput.apply {
+                if (text.toString() != state.input.raw) {
+                    setText(state.input.raw)
+                    setSelection(text!!.length)
+                }
             }
 
             searchOptionContainer.removeOnButtonCheckedListener(modeListener)

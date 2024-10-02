@@ -31,12 +31,14 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/search_layout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="16dp"
                 android:hint="@string/search_page_label"
                 android:textColorHint="?colorOnPrimary"
+                app:boxStrokeColor="?colorOnPrimary"
+                app:cursorColor="?colorOnPrimary"
                 app:endIconMode="clear_text"
                 app:endIconTint="?colorOnPrimary"
                 app:hintTextColor="?colorOnPrimary"
@@ -49,10 +51,9 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/search_input"
-                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:imeOptions="actionSearch"
                     android:maxLines="1"
@@ -65,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

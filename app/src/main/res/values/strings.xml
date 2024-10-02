@@ -23,6 +23,9 @@
     <string name="general_sponsor_action">Sponsor development</string>
     <string name="general_sponsor_description">Say thanks and incentivize further app development.</string>
 
+    <string name="general_callsign_label">Callsign</string>
+    <string name="general_squawk_label">Squawk</string>
+
     <string name="generic_loading_label_0">Soon™</string>
     <string name="generic_loading_label_1">Passing the butter</string>
     <string name="generic_loading_label_2">Downloading more RAM</string>
@@ -163,5 +166,4 @@
     <string name="search_progress_title">Searching</string>
     <string name="search_progress_body">Found %d so far. Still searching...</string>
     <string name="search_summary_x_aircraft">%d aircraft found</string>
-
 </resources>
