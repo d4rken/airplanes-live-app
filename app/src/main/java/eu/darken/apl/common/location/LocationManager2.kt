@@ -3,7 +3,6 @@ package eu.darken.apl.common.location
 import android.content.Context
 import android.location.Location
 import android.location.LocationManager
-import android.os.Bundle
 import androidx.core.location.LocationListenerCompat
 import androidx.core.location.LocationManagerCompat
 import androidx.core.location.LocationRequestCompat
@@ -39,7 +38,7 @@ class LocationManager2 @Inject constructor(
 
     private val permissionFlow: Flow<Boolean> = flow {
         var lastCheck: Boolean? = null
-        fun check() = Permission.ACCESS_FINE_LOCATION.isGranted(context)
+        fun check() = Permission.ACCESS_COARSE_LOCATION.isGranted(context)
         while (currentCoroutineContext().isActive) {
             val newCheck = check()
             if (newCheck != lastCheck) emit(newCheck)
@@ -48,26 +47,20 @@ class LocationManager2 @Inject constructor(
         }
     }
     private val locationFlow: Flow<State> = callbackFlow {
-        if (!Permission.ACCESS_FINE_LOCATION.isGranted(context)) {
-            throw SecurityException("ACCESS_FINE_LOCATION has not been granted")
+        if (!Permission.ACCESS_COARSE_LOCATION.isGranted(context)) {
+            throw SecurityException("ACCESS_COARSE_LOCATION has not been granted")
         }
 
-        val locationListener = object : LocationListenerCompat {
-            override fun onLocationChanged(location: Location) {
-                log(TAG) { "New location $location" }
-                trySend(State.Available(location))
-            }
-
-            override fun onStatusChanged(provider: String, status: Int, extras: Bundle?) {}
-            override fun onProviderEnabled(provider: String) {}
-            override fun onProviderDisabled(provider: String) {}
+        val locationListener = LocationListenerCompat { location ->
+            log(TAG) { "New location $location" }
+            trySend(State.Available(location))
         }
 
         log(TAG) { "Requesting location updates" }
         @Suppress("MissingPermission")
         LocationManagerCompat.requestLocationUpdates(
             locationManager,
-            LocationManager.FUSED_PROVIDER,
+            LocationManager.NETWORK_PROVIDER,
             LocationRequestCompat.Builder(60 * 1000L).apply {
                 setMinUpdateDistanceMeters(100f)
                 setQuality(LocationRequestCompat.QUALITY_BALANCED_POWER_ACCURACY)
@@ -88,7 +81,7 @@ class LocationManager2 @Inject constructor(
             if (hasPermission) {
                 locationFlow
             } else {
-                flowOf(State.Unavailable(SecurityException("ACCESS_FINE_LOCATION has not been granted")))
+                flowOf(State.Unavailable(SecurityException("ACCESS_COARSE_LOCATION has not been granted")))
             }
         }
         .catch {

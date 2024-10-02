@@ -45,7 +45,7 @@ class MapViewModel @Inject constructor(
     }.asLiveData2()
 
     fun checkLocationPermission() {
-        if (Permission.ACCESS_FINE_LOCATION.isGranted(context)) {
+        if (Permission.ACCESS_COARSE_LOCATION.isGranted(context)) {
             log(TAG) { "checkLocationPermission(): Already granted" }
         } else {
             log(TAG, INFO) { "checkLocationPermission(): Requesting location permission" }

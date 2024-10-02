@@ -168,7 +168,7 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
         vm.events.observe2 { event ->
             when (event) {
                 SearchEvents.RequestLocationPermission -> {
-                    locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                    locationPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
                 }
             }
         }
