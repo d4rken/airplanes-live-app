@@ -1,5 +1,6 @@
 package eu.darken.apl.common.planespotters.coil
 
+import androidx.appcompat.content.res.AppCompatResources
 import coil.ImageLoader
 import coil.decode.DataSource
 import coil.fetch.DrawableResult
@@ -8,6 +9,7 @@ import coil.fetch.Fetcher
 import coil.request.ImageRequest
 import coil.request.Options
 import coil.request.SuccessResult
+import coil.size.pxOrElse
 import eu.darken.apl.R
 import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
 import eu.darken.apl.common.debug.logging.log
@@ -34,7 +36,7 @@ class PlanespottersFetcher(
         // TODO maybe a slideshow of pictures?
         val photo = photos.firstOrNull() ?: return DrawableResult(
             drawable = PlanespottersImage(
-                options.context.getDrawable(R.drawable.aircraft_photo_unavailable)!!,
+                AppCompatResources.getDrawable(options.context, R.drawable.aircraft_photo_unavailable)!!,
                 PlanespottersMeta(
                     author = "?",
                     link = "https://www.planespotters.net",
@@ -45,9 +47,18 @@ class PlanespottersFetcher(
         )
 
         val request = ImageRequest.Builder(options.context).apply {
-            // TODO Can we pick a better size if we know the target size
-            data(photo.thumbnail.src)
+            val largeHeight = options.size.height.pxOrElse { 128 } > photo.thumbnail.size.height
+            val largeWidth = options.size.width.pxOrElse { 128 } > photo.thumbnail.size.width
+            val bestSize = if (largeHeight || largeWidth) {
+                log(TAG) { "Picking large thumbnail" }
+                photo.thumbnailLarge
+            } else {
+                log(TAG) { "Picking small thumbnail" }
+                photo.thumbnail
+            }
+            data(bestSize.src)
             size(options.size)
+            log(TAG) { "OPTION SIZE: ${options.size}" }
         }.build()
 
         val result = try {

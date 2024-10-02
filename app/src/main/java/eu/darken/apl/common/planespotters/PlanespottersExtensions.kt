@@ -3,6 +3,7 @@ package eu.darken.apl.common.planespotters
 import coil.imageLoader
 import coil.request.Disposable
 import coil.request.ImageRequest
+import coil.size.ViewSizeResolver
 import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
 import eu.darken.apl.common.debug.logging.asLog
 import eu.darken.apl.common.debug.logging.log
@@ -11,7 +12,7 @@ import eu.darken.apl.common.planespotters.coil.PlanespottersImage
 import eu.darken.apl.main.core.aircraft.Aircraft
 
 fun PlanespottersThumbnailView.load(
-    aircraft: Aircraft,
+    aircraft: Aircraft
 ): Disposable? {
     log(TAG, VERBOSE) { "Loading $aircraft into $this" }
     val current = tag as? Aircraft
@@ -19,6 +20,7 @@ fun PlanespottersThumbnailView.load(
     tag = current
 
     val request = ImageRequest.Builder(context).apply {
+        size(ViewSizeResolver(this@load))
         data(aircraft)
         listener(
             onStart = { request ->
@@ -35,7 +37,7 @@ fun PlanespottersThumbnailView.load(
                 setImage(result.drawable as PlanespottersImage)
             },
             onError = { request, error ->
-                log(TAG) { "onError: $error for $request for $aircraft:\n${error.throwable?.asLog()}" }
+                log(TAG) { "onError: $error for $request for $aircraft:\n${error.throwable.asLog()}" }
                 setImage(null)
             }
         )
