@@ -3,7 +3,6 @@ package eu.darken.apl.search.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
-import eu.darken.apl.BottomNavigationDirections
 import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.datastore.valueBlocking
@@ -75,7 +74,7 @@ class SearchViewModel @Inject constructor(
         .flatMapLatest { it }
 
     init {
-        log(TAG) { "handle: $handle" }
+        log(TAG) { "init with handle: $handle" }
 //        launch {
 //            if (currentRawQuery.value != null) return@launch
 //            val locationState = locationManager2.state.first()
@@ -118,7 +117,7 @@ class SearchViewModel @Inject constructor(
 
                     },
                     onLongPress = {
-                        BottomNavigationDirections.actionGlobalMap(
+                        SearchFragmentDirections.actionSearchToMap(
                             mapOptions = MapOptions(
                                 filter = MapOptions.Filter(
                                     icaos = setOf(ac.hex),

@@ -3,12 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottom_navigation"
-    app:startDestination="@id/search">
+    app:startDestination="@id/map">
 
-    <action
-        android:id="@+id/action_global_feeder"
-        app:destination="@id/feeder"
-        app:popUpTo="@id/bottom_navigation" />
     <fragment
         android:id="@+id/feeder"
         android:name="eu.darken.apl.feeder.ui.FeederListFragment"
@@ -25,10 +21,6 @@
             android:name="receiverId"
             app:argType="string" />
     </dialog>
-    <action
-        android:id="@+id/action_global_alerts"
-        app:destination="@id/alerts"
-        app:popUpTo="@id/bottom_navigation" />
     <fragment
         android:id="@+id/alerts"
         android:name="eu.darken.apl.alerts.ui.AlertsListFragment"
@@ -45,18 +37,14 @@
             android:name="alertId"
             app:argType="string" />
     </dialog>
-    <action
-        android:id="@+id/action_global_search"
-        app:destination="@id/search"
-        app:popUpTo="@id/bottom_navigation" />
     <fragment
         android:id="@+id/search"
         android:name="eu.darken.apl.search.ui.SearchFragment"
-        tools:layout="@layout/search_fragment" />
-    <action
-        android:id="@+id/action_global_map"
-        app:destination="@id/map"
-        app:popUpTo="@id/bottom_navigation" />
+        tools:layout="@layout/search_fragment">
+        <action
+            android:id="@+id/action_search_to_map"
+            app:destination="@id/map" />
+    </fragment>
     <fragment
         android:id="@+id/map"
         android:name="eu.darken.apl.map.ui.MapFragment"

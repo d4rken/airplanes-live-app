@@ -17,6 +17,9 @@
             app:destination="@id/onboardingFragment"
             app:popUpTo="@id/mainFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_mainFragment_to_bottom_navigation"
+            app:destination="@id/bottom_navigation" />
     </fragment>
 
     <fragment
@@ -33,5 +36,6 @@
             app:destination="@id/mainFragment"
             app:popUpTo="@id/main_navigation" />
     </fragment>
+    <include app:graph="@navigation/bottom_navigation" />
 
 </navigation>

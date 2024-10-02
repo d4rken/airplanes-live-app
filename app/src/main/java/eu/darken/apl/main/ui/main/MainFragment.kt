@@ -8,7 +8,7 @@ import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI.setupWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_LABELED
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,35 +55,21 @@ class MainFragment : Fragment3(R.layout.main_fragment) {
 
         val navController: NavController = ui.bottomNavHost.getFragment<NavHostFragment>().navController
         ui.bottomNavigation.apply {
-            setupWithNavController(this, navController)
-            if (savedInstanceState == null) {
-                menu.findItem(R.id.page_search).isChecked = true
-            }
+            setupWithNavController(navController)
+
             labelVisibilityMode = LABEL_VISIBILITY_LABELED
             setOnItemSelectedListener { item ->
-                when (item.itemId) {
-                    R.id.page_map -> {
-                        navController.navigate(R.id.action_global_map)
-                        true
+                val destinationId = item.itemId
+                with(navController) {
+                    if (currentDestination?.id != destinationId) {
+                        popBackStack(destinationId, false)
                     }
-
-                    R.id.page_search -> {
-                        navController.navigate(R.id.action_global_search)
-                        true
+                    if (currentDestination?.id != destinationId) {
+                        navigate(destinationId)
                     }
-
-                    R.id.page_alerts -> {
-                        navController.navigate(R.id.action_global_alerts)
-                        true
-                    }
-
-                    R.id.page_feeder -> {
-                        navController.navigate(R.id.action_global_feeder)
-                        true
-                    }
-
-                    else -> false
                 }
+
+                true
             }
         }
 
