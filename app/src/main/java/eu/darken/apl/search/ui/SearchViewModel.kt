@@ -2,12 +2,14 @@ package eu.darken.apl.search.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.datastore.valueBlocking
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.flow.combine
+import eu.darken.apl.common.flow.replayingShare
 import eu.darken.apl.common.flow.throttleLatest
 import eu.darken.apl.common.livedata.SingleLiveEvent
 import eu.darken.apl.common.location.LocationManager2
@@ -72,6 +74,7 @@ class SearchViewModel @Inject constructor(
     }
         .map { searchRepo.search(it) }
         .flatMapLatest { it }
+        .replayingShare(viewModelScope)
 
     init {
         log(TAG) { "init with handle: $handle" }
@@ -176,8 +179,8 @@ class SearchViewModel @Inject constructor(
             oldInput.copy(
                 raw = when {
                     mode == State.Mode.INTERESTING -> "military,ladd,pia"
+                    mode == State.Mode.SQUAWK -> "7700,7600,7500"
                     mode == State.Mode.POSITION -> "" // TODO
-                    oldInput.mode == State.Mode.INTERESTING -> ""
                     else -> ""
                 },
                 mode = mode,

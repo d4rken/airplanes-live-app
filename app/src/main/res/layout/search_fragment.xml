@@ -5,130 +5,127 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/DefaultToolbarStyle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:menu="@menu/menu_search"
+        app:subtitle="@string/search_page_label"
+        app:title="@string/app_name" />
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:menu="@menu/menu_search"
-            app:subtitle="@string/search_page_label"
-            app:title="@string/app_name" />
+    <com.google.android.material.appbar.AppBarLayout
+        style="@style/Widget.Material3.AppBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:background="?colorPrimary">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/search_card"
-            style="@style/Widget.Material3.CardView.Elevated"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@id/list"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            app:layout_scrollFlags="scroll|enterAlways|snap">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/search_layout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp">
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="16dp"
+                android:hint="@string/search_page_label"
+                android:textColorHint="?colorOnPrimary"
+                app:endIconMode="clear_text"
+                app:endIconTint="?colorOnPrimary"
+                app:hintTextColor="?colorOnPrimary"
+                app:layout_constraintBottom_toTopOf="@id/search_option_container"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:startIconDrawable="@drawable/ic_airplane_search_24"
+                app:startIconTint="?colorOnPrimary">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/search_layout"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="@string/search_page_label"
-                    app:endIconMode="clear_text">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/search_input"
-                        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_airplane_search_24"
-                        android:drawablePadding="8dp"
-                        android:gravity="center_vertical"
-                        android:imeOptions="actionSearch"
-                        android:maxLines="1" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.button.MaterialButtonToggleGroup
-                    android:id="@+id/search_option_container"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/search_input"
+                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/search_layout"
-                    app:selectionRequired="true"
-                    app:singleSelection="true">
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:imeOptions="actionSearch"
+                    android:maxLines="1"
+                    android:textColor="?colorOnPrimary" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/search_option_all"
-                        style="@style/SearchTypeButton"
-                        android:visibility="gone"
-                        app:icon="@drawable/ic_layers_search_24" />
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/search_option_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/search_layout"
+                app:selectionRequired="true"
+                app:singleSelection="true">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/search_option_hex"
-                        style="@style/SearchTypeButton"
-                        app:icon="@drawable/ic_hexagon_24" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/search_option_all"
+                    style="@style/SearchTypeButton"
+                    android:visibility="gone"
+                    app:icon="@drawable/ic_layers_search_24" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/search_option_callsign"
-                        style="@style/SearchTypeButton"
-                        app:icon="@drawable/ic_bullhorn_24" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/search_option_hex"
+                    style="@style/SearchTypeButton"
+                    app:icon="@drawable/ic_hexagon_24" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/search_option_registration"
-                        style="@style/SearchTypeButton"
-                        app:icon="@drawable/ic_id_card_24" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/search_option_callsign"
+                    style="@style/SearchTypeButton"
+                    app:icon="@drawable/ic_bullhorn_24" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/search_option_squawk"
-                        style="@style/SearchTypeButton"
-                        app:icon="@drawable/ic_code_array_24" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/search_option_registration"
+                    style="@style/SearchTypeButton"
+                    app:icon="@drawable/ic_id_card_24" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/search_option_airframe"
-                        style="@style/SearchTypeButton"
-                        app:icon="@drawable/ic_airballoon_24" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/search_option_squawk"
+                    style="@style/SearchTypeButton"
+                    app:icon="@drawable/ic_code_array_24" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/search_option_military"
-                        style="@style/SearchTypeButton"
-                        app:icon="@drawable/ic_robot_confused_24" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/search_option_airframe"
+                    style="@style/SearchTypeButton"
+                    app:icon="@drawable/ic_airballoon_24" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/search_option_location"
-                        style="@style/SearchTypeButton"
-                        app:icon="@drawable/ic_airplane_marker_24" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/search_option_military"
+                    style="@style/SearchTypeButton"
+                    app:icon="@drawable/ic_robot_confused_24" />
 
-                </com.google.android.material.button.MaterialButtonToggleGroup>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/search_option_location"
+                    style="@style/SearchTypeButton"
+                    app:icon="@drawable/ic_airplane_marker_24" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </com.google.android.material.appbar.AppBarLayout>
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="8dp"
-            android:clipToPadding="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_card"
-            tools:listitem="@layout/search_list_aircraft_item" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingVertical="8dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/search_list_aircraft_item" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -8,6 +8,12 @@
         <item name="android:insetLeft">0dp</item>
         <item name="android:insetRight">0dp</item>
         <item name="android:paddingStart">14dp</item>
+        <item name="android:textColor">?colorOnPrimary</item>
+        <item name="android:backgroundTint">?colorPrimaryContainer</item>
+    </style>
+
+    <style name="DefaultToolbarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:minHeight">?attr/actionBarSize</item>
     </style>
 
 </resources>

@@ -92,7 +92,6 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
             }
 
         }
-        ui.searchOptionContainer.addOnButtonCheckedListener(modeListener)
 
         val adapter = SearchAdapter()
         ui.list.setupDefaults(adapter, dividers = false)
