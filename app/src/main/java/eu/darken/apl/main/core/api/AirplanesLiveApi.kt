@@ -10,6 +10,7 @@ import eu.darken.apl.main.core.aircraft.Registration
 import eu.darken.apl.main.core.aircraft.SquawkCode
 import retrofit2.http.GET
 import retrofit2.http.Path
+import java.time.Instant
 
 interface AirplanesLiveApi {
 
@@ -162,9 +163,11 @@ interface AirplanesLiveApi {
         @Json(name = "lastPosition") val lastPosition: LastPosition?,
         @Json(name = "version") val version: Int?,
         @Json(name = "messages") val messages: Int,
-        @Json(name = "seen") val seen: Double,
+        @Json(name = "seen") val seenSecondsAgo: Double,
         @Json(name = "rssi") val rssi: Double
     ) : eu.darken.apl.main.core.aircraft.Aircraft {
+
+        val seenAt: Instant = Instant.now().minusSeconds(seenSecondsAgo.toLong())
 
         override val location: Location?
             get() {

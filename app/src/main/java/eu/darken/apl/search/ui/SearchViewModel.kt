@@ -118,7 +118,9 @@ class SearchViewModel @Inject constructor(
                         null
                     },
                     onTap = {
-
+                        SearchFragmentDirections.actionSearchToSearchAction(
+                            hex = ac.hex,
+                        ).navigate()
                     },
                     onLongPress = {
                         SearchFragmentDirections.actionSearchToMap(

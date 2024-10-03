@@ -68,6 +68,9 @@
         <argument
             android:name="hex"
             app:argType="string" />
+        <action
+            android:id="@+id/action_searchAction_to_map"
+            app:destination="@id/map" />
     </dialog>
 
 </navigation>
