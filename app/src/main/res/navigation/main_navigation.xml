@@ -13,13 +13,11 @@
             android:id="@+id/action_mainFragment_to_settingsContainerFragment"
             app:destination="@id/settingsContainerFragment" />
         <action
-            android:id="@+id/action_mainFragment_to_onboardingFragment"
-            app:destination="@id/onboardingFragment"
-            app:popUpTo="@id/mainFragment"
-            app:popUpToInclusive="true" />
-        <action
             android:id="@+id/action_mainFragment_to_bottom_navigation"
             app:destination="@id/bottom_navigation" />
+        <action
+            android:id="@+id/action_mainFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment" />
     </fragment>
 
     <fragment
@@ -27,15 +25,23 @@
         android:name="eu.darken.apl.main.ui.settings.SettingsFragment"
         tools:layout="@layout/settings_fragment" />
 
+    <include app:graph="@navigation/bottom_navigation" />
     <fragment
-        android:id="@+id/onboardingFragment"
-        android:name="eu.darken.apl.main.ui.onboarding.OnboardingFragment"
-        tools:layout="@layout/onboarding_fragment">
+        android:id="@+id/welcomeFragment"
+        android:name="eu.darken.apl.main.ui.onboarding.welcome.WelcomeFragment"
+        tools:layout="@layout/welcome_fragment">
         <action
-            android:id="@+id/action_onboardingFragment_to_mainFragment"
+            android:id="@+id/action_welcomeFragment_to_privacyFragment"
+            app:destination="@id/privacyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/privacyFragment"
+        android:name="eu.darken.apl.main.ui.onboarding.privacy.PrivacyFragment"
+        tools:layout="@layout/privacy_fragment">
+        <action
+            android:id="@+id/action_privacyFragment_to_mainFragment"
             app:destination="@id/mainFragment"
             app:popUpTo="@id/main_navigation" />
     </fragment>
-    <include app:graph="@navigation/bottom_navigation" />
 
 </navigation>

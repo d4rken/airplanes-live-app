@@ -31,7 +31,7 @@ class AircraftResultVH(parent: ViewGroup) :
             aircraft.operator?.let { append(" from $it") }
         }
         distance.apply {
-            text = item?.distanceInMeter?.let {
+            text = item.distanceInMeter?.let {
                 getString(R.string.general_xdistance_away_label, "${(it / 1000).toInt()}km")
             }
             isGone = item.distanceInMeter == null

@@ -20,6 +20,7 @@
     <string name="general_dismiss_action">Dismiss</string>
     <string name="general_internet_unavailable_message">Internet is not available.</string>
 
+    <string name="common_unavailable_label">N/A</string>
     <string name="common_sponsor_action">Sponsor development</string>
     <string name="common_sponsor_description">Say thanks and incentivize further app development.</string>
 
@@ -55,6 +56,9 @@
     <string name="general_settings_label">General</string>
     <string name="general_settings_desc">General tweaks that affect the whole app.</string>
 
+    <string name="updatecheck_setting_enabled_label">Update check</string>
+    <string name="updatecheck_setting_enabled_explanation">Allow this app to check for updates to let you know if a newer version is available.</string>
+
     <string name="settings_category_ui_label">User interface</string>
 
     <string name="ui_theme_mode_setting_label">Theme mod</string>
@@ -82,9 +86,13 @@
     <string name="changelog_label">Changelog</string>
     <string name="settings_acknowledgements_label">Acknowledgements</string>
 
-    <string name="onboarding_body1">This is a companion app for airplanes.live community members!</string>
-    <string name="onboarding_body2">airplanes.live is a community-driven flight tracker with feeders around the world. It provides open and unfiltered access to worldwide air traffic data.</string>
-    <string name="onboarding_body3">Consider contributing data.</string>
+    <string name="welcome_body1">This is a companion app for airplanes.live community members!</string>
+    <string name="welcome_body2">airplanes.live is a community-driven flight tracker with feeders around the world. It provides open and unfiltered access to worldwide air traffic data.</string>
+    <string name="welcome_body3">Consider contributing data.</string>
+
+    <string name="privacy_body1">This app does not collect or sell user data.</string>
+    <string name="privacy_body2">Internet access is required.</string>
+    <string name="privacy_body3">Enjoy the app!</string>
 
     <string name="feeder_page_label">Feeder</string>
     <plurals name="feeder_yours_x_active_msg">
@@ -166,4 +174,5 @@
     <string name="search_progress_title">Searching</string>
     <string name="search_progress_body">Found %d so far. Still searching…</string>
     <string name="search_summary_x_aircraft">%d aircraft found</string>
+    <string name="common_show_on_map">Show on map</string>
 </resources>

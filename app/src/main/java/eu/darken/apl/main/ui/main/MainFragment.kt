@@ -30,7 +30,7 @@ class MainFragment : Fragment3(R.layout.main_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (!generalSettings.isOnboardingFinished.valueBlocking) {
-            MainFragmentDirections.actionMainFragmentToOnboardingFragment().navigate()
+            MainFragmentDirections.actionMainFragmentToWelcomeFragment().navigate()
             return
         }
 

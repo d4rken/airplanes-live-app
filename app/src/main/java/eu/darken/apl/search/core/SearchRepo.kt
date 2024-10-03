@@ -18,7 +18,10 @@ import eu.darken.apl.main.core.api.getByLocation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -26,6 +29,8 @@ import javax.inject.Singleton
 class SearchRepo @Inject constructor(
     private val endpoint: AirplanesLiveEndpoint,
 ) {
+
+    private val acCache: MutableMap<AircraftHex, Aircraft> = ConcurrentHashMap()
 
     data class Result(
         val aircraft: Collection<Aircraft>,
@@ -143,10 +148,22 @@ class SearchRepo @Inject constructor(
                     locationAc,
                 ).any { it == null }
             )
-        }.catch {
-            log(TAG, ERROR) { "search($query) failed:\n${it.asLog()}" }
-            emit(Result(aircraft = emptySet(), searching = false, error = it))
         }
+            .onEach { result ->
+                if (result.aircraft.isNotEmpty()) {
+                    val beforeSize = acCache.size
+                    acCache.putAll(result.aircraft.associateBy { it.hex })
+                    log(TAG) { "Aircraft cache updated (before=$beforeSize, after=${acCache.size})" }
+                }
+            }
+            .catch {
+                log(TAG, ERROR) { "search($query) failed:\n${it.asLog()}" }
+                emit(Result(aircraft = emptySet(), searching = false, error = it))
+            }
+    }
+
+    fun getByHex(hex: AircraftHex): Flow<Aircraft?> {
+        return flowOf(acCache[hex])
     }
 
     companion object {

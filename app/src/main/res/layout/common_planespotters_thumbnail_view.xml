@@ -11,16 +11,18 @@
         android:id="@+id/thumbnail"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:scaleType="centerCrop"
         android:contentDescription="Picture of the airplane"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="420:280"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/default_plane"
-        tools:text="Soon™"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        tools:src="@drawable/aircraft_photo_unavailable"
+        tools:text="Soon™" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/author"
@@ -31,15 +33,17 @@
         android:ellipsize="middle"
         android:gravity="center"
         android:maxLines="2"
-        android:textColor="@android:color/white"
         android:paddingHorizontal="2dp"
         android:paddingVertical="1dp"
+        android:textColor="@android:color/white"
         android:textSize="8sp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="SmallSp"
         tools:text="John Doe Jane Doe"
-        tools:ignore="SmallSp" />
+        tools:visibility="visible" />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/loading_indicator"

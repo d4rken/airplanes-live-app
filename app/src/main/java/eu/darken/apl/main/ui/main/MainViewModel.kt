@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.darken.apl.common.BuildConfigWrap
 import eu.darken.apl.common.coroutine.DispatcherProvider
-import eu.darken.apl.common.datastore.valueBlocking
 import eu.darken.apl.common.debug.logging.Logging.Priority.ERROR
 import eu.darken.apl.common.debug.logging.asLog
 import eu.darken.apl.common.debug.logging.log
@@ -27,12 +26,6 @@ class MainViewModel @Inject constructor(
     private val generalSettings: GeneralSettings,
     private val networkStateProvider: NetworkStateProvider,
 ) : ViewModel3(dispatcherProvider = dispatcherProvider) {
-
-    init {
-        if (!generalSettings.isOnboardingFinished.valueBlocking) {
-            MainFragmentDirections.actionMainFragmentToOnboardingFragment().navigate()
-        }
-    }
 
     val isInternetAvailable = networkStateProvider.networkState
         .map { it.isInternetAvailable }

@@ -44,6 +44,9 @@
         <action
             android:id="@+id/action_search_to_map"
             app:destination="@id/map" />
+        <action
+            android:id="@+id/action_search_to_searchAction"
+            app:destination="@id/searchAction" />
     </fragment>
     <fragment
         android:id="@+id/map"
@@ -51,12 +54,20 @@
         tools:layout="@layout/map_fragment">
         <argument
             android:name="mapOptions"
+            android:defaultValue="@null"
             app:argType="eu.darken.apl.map.core.MapOptions"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
         <action
             android:id="@+id/action_map_to_search"
             app:destination="@id/search" />
     </fragment>
+    <dialog
+        android:id="@+id/searchAction"
+        android:name="eu.darken.apl.search.ui.actions.SearchActionDialog"
+        tools:layout="@layout/search_action_dialog">
+        <argument
+            android:name="hex"
+            app:argType="string" />
+    </dialog>
 
 </navigation>

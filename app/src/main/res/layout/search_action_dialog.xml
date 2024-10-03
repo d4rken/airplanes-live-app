@@ -11,6 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:backgroundTint="?colorSurfaceVariant"
         android:gravity="center_vertical"
         android:orientation="vertical"
@@ -18,57 +19,115 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
 
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_settings_input_antenna_24"
-            app:layout_constraintBottom_toBottomOf="@id/tertiary"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/title"
+            style="@style/TextAppearance.Material3.TitleMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            app:layout_constraintEnd_toStartOf="@id/distance"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/primary" />
-
-        <TextView
-            android:id="@+id/primary"
-            style="@style/TextAppearance.Material3.BodyLarge"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:textIsSelectable="true"
-            app:layout_constraintBottom_toTopOf="@id/secondary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/icon"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:text="ATC-ABC" />
+            tools:text="LZ-LAJ (45211e)" />
 
-        <TextView
-            android:id="@+id/secondary"
-            style="@style/TextAppearance.Material3.LabelSmall"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/subtitle"
+            style="@style/TextAppearance.Material3.LabelMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textIsSelectable="true"
-            app:layout_constraintBottom_toTopOf="@id/tertiary"
-            app:layout_constraintEnd_toEndOf="@id/primary"
-            app:layout_constraintStart_toStartOf="@id/primary"
-            app:layout_constraintTop_toBottomOf="@id/primary"
-            tools:text="f042c667-7193-4db6-9112-4eb2f5902951" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            tools:text="BOEING 737-800" />
 
-        <TextView
-            android:id="@+id/tertiary"
-            style="@style/TextAppearance.Material3.BodySmall"
-            android:layout_width="0dp"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/distance"
+            style="@style/TextAppearance.Material3.LabelLarge"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:singleLine="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="999km from you" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="?colorSurfaceVariant" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <eu.darken.apl.common.planespotters.PlanespottersThumbnailView
+            android:id="@+id/thumbnail"
+            android:layout_width="0dp"
+            android:layout_height="96dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/primary"
-            app:layout_constraintStart_toStartOf="@id/primary"
-            app:layout_constraintTop_toBottomOf="@id/secondary"
-            tools:text="-" />
+            app:layout_constraintDimensionRatio="420:280"
+            app:layout_constraintEnd_toStartOf="@id/info_container"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/info_container"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="@id/thumbnail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/thumbnail"
+            app:layout_constraintTop_toTopOf="@id/thumbnail">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/flight_value"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/common_unavailable_label"
+                app:layout_constraintEnd_toStartOf="@id/squawk_value"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="CFG846" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/flight_label"
+                style="@style/TextAppearance.Material3.LabelSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/common_callsign_label"
+                app:layout_constraintEnd_toEndOf="@id/flight_value"
+                app:layout_constraintStart_toStartOf="@id/flight_value"
+                app:layout_constraintTop_toBottomOf="@id/flight_value" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/squawk_value"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/common_unavailable_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/flight_value"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="7700" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/squawk_label"
+                style="@style/TextAppearance.Material3.LabelSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/common_squawk_label"
+                app:layout_constraintEnd_toEndOf="@id/squawk_value"
+                app:layout_constraintStart_toStartOf="@id/squawk_value"
+                app:layout_constraintTop_toBottomOf="@id/squawk_value" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -81,7 +140,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
         android:paddingBottom="16dp">
 
@@ -90,31 +149,7 @@
             style="@style/Widget.Material3.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/feeder_show_map_action" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/remove_feeder_action"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/feeder_remove_action"
-            android:textColor="?colorOnError"
-            app:backgroundTint="@color/error" />
-
-        <com.google.android.material.textview.MaterialTextView
-            style="@style/TextAppearance.Material3.LabelLarge"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/feeder_options_label" />
-
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/monitor_feeder_offline_toggle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/feeder_monitor_offline_label" />
+            android:text="@string/common_show_on_map" />
 
     </LinearLayout>
 </LinearLayout>

@@ -30,6 +30,7 @@ class GeneralSettings @Inject constructor(
     val deviceLabel = dataStore.createValue("core.device.label", Build.DEVICE)
 
     val isAutoReportingEnabled = dataStore.createValue("debug.bugreport.automatic.enabled", true)
+    val isUpdateCheckEnabled = dataStore.createValue("updater.check.enabled", false)
 
     val isOnboardingFinished = dataStore.createValue("core.onboarding.finished", false)
 
@@ -43,6 +44,7 @@ class GeneralSettings @Inject constructor(
         deviceLabel,
         themeMode,
         themeStyle,
+        isUpdateCheckEnabled,
     )
 
     companion object {
