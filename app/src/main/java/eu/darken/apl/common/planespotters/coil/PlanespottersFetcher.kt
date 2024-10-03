@@ -30,7 +30,11 @@ class PlanespottersFetcher(
     override suspend fun fetch(): FetchResult {
         log(TAG, VERBOSE) { "Fetching $aircraft with $options " }
 
-        val photos = endpoint.getPhotosByHex(aircraft.hex)
+        val photos = if (aircraft.registration != null) {
+            endpoint.getPhotosByRegistration(aircraft.registration!!)
+        } else {
+            endpoint.getPhotosByHex(aircraft.hex)
+        }
         log(TAG, VERBOSE) { "Got ${photos.size} photos for $aircraft with $options, picking first. " }
 
         // TODO maybe a slideshow of pictures?
