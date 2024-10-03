@@ -20,7 +20,6 @@
 
     </PreferenceCategory>
 
-
     <PreferenceCategory android:title="@string/settings_category_other_label">
 
         <CheckBoxPreference

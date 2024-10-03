@@ -145,7 +145,7 @@
         android:paddingBottom="16dp">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/show_feed_action"
+            android:id="@+id/show_map_action"
             style="@style/Widget.Material3.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
