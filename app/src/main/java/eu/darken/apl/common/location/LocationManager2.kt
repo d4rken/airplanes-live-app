@@ -11,6 +11,7 @@ import eu.darken.apl.common.coroutine.AppScope
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.flow.replayingShare
+import eu.darken.apl.common.flow.setupCommonEventHandlers
 import eu.darken.apl.common.permissions.Permission
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.awaitClose
@@ -43,7 +44,7 @@ class LocationManager2 @Inject constructor(
             val newCheck = check()
             if (newCheck != lastCheck) emit(newCheck)
             lastCheck = newCheck
-            delay(3000L)
+            if (!newCheck) delay(1000L) else break
         }
     }
     private val locationFlow: Flow<State> = callbackFlow {
@@ -55,6 +56,8 @@ class LocationManager2 @Inject constructor(
             log(TAG) { "New location $location" }
             trySend(State.Available(location))
         }
+
+        trySend(State.Waiting)
 
         log(TAG) { "Requesting location updates" }
         @Suppress("MissingPermission")
@@ -68,6 +71,7 @@ class LocationManager2 @Inject constructor(
             executor,
             locationListener
         )
+
 
         awaitClose {
             log(TAG) { "Canceling location updates" }
@@ -87,10 +91,13 @@ class LocationManager2 @Inject constructor(
         .catch {
             emit(State.Unavailable(error = it))
         }
+        .setupCommonEventHandlers(TAG) { "location" }
         .replayingShare(scope)
 
 
     sealed interface State {
+        data object Waiting : State
+
         data class Available(
             val location: Location,
         ) : State
