@@ -70,6 +70,7 @@ class MapFragment : Fragment3(R.layout.map_fragment) {
                         is MapHandler.Event.OpenUrl -> vm.onOpenUrl(event.url)
                         is MapHandler.Event.OptionsChanged -> vm.onOptionsUpdated(event.options)
                         is MapHandler.Event.ShowInSearch -> vm.showInSearch(event.hex)
+                        is MapHandler.Event.AddAlert -> vm.addAlert(event.hex)
                     }
                 }
                 .launchIn(viewLifecycleOwner.lifecycleScope)

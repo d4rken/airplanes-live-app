@@ -76,6 +76,13 @@ class MapViewModel @Inject constructor(
         ).navigate()
     }
 
+    fun addAlert(hex: AircraftHex) {
+        log(TAG) { "addAlert($hex)" }
+        MapFragmentDirections.actionMapToAlerts(
+            targetAircraft = arrayOf(hex)
+        ).navigate()
+    }
+
     data class State(
         val options: MapOptions,
     )

@@ -25,6 +25,11 @@
         android:id="@+id/alerts"
         android:name="eu.darken.apl.alerts.ui.AlertsListFragment"
         tools:layout="@layout/alerts_list_fragment">
+        <argument
+            android:name="targetAircraft"
+            app:argType="string[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
         <action
             android:id="@+id/action_alerts_to_alertActionDialog"
             app:destination="@id/alertActionDialog" />
@@ -65,6 +70,9 @@
         <action
             android:id="@+id/action_map_to_search"
             app:destination="@id/search" />
+        <action
+            android:id="@+id/action_map_to_alerts"
+            app:destination="@id/alerts" />
     </fragment>
     <dialog
         android:id="@+id/searchAction"

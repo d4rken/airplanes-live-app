@@ -51,6 +51,10 @@ class MapHandler @AssistedInject constructor(
         override fun onShowInSearch(hex: AircraftHex) {
             sendEvent(Event.ShowInSearch(hex))
         }
+
+        override fun onAddAlert(hex: AircraftHex) {
+            sendEvent(Event.AddAlert(hex))
+        }
     }
 
     init {
@@ -97,6 +101,7 @@ class MapHandler @AssistedInject constructor(
         data class OpenUrl(val url: String) : Event
         data class OptionsChanged(val options: MapOptions) : Event
         data class ShowInSearch(val hex: AircraftHex) : Event
+        data class AddAlert(val hex: AircraftHex) : Event
     }
 
     override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
@@ -111,6 +116,7 @@ class MapHandler @AssistedInject constructor(
         if (url.contains("globe.airplanes.live")) {
             view.setupUrlChangeHook()
             view.setupButtonHook("H", "onHomePressed")
+            view.setupAddAlert()
             view.setupShowInSearch()
         } else {
             log(TAG, WARN) { "Skipping inject, not globe.airplanes.live" }

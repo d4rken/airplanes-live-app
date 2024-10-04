@@ -65,7 +65,38 @@ internal fun WebView.setupShowInSearch() {
                                 var hexText = targetDiv.textContent.match(/Hex:\s*([0-9A-F]+)/i);
                                 var hex = hexText ? hexText[1] : "N/A";
                                 if (hex !== "N/A") {
-                                    Android.onShowInSearch(hex); // Calls the Android interface method with the hex value
+                                    Android.onShowInSearch(hex);
+                                }
+                            }
+                        });
+                    }
+                });
+            }).observe(document.body, { childList: true, subtree: true });
+        })();
+    """.trimIndent()
+    evaluateJavascript(jsCode, null)
+}
+
+internal fun WebView.setupAddAlert() {
+    log(MapHandler.TAG) { "Setting up 'Add alert' button and creating hook" }
+    val jsCode = """
+        (function() {
+            new MutationObserver(function(mutations) {
+                mutations.forEach(function() {
+                    var targetDiv = document.getElementById('selected_icao');
+                    if (targetDiv && !document.querySelector('#android_add_alert')) {
+                        var button = document.createElement('button');
+                        button.id = 'android_add_alert';
+                        button.textContent = 'Add alert';
+                        button.style = 'margin-top: 10px; width: 100%';
+                        targetDiv.parentNode.insertBefore(button, targetDiv.nextSibling);
+        
+                        button.addEventListener('click', function() {
+                            if (window.getComputedStyle(targetDiv).display !== "none") {
+                                var hexText = targetDiv.textContent.match(/Hex:\s*([0-9A-F]+)/i);
+                                var hex = hexText ? hexText[1] : "N/A";
+                                if (hex !== "N/A") {
+                                    Android.onAddAlert(hex);
                                 }
                             }
                         });

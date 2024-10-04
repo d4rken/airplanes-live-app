@@ -10,10 +10,13 @@ import eu.darken.apl.alerts.core.types.UnsupportedSquawkError
 import eu.darken.apl.alerts.ui.types.HexAlertVH
 import eu.darken.apl.alerts.ui.types.SquawkAlertVH
 import eu.darken.apl.common.coroutine.DispatcherProvider
+import eu.darken.apl.common.debug.logging.Logging.Priority.INFO
 import eu.darken.apl.common.debug.logging.Logging.Priority.WARN
 import eu.darken.apl.common.debug.logging.asLog
 import eu.darken.apl.common.debug.logging.log
+import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
+import eu.darken.apl.main.core.aircraft.AircraftHex
 import eu.darken.apl.main.core.aircraft.SquawkCode
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
@@ -29,6 +32,14 @@ class AlertsListViewModel @Inject constructor(
     dispatcherProvider: DispatcherProvider,
     private val alertsRepo: AlertsRepo,
 ) : ViewModel3(dispatcherProvider = dispatcherProvider) {
+
+    private val args by handle.navArgs<AlertsListFragmentArgs>()
+    private val targetAircraft: Set<AircraftHex>?
+        get() = args.targetAircraft?.toSet()
+
+    init {
+        log(TAG, INFO) { "targetAircraft=$targetAircraft" }
+    }
 
     private val refreshTimer = callbackFlow {
         while (isActive) {

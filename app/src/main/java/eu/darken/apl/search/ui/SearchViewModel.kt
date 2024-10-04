@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.datastore.valueBlocking
+import eu.darken.apl.common.debug.logging.Logging
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.flow.combine
 import eu.darken.apl.common.flow.replayingShare
@@ -47,6 +48,11 @@ class SearchViewModel @Inject constructor(
     private val args by handle.navArgs<SearchFragmentArgs>()
     private val targetAircraft: Set<AircraftHex>?
         get() = args.targetAircraft?.toSet()
+
+
+    init {
+        log(TAG, Logging.Priority.INFO) { "targetAircraft=$targetAircraft" }
+    }
 
     val events = SingleLiveEvent<SearchEvents>()
 

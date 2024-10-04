@@ -14,6 +14,7 @@ class MapWebInterface @AssistedInject constructor(
         fun onHomePressed()
         fun onUrlChanged(newUrl: String)
         fun onShowInSearch(hex: AircraftHex)
+        fun onAddAlert(hex: AircraftHex)
     }
 
     @JavascriptInterface
@@ -29,6 +30,11 @@ class MapWebInterface @AssistedInject constructor(
     @JavascriptInterface
     fun onShowInSearch(hex: String) {
         listener.onShowInSearch(hex)
+    }
+
+    @JavascriptInterface
+    fun onAddAlert(hex: String) {
+        listener.onAddAlert(hex)
     }
 
     @AssistedFactory
