@@ -45,3 +45,34 @@ internal fun WebView.setupUrlChangeHook() {
         """.trimIndent()
     evaluateJavascript(jsCode, null)
 }
+
+internal fun WebView.setupShowInSearch() {
+    log(MapHandler.TAG) { "Setting up 'Show in search' button and creating hook" }
+    val jsCode = """
+        (function() {
+            new MutationObserver(function(mutations) {
+                mutations.forEach(function() {
+                    var targetDiv = document.getElementById('selected_icao');
+                    if (targetDiv && !document.querySelector('#android_show_search')) {
+                        var button = document.createElement('button');
+                        button.id = 'android_show_search';
+                        button.textContent = 'Show in search';
+                        button.style = 'margin-top: 10px; width: 100%';
+                        targetDiv.parentNode.insertBefore(button, targetDiv.nextSibling);
+        
+                        button.addEventListener('click', function() {
+                            if (window.getComputedStyle(targetDiv).display !== "none") {
+                                var hexText = targetDiv.textContent.match(/Hex:\s*([0-9A-F]+)/i);
+                                var hex = hexText ? hexText[1] : "N/A";
+                                if (hex !== "N/A") {
+                                    Android.onShowInSearch(hex); // Calls the Android interface method with the hex value
+                                }
+                            }
+                        });
+                    }
+                });
+            }).observe(document.body, { childList: true, subtree: true });
+        })();
+    """.trimIndent()
+    evaluateJavascript(jsCode, null)
+}

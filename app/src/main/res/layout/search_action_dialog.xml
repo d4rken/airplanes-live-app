@@ -149,7 +149,19 @@
             style="@style/Widget.Material3.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/common_show_on_map" />
+            android:text="@string/common_show_on_map"
+            app:iconGravity="textStart"
+            app:icon="@drawable/ic_map_24" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/add_alert_action"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="match_parent"
+            app:icon="@drawable/ic_crisis_alert_24"
+            app:iconGravity="textStart"
+            android:layout_height="wrap_content"
+            android:text="@string/common_add_alert" />
 
     </LinearLayout>
 </LinearLayout>

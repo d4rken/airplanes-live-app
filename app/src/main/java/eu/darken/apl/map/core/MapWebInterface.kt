@@ -4,14 +4,16 @@ import android.webkit.JavascriptInterface
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import eu.darken.apl.main.core.aircraft.AircraftHex
 
-class AndroidWebInterface @AssistedInject constructor(
+class MapWebInterface @AssistedInject constructor(
     @Assisted private val listener: Listener,
 ) {
 
     interface Listener {
         fun onHomePressed()
         fun onUrlChanged(newUrl: String)
+        fun onShowInSearch(hex: AircraftHex)
     }
 
     @JavascriptInterface
@@ -24,8 +26,13 @@ class AndroidWebInterface @AssistedInject constructor(
         listener.onUrlChanged(newUrl)
     }
 
+    @JavascriptInterface
+    fun onShowInSearch(hex: String) {
+        listener.onShowInSearch(hex)
+    }
+
     @AssistedFactory
     interface Factory {
-        fun create(listener: Listener): AndroidWebInterface
+        fun create(listener: Listener): MapWebInterface
     }
 }

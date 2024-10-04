@@ -52,6 +52,7 @@ class SearchActionDialog : BottomSheetDialogFragment2() {
         }
 
         ui.showMapAction.setOnClickListener { vm.showMap() }
+        ui.addAlertAction.setOnClickListener { vm.addAlert() }
 
         vm.events.observe2(ui) { event ->
 

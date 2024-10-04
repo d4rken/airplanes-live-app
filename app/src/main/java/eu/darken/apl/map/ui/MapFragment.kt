@@ -69,6 +69,7 @@ class MapFragment : Fragment3(R.layout.map_fragment) {
                         MapHandler.Event.HomePressed -> vm.checkLocationPermission()
                         is MapHandler.Event.OpenUrl -> vm.onOpenUrl(event.url)
                         is MapHandler.Event.OptionsChanged -> vm.onOptionsUpdated(event.options)
+                        is MapHandler.Event.ShowInSearch -> vm.showInSearch(event.hex)
                     }
                 }
                 .launchIn(viewLifecycleOwner.lifecycleScope)

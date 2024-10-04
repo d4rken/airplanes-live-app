@@ -70,7 +70,9 @@ class MainFragment : Fragment3(R.layout.main_fragment) {
                     }
 
                     R.id.map -> {
-                        navController.navigate(R.id.map)
+                        if (!navController.popBackStack(R.id.map, false)) {
+                            navController.navigate(R.id.map)
+                        }
                         true
                     }
 

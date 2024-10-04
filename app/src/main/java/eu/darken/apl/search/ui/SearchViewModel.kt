@@ -13,8 +13,10 @@ import eu.darken.apl.common.flow.replayingShare
 import eu.darken.apl.common.flow.throttleLatest
 import eu.darken.apl.common.livedata.SingleLiveEvent
 import eu.darken.apl.common.location.LocationManager2
+import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.main.core.GeneralSettings
+import eu.darken.apl.main.core.aircraft.AircraftHex
 import eu.darken.apl.map.core.AirplanesLive
 import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.search.core.SearchQuery
@@ -42,13 +44,25 @@ class SearchViewModel @Inject constructor(
     private val generalSettings: GeneralSettings,
 ) : ViewModel3(dispatcherProvider) {
 
+    private val args by handle.navArgs<SearchFragmentArgs>()
+    private val targetAircraft: Set<AircraftHex>?
+        get() = args.targetAircraft?.toSet()
+
     val events = SingleLiveEvent<SearchEvents>()
 
     private val currentInput = MutableStateFlow(
-        Input(
-            mode = State.Mode.SQUAWK,
-            raw = "7700,7600,7500",
-        )
+        when {
+            targetAircraft != null -> Input(
+                mode = State.Mode.HEX,
+                raw = targetAircraft!!.joinToString(","),
+            )
+
+            else -> Input(
+                mode = State.Mode.SQUAWK,
+                raw = "7700,7600,7500",
+            )
+
+        }
     )
 
     private val searchTrigger = MutableStateFlow(UUID.randomUUID())

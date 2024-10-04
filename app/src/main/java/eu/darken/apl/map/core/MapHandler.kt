@@ -2,6 +2,7 @@ package eu.darken.apl.map.core
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
+import android.webkit.ConsoleMessage
 import android.webkit.GeolocationPermissions
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
@@ -15,16 +16,17 @@ import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
 import eu.darken.apl.common.debug.logging.Logging.Priority.WARN
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
+import eu.darken.apl.main.core.aircraft.AircraftHex
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 
 class MapHandler @AssistedInject constructor(
     @Assisted private val webView: WebView,
-    private val androidWebInterfaceFactory: AndroidWebInterface.Factory,
+    private val mapWebInterfaceFactory: MapWebInterface.Factory,
 ) : WebViewClient() {
 
     private lateinit var currentOptions: MapOptions
-    private val interfaceListener = object : AndroidWebInterface.Listener {
+    private val interfaceListener = object : MapWebInterface.Listener {
         override fun onHomePressed() {
             sendEvent(Event.HomePressed)
         }
@@ -45,13 +47,17 @@ class MapHandler @AssistedInject constructor(
             )
             sendEvent(Event.OptionsChanged(currentOptions))
         }
+
+        override fun onShowInSearch(hex: AircraftHex) {
+            sendEvent(Event.ShowInSearch(hex))
+        }
     }
 
     init {
         log(TAG) { "init($webView)" }
         webView.apply {
             webViewClient = this@MapHandler
-            addJavascriptInterface(androidWebInterfaceFactory.create(interfaceListener), "Android")
+            addJavascriptInterface(mapWebInterfaceFactory.create(interfaceListener), "Android")
             settings.apply {
                 @SuppressLint("SetJavaScriptEnabled")
                 javaScriptEnabled = true
@@ -65,6 +71,11 @@ class MapHandler @AssistedInject constructor(
                 ) {
                     log(TAG) { "onGeolocationPermissionsShowPrompt($origin,$callback)" }
                     callback.invoke(origin, true, false)
+                }
+
+                override fun onConsoleMessage(message: ConsoleMessage): Boolean {
+                    log(TAG, VERBOSE) { "Console: ${message.message()}" }
+                    return super.onConsoleMessage(message)
                 }
             }
         }
@@ -85,6 +96,7 @@ class MapHandler @AssistedInject constructor(
         data object HomePressed : Event
         data class OpenUrl(val url: String) : Event
         data class OptionsChanged(val options: MapOptions) : Event
+        data class ShowInSearch(val hex: AircraftHex) : Event
     }
 
     override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
@@ -99,6 +111,7 @@ class MapHandler @AssistedInject constructor(
         if (url.contains("globe.airplanes.live")) {
             view.setupUrlChangeHook()
             view.setupButtonHook("H", "onHomePressed")
+            view.setupShowInSearch()
         } else {
             log(TAG, WARN) { "Skipping inject, not globe.airplanes.live" }
         }

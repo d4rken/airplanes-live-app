@@ -62,6 +62,10 @@ class SearchActionViewModel @Inject constructor(
         ).navigate()
     }
 
+    fun addAlert() {
+        log(TAG) { "addAlert()" }
+    }
+
     data class State(
         val aircraft: Aircraft,
     )

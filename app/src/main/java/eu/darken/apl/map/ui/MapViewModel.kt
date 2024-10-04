@@ -11,6 +11,7 @@ import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.livedata.SingleLiveEvent
 import eu.darken.apl.common.permissions.Permission
 import eu.darken.apl.common.uix.ViewModel3
+import eu.darken.apl.main.core.aircraft.AircraftHex
 import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.map.core.MapSettings
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -66,6 +67,13 @@ class MapViewModel @Inject constructor(
     fun onOptionsUpdated(options: MapOptions) {
         log(TAG) { "onUrlUpdated($options)" }
         currentOptions.value = options
+    }
+
+    fun showInSearch(hex: AircraftHex) {
+        log(TAG) { "showInSearch($hex)" }
+        MapFragmentDirections.actionMapToSearch(
+            targetAircraft = arrayOf(hex)
+        ).navigate()
     }
 
     data class State(

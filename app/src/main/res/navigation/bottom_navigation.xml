@@ -41,6 +41,11 @@
         android:id="@+id/search"
         android:name="eu.darken.apl.search.ui.SearchFragment"
         tools:layout="@layout/search_fragment">
+        <argument
+            android:name="targetAircraft"
+            app:argType="string[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
         <action
             android:id="@+id/action_search_to_map"
             app:destination="@id/map" />

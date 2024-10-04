@@ -175,4 +175,5 @@
     <string name="search_progress_body">Found %d so far. Still searching…</string>
     <string name="search_summary_x_aircraft">%d aircraft found</string>
     <string name="common_show_on_map">Show on map</string>
+    <string name="common_add_alert">Add alert</string>
 </resources>
