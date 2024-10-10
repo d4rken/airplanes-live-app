@@ -1,7 +1,7 @@
 package eu.darken.apl.alerts.ui.types
 
 import android.view.ViewGroup
-import androidx.core.view.isVisible
+import androidx.core.view.isGone
 import eu.darken.apl.R
 import eu.darken.apl.alerts.core.types.HexAlert
 import eu.darken.apl.alerts.ui.AlertsListAdapter
@@ -21,39 +21,38 @@ class HexAlertVH(parent: ViewGroup) :
         item: Item,
         payloads: List<Any>
     ) -> Unit = { item, _ ->
-        val alert = item.alert
+        val status = item.status
 
-        title.text = alert.label
-        subtitle.text = alert.hex
+        title.text = status.hex
 
-        notfoundContainer.isVisible = alert.infos.isEmpty()
-        infoContainer.isVisible = alert.infos.isNotEmpty()
+        lastTriggered.text = status.tracked.maxByOrNull { it.triggeredAt }?.toString() ?: ""
 
-        if (alert.infos.isEmpty()) {
-            alertStatus.text = getString(R.string.alerts_hexcode_notfound_message)
-        } else {
-            val aircraft = alert.infos.first()
+        alertStatus.text = getQuantityString(R.plurals.alerts_aircraft_spotted, status.tracked.size)
+
+        infoContainer.isGone = status.tracked.size != 1
+        if (status.tracked.size == 1) {
+            val aircraft = status.tracked.first().aircraft
             flightValue.text = aircraft.callsign
             registrationValue.text = aircraft.registration
             squawkValue.text = aircraft.squawk
-            descriptionValue.text = "${aircraft.description} @ ${aircraft.altitude} ft"
+        }
+
+        noteLabel.isGone = status.note.isBlank()
+        noteValue.apply {
+            isGone = status.note.isBlank()
+            text = status.note
         }
 
         root.apply {
             setOnClickListener { item.onTap(item) }
-            setOnLongClickListener {
-                item.onLongPress(item)
-                true
-            }
         }
     }
 
     data class Item(
-        val alert: HexAlert,
+        val status: HexAlert.Status,
         val onTap: (Item) -> Unit,
-        val onLongPress: (Item) -> Unit,
     ) : AlertsListAdapter.Item {
         override val stableId: Long
-            get() = alert.id.hashCode().toLong()
+            get() = status.id.hashCode().toLong()
     }
 }

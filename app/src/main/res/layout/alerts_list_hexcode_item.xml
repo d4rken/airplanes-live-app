@@ -52,7 +52,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/last_triggered"
-            style="@style/TextAppearance.Material3.LabelMedium"
+            style="@style/TextAppearance.Material3.LabelLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@id/title"
@@ -60,34 +60,27 @@
             app:layout_constraintTop_toTopOf="@id/title"
             tools:text="5min ago" />
 
-        <LinearLayout
-            android:id="@+id/notfound_container"
-            android:layout_width="match_parent"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/alert_status"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:orientation="vertical"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subtitle">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/alert_status"
-                style="@style/TextAppearance.Material3.BodyMedium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="There are no active events for this alert." />
-
-        </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@id/subtitle"
+            tools:text="%1$d matching aircraft have been spotted" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/info_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subtitle">
+            app:layout_constraintTop_toBottomOf="@id/alert_status"
+            tools:visibility="visible">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/flight_value"
@@ -101,7 +94,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/flight_label"
-                style="@style/TextAppearance.Material3.LabelSmall"
+                style="@style/TextAppearance.Material3.LabelMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Flight"
@@ -121,7 +114,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/registration_label"
-                style="@style/TextAppearance.Material3.LabelSmall"
+                style="@style/TextAppearance.Material3.LabelMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Registration"
@@ -142,7 +135,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/squawk_label"
-                style="@style/TextAppearance.Material3.LabelSmall"
+                style="@style/TextAppearance.Material3.LabelMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Squawk"
@@ -150,18 +143,30 @@
                 app:layout_constraintStart_toStartOf="@id/squawk_value"
                 app:layout_constraintTop_toBottomOf="@id/squawk_value" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/description_value"
-                style="@style/TextAppearance.Material3.BodyMedium"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/flight_label"
-                tools:text="BOEING 737-800" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/note_label"
+            style="@style/TextAppearance.Material3.LabelMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/alerts_note_label"
+            app:layout_constraintBottom_toTopOf="@id/note_value"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/info_container" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/note_value"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/note_label"
+            tools:text="@tools:sample/lorem/random" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

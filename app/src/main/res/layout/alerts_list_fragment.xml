@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/alerts_list_add_title"
-                app:icon="@drawable/ic_alert_plus_24" />
+                app:icon="@drawable/ic_crisis_alert_24" />
 
         </LinearLayout>
 

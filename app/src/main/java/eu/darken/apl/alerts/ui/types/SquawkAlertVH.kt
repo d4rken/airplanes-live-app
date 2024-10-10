@@ -1,6 +1,7 @@
 package eu.darken.apl.alerts.ui.types
 
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import eu.darken.apl.R
 import eu.darken.apl.alerts.core.types.SquawkAlert
 import eu.darken.apl.alerts.ui.AlertsListAdapter
@@ -20,25 +21,30 @@ class SquawkAlertVH(parent: ViewGroup) :
         item: Item,
         payloads: List<Any>
     ) -> Unit = { item, _ ->
-        val alert = item.alert
+        val status = item.status
 
-        title.text = alert.squawk
+        title.text = status.squawk
+
+        lastTriggered.text = status.tracked.maxByOrNull { it.triggeredAt }?.toString() ?: ""
+
+        alertStatus.text = getQuantityString(R.plurals.alerts_aircraft_spotted, status.tracked.size)
+
+        noteLabel.isGone = status.note.isBlank()
+        noteValue.apply {
+            isGone = status.note.isBlank()
+            text = status.note
+        }
 
         root.apply {
             setOnClickListener { item.onTap(item) }
-            setOnLongClickListener {
-                item.onLongPress(item)
-                true
-            }
         }
     }
 
     data class Item(
-        val alert: SquawkAlert,
+        val status: SquawkAlert.Status,
         val onTap: (Item) -> Unit,
-        val onLongPress: (Item) -> Unit,
     ) : AlertsListAdapter.Item {
         override val stableId: Long
-            get() = alert.id.hashCode().toLong()
+            get() = status.id.hashCode().toLong()
     }
 }

@@ -1,16 +1,25 @@
 package eu.darken.apl.alerts.core.types
 
-import eu.darken.apl.alerts.core.config.SquawkAlertConfig
+import eu.darken.apl.alerts.core.AlertId
+import eu.darken.apl.alerts.core.config.db.SquawkAlertEntity
 import eu.darken.apl.main.core.aircraft.SquawkCode
-import eu.darken.apl.main.core.api.AirplanesLiveApi
 
 data class SquawkAlert(
-    val config: SquawkAlertConfig,
-    val infos: Set<AirplanesLiveApi.Aircraft>,
+    private val entity: SquawkAlertEntity,
 ) : AircraftAlert {
-    override val id: String
-        get() = squawk
+    override val id: AlertId
+        get() = entity.id
+    override val note: String
+        get() = entity.userNote
 
-    val squawk: SquawkCode
-        get() = config.code
+    val code: SquawkCode
+        get() = entity.code
+
+    data class Status(
+        override val alert: SquawkAlert,
+        override val tracked: Set<AircraftAlert.Status.Tracked> = emptySet(),
+    ) : AircraftAlert.Status {
+        val squawk: SquawkCode
+            get() = alert.code
+    }
 }

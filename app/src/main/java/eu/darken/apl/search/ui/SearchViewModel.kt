@@ -128,6 +128,21 @@ class SearchViewModel @Inject constructor(
             ).run { items.add(this) }
         }
 
+        if (result?.aircraft != null) {
+            if (result.searching) {
+                items.add(SearchingAircraftVH.Item(input, result.aircraft.size))
+            } else if (result.aircraft.isEmpty()) {
+                NoAircraftVH.Item(
+                    input,
+                    onStartFeeding = {
+                        webpageTool.open(AirplanesLive.URL_START_FEEDING)
+                    }
+                ).run { items.add(this) }
+            } else {
+                items.add(SummaryVH.Item(result.aircraft.size))
+            }
+        }
+
         result?.aircraft
             ?.map { ac ->
                 AircraftResultVH.Item(
@@ -158,21 +173,6 @@ class SearchViewModel @Inject constructor(
             }
             ?.sortedBy { it.distanceInMeter ?: Float.MAX_VALUE }
             ?.run { items.addAll(this) }
-
-        if (result?.aircraft != null) {
-            if (result.searching) {
-                items.add(SearchingAircraftVH.Item(input, result.aircraft.size))
-            } else if (result.aircraft.isEmpty()) {
-                NoAircraftVH.Item(
-                    input,
-                    onStartFeeding = {
-                        webpageTool.open(AirplanesLive.URL_START_FEEDING)
-                    }
-                ).run { items.add(this) }
-            } else {
-                items.add(0, SummaryVH.Item(result.aircraft.size))
-            }
-        }
 
         State(
             input = input,

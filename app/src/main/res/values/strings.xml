@@ -132,24 +132,21 @@
     <string name="alerts_list_addnew_msg">Create your first aircraft alert now!</string>
     <string name="alerts_add_alert_type_title">New alert type</string>
     <string name="alerts_add_alert_type_label_hexcode">Aircraft hex code </string>
-    <string name="alerts_add_alert_type_label_squawk">Transponder code</string>
+    <string name="alerts_add_alert_type_label_squawk">Transponder code (SQUAWK)</string>
     <string name="alerts_add_hexcode_title">New hexcode alert</string>
     <string name="alerts_add_hexcode_msg">Enter the hexcode of the aircraft you want alerts for.</string>
     <string name="alerts_add_squawk_title">New squawk alert</string>
-    <string name="alerts_add_squawk_msg">Enter the transpoder code you want to be alert of.</string>
-    <string name="alerts_squawk_error_notallowed_label">Unsupported squawk</string>
-    <string name="alerts_squawk_error_notallowed_message">Provided squawk not allowed. Supported are %s</string>
+    <string name="alerts_add_squawk_msg">Enter the transpoder code you want to be alerted of.</string>
     <string name="alerts_item_squawk_subtitle">Transponder code</string>
     <string name="alerts_item_hexcode_subtitle">ICAO 24-bit address</string>
-    <string name="alerts_hexcode_notfound_message">Aircraft has not been spotted.</string>
-    <string name="alerts_show_map_action">Show on map</string>
+    <plurals name="alerts_aircraft_spotted">
+        <item quantity="zero">%1$d matching aircraft have been spotted</item>
+        <item quantity="one">%1$d matching aircraft has been spotted</item>
+        <item quantity="other">%1$d matching aircraft have been spotted</item>
+    </plurals>
     <string name="alerts_remove_action">Delete alert</string>
     <string name="alerts_remove_confirmation_title">Confirmation</string>
     <string name="alerts_remove_confirmation_message">Delete this alert?</string>
-    <plurals name="alerts_squawk_matches_msg">
-        <item quantity="one">%1$d aircraft is squawking %1$s</item>
-        <item quantity="other">%1$d aircraft are squawking %1$s</item>
-    </plurals>
 
     <string name="search_page_label">Search</string>
     <string name="search_search_by_aircraft">Search by aircraft</string>
@@ -175,5 +172,7 @@
     <string name="search_progress_body">Found %d so far. Still searching…</string>
     <string name="search_summary_x_aircraft">%d aircraft found</string>
     <string name="common_show_on_map">Show on map</string>
+    <string name="common_show_in_search">Show in search</string>
     <string name="common_add_alert">Add alert</string>
+    <string name="alerts_note_label">Note</string>
 </resources>

@@ -4,15 +4,11 @@ import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.darken.apl.alerts.core.AlertsRepo
 import eu.darken.apl.alerts.core.types.HexAlert
-import eu.darken.apl.alerts.core.types.NewHexAlert
 import eu.darken.apl.alerts.core.types.SquawkAlert
-import eu.darken.apl.alerts.core.types.UnsupportedSquawkError
 import eu.darken.apl.alerts.ui.types.HexAlertVH
 import eu.darken.apl.alerts.ui.types.SquawkAlertVH
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.Logging.Priority.INFO
-import eu.darken.apl.common.debug.logging.Logging.Priority.WARN
-import eu.darken.apl.common.debug.logging.asLog
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
@@ -23,7 +19,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.isActive
-import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -51,25 +46,19 @@ class AlertsListViewModel @Inject constructor(
 
     val state = combine(
         refreshTimer,
-        alertsRepo.alerts,
+        alertsRepo.status,
         alertsRepo.isRefreshing
     ) { _, alerts, isRefreshing ->
         val items = alerts.map { alert ->
             when (alert) {
-                is HexAlert -> HexAlertVH.Item(
-                    alert = alert,
+                is HexAlert.Status -> HexAlertVH.Item(
+                    status = alert,
                     onTap = { AlertsListFragmentDirections.actionAlertsToAlertActionDialog(alert.id).navigate() },
-                    onLongPress = {
-
-                    }
                 )
 
-                is SquawkAlert -> SquawkAlertVH.Item(
-                    alert = alert,
+                is SquawkAlert.Status -> SquawkAlertVH.Item(
+                    status = alert,
                     onTap = { AlertsListFragmentDirections.actionAlertsToAlertActionDialog(alert.id).navigate() },
-                    onLongPress = {
-
-                    }
                 )
             }
 
@@ -80,25 +69,14 @@ class AlertsListViewModel @Inject constructor(
         )
     }.asLiveData2()
 
-    fun addHexAlert(newAlert: NewHexAlert) = launch {
-        log(TAG) { "addHexAlert($newAlert)" }
-
-        alertsRepo.addHexAlert(newAlert)
+    fun addHexAlert(hex: AircraftHex, note: String) = launch {
+        log(TAG) { "addHexAlert($hex, $note)" }
+        alertsRepo.createHexAlert(hex.uppercase(), note.trim())
     }
 
-    fun addSquawkAlert(squawk: SquawkCode) = launch {
-        log(TAG) { "addSquawkAlert($squawk)" }
-        try {
-            alertsRepo.checkSquawk(squawk)
-        } catch (e: HttpException) {
-            log(TAG, WARN) { "Squawk check failed: ${e.asLog()}" }
-            if (e.code() == 403) {
-                throw UnsupportedSquawkError(e)
-            }
-            throw e
-        }
-
-        alertsRepo.addSquawkAlert(squawk)
+    fun addSquawkAlert(squawk: SquawkCode, note: String) = launch {
+        log(TAG) { "addSquawkAlert($squawk, $note)" }
+        alertsRepo.createSquawkAlert(squawk, note.trim())
     }
 
     fun refresh() = launch {

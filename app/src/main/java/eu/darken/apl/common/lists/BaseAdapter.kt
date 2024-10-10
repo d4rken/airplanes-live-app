@@ -13,6 +13,7 @@ import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import eu.darken.apl.common.getColorForAttr
+import eu.darken.apl.common.getQuantityString
 
 abstract class BaseAdapter<T : BaseAdapter.VH> : RecyclerView.Adapter<T>() {
 
@@ -55,9 +56,9 @@ abstract class BaseAdapter<T : BaseAdapter.VH> : RecyclerView.Adapter<T>() {
         fun getString(@StringRes stringRes: Int, vararg args: Any): String = context.getString(stringRes, *args)
 
         fun getQuantityString(@PluralsRes pluralRes: Int, quantity: Int, vararg args: Any): String =
-            context.resources.getQuantityString(pluralRes, quantity, *args)
+            context.getQuantityString(pluralRes, quantity, *args)
 
         fun getQuantityString(@PluralsRes pluralRes: Int, quantity: Int): String =
-            context.resources.getQuantityString(pluralRes, quantity, quantity)
+            context.getQuantityString(pluralRes, quantity)
     }
 }

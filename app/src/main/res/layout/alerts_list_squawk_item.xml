@@ -45,14 +45,14 @@
             android:layout_marginEnd="16dp"
             android:ellipsize="end"
             android:singleLine="true"
+            android:text="@string/alerts_item_squawk_subtitle"
             app:layout_constraintEnd_toStartOf="@id/last_triggered"
             app:layout_constraintStart_toEndOf="@id/alert_icon"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            android:text="@string/alerts_item_squawk_subtitle" />
+            app:layout_constraintTop_toBottomOf="@id/title" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/last_triggered"
-            style="@style/TextAppearance.Material3.LabelMedium"
+            style="@style/TextAppearance.Material3.LabelLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@id/title"
@@ -66,11 +66,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toTopOf="@id/note_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/subtitle"
             tools:text="There are no active events for this alert." />
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/note_label"
+            style="@style/TextAppearance.Material3.LabelMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/alerts_note_label"
+            app:layout_constraintBottom_toTopOf="@id/note_value"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/alert_status" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/note_value"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/note_label"
+            tools:text="@tools:sample/lorem/random" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

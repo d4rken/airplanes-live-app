@@ -90,7 +90,7 @@ internal fun WebView.setupAddAlert() {
                         button.textContent = 'Add alert';
                         button.style = 'margin-top: 10px; width: 100%';
                         targetDiv.parentNode.insertBefore(button, targetDiv.nextSibling);
-        
+        77
                         button.addEventListener('click', function() {
                             if (window.getComputedStyle(targetDiv).display !== "none") {
                                 var hexText = targetDiv.textContent.match(/Hex:\s*([0-9A-F]+)/i);

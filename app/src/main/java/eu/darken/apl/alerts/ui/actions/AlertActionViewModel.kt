@@ -1,16 +1,16 @@
 package eu.darken.apl.alerts.ui.actions
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.darken.apl.alerts.core.AlertId
 import eu.darken.apl.alerts.core.AlertsRepo
 import eu.darken.apl.alerts.core.types.AircraftAlert
-import eu.darken.apl.alerts.core.types.HexAlert
-import eu.darken.apl.alerts.core.types.SquawkAlert
 import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
+import eu.darken.apl.common.flow.replayingShare
 import eu.darken.apl.common.livedata.SingleLiveEvent
 import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
@@ -35,11 +35,17 @@ class AlertActionViewModel @Inject constructor(
 
     private val navArgs by handle.navArgs<AlertActionDialogArgs>()
     private val alertId: AlertId = navArgs.alertId
-    private val trigger = MutableStateFlow(UUID.randomUUID())
+
     val events = SingleLiveEvent<AlertActionEvents>()
 
+    private val trigger = MutableStateFlow(UUID.randomUUID())
+
+    private val status = alertsRepo.status
+        .mapNotNull { data -> data.singleOrNull { it.id == alertId } }
+        .replayingShare(viewModelScope)
+
     init {
-        alertsRepo.alerts
+        alertsRepo.status
             .map { alerts -> alerts.singleOrNull { it.id == alertId } }
             .filter { it == null }
             .take(1)
@@ -52,43 +58,43 @@ class AlertActionViewModel @Inject constructor(
 
     val state = combine(
         trigger,
-        alertsRepo.alerts.mapNotNull { data -> data.singleOrNull { it.id == alertId } },
+        status,
     ) { _, alert ->
 
 
         State(
-            alert = alert,
+            status = alert,
         )
     }
         .asLiveData2()
 
     fun removeAlert(confirmed: Boolean = false) = launch {
-        log(TAG) { "removeFeeder()" }
+        log(TAG) { "removeAlert()" }
         if (!confirmed) {
             events.postValue(AlertActionEvents.RemovalConfirmation(alertId))
             return@launch
         }
 
-        alertsRepo.removeAlert(state.value!!.alert)
+        alertsRepo.deleteAlert(state.value!!.status.id)
     }
 
     fun showOnMap() = launch {
         log(TAG) { "showOnMap()" }
+        TODO()
+    }
 
-        when (val alert = state.value!!.alert) {
-            is HexAlert -> {
-                webpageTool.open("https://globe.airplanes.live/?icao=${alert.hex}")
-            }
+    fun showInSearch() = launch {
+        log(TAG) { "showInSearch()" }
+        TODO()
+    }
 
-            is SquawkAlert -> {
-                // TODO better URL
-                webpageTool.open("https://globe.airplanes.live/")
-            }
-        }
+    fun updateNote(note: String) = launch {
+        log(TAG) { "updateNote($note)" }
+        alertsRepo.updateNote(alertId, note.trim())
     }
 
     data class State(
-        val alert: AircraftAlert,
+        val status: AircraftAlert.Status,
     )
 
     companion object {

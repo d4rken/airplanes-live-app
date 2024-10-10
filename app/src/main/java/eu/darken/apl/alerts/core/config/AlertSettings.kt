@@ -8,7 +8,6 @@ import com.squareup.moshi.Moshi
 import dagger.hilt.android.qualifiers.ApplicationContext
 import eu.darken.apl.common.datastore.PreferenceScreenData
 import eu.darken.apl.common.datastore.PreferenceStoreMapper
-import eu.darken.apl.common.datastore.createValue
 import eu.darken.apl.common.debug.logging.logTag
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -23,10 +22,6 @@ class AlertSettings @Inject constructor(
 
     override val dataStore: DataStore<Preferences>
         get() = context.dataStore
-
-    val hexAlerts = dataStore.createValue("alerts.hex", HexAlertGroup(), moshi)
-
-    val squawkAlerts = dataStore.createValue("alerts.squawk", SquawkAlertGroup(), moshi)
 
     override val mapper = PreferenceStoreMapper()
 

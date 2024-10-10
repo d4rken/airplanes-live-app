@@ -1,19 +1,28 @@
 package eu.darken.apl.alerts.core.types
 
-import eu.darken.apl.alerts.core.config.HexAlertConfig
+import eu.darken.apl.alerts.core.AlertId
+import eu.darken.apl.alerts.core.config.db.HexAlertEntity
 import eu.darken.apl.main.core.aircraft.AircraftHex
-import eu.darken.apl.main.core.api.AirplanesLiveApi
+
 
 data class HexAlert(
-    val config: HexAlertConfig,
-    val infos: Set<AirplanesLiveApi.Aircraft>,
+    private val entity: HexAlertEntity,
 ) : AircraftAlert {
+    override val id: AlertId
+        get() = entity.id
+
+    override val note: String
+        get() = entity.userNote
+
     val hex: AircraftHex
-        get() = config.hexCode
+        get() = entity.hexCode
 
-    override val id: String
-        get() = hex
+    data class Status(
+        override val alert: HexAlert,
+        override val tracked: Set<AircraftAlert.Status.Tracked> = emptySet(),
+    ) : AircraftAlert.Status {
 
-    val label: String
-        get() = config.label
+        val hex: AircraftHex
+            get() = alert.hex
+    }
 }

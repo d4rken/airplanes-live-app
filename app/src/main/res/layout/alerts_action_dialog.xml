@@ -85,12 +85,39 @@
         android:orientation="vertical"
         android:paddingBottom="16dp">
 
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Material3.TextInputLayout.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/note_layout"
+            android:hint="@string/alerts_note_label">
+
+            <com.google.android.material.textfield.TextInputEditText
+                style="@style/ThemeOverlay.Material3.TextInputEditText.FilledBox"
+                android:layout_width="match_parent"
+                android:id="@+id/note_input"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/show_feed_action"
+            android:id="@+id/show_map_action"
             style="@style/Widget.Material3.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/alerts_show_map_action" />
+            android:layout_marginTop="16dp"
+            android:text="@string/common_show_on_map"
+            app:icon="@drawable/ic_map_24"
+            app:iconGravity="textStart" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/show_search_action"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/common_show_in_search"
+            app:icon="@drawable/ic_airplane_search_24"
+            app:iconGravity="textStart" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/remove_feeder_action"
@@ -98,8 +125,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/alerts_remove_action"
-            android:textColor="?colorOnError"
-            app:backgroundTint="@color/error" />
+            android:textColor="?colorOnErrorContainer"
+            app:backgroundTint="?colorErrorContainer"
+            app:icon="@drawable/ic_delete_24"
+            app:iconGravity="textStart"
+            app:iconTint="?colorOnErrorContainer" />
 
     </LinearLayout>
 </LinearLayout>
