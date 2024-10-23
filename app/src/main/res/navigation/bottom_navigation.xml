@@ -27,12 +27,21 @@
         tools:layout="@layout/alerts_list_fragment">
         <argument
             android:name="targetAircraft"
+            android:defaultValue="@null"
             app:argType="string[]"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
         <action
             android:id="@+id/action_alerts_to_alertActionDialog"
             app:destination="@id/alertActionDialog" />
+        <action
+            android:id="@+id/action_alerts_to_createHexAlertFragment"
+            app:destination="@id/createHexAlertFragment" />
+        <action
+            android:id="@+id/action_alerts_to_createSquawkAlertFragment"
+            app:destination="@id/createSquawkAlertFragment" />
+        <action
+            android:id="@+id/action_alerts_to_createCallsignAlertFragment"
+            app:destination="@id/createCallsignAlertFragment" />
     </fragment>
     <dialog
         android:id="@+id/alertActionDialog"
@@ -41,16 +50,32 @@
         <argument
             android:name="alertId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_alertActionDialog_to_map"
+            app:destination="@id/map" />
+        <action
+            android:id="@+id/action_alertActionDialog_to_search"
+            app:destination="@id/search" />
     </dialog>
     <fragment
         android:id="@+id/search"
         android:name="eu.darken.apl.search.ui.SearchFragment"
         tools:layout="@layout/search_fragment">
         <argument
-            android:name="targetAircraft"
+            android:name="targetHexes"
+            android:defaultValue="@null"
             app:argType="string[]"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
+        <argument
+            android:name="targetSquawks"
+            android:defaultValue="@null"
+            app:argType="string[]"
+            app:nullable="true" />
+        <argument
+            android:name="targetCallsigns"
+            android:defaultValue="@null"
+            app:argType="string[]"
+            app:nullable="true" />
         <action
             android:id="@+id/action_search_to_map"
             app:destination="@id/map" />
@@ -73,6 +98,9 @@
         <action
             android:id="@+id/action_map_to_alerts"
             app:destination="@id/alerts" />
+        <action
+            android:id="@+id/action_map_to_createHexAlertFragment"
+            app:destination="@id/createHexAlertFragment" />
     </fragment>
     <dialog
         android:id="@+id/searchAction"
@@ -84,6 +112,55 @@
         <action
             android:id="@+id/action_searchAction_to_map"
             app:destination="@id/map" />
+        <action
+            android:id="@+id/action_searchAction_to_createHexAlertFragment"
+            app:destination="@id/createHexAlertFragment" />
     </dialog>
+    <dialog
+        android:id="@+id/createHexAlertFragment"
+        android:name="eu.darken.apl.alerts.ui.create.CreateHexAlertFragment"
+        tools:layout="@layout/alerts_create_hex">
+        <argument
+            android:name="hex"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="note"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </dialog>
+    <dialog
+        android:id="@+id/createSquawkAlertFragment"
+        android:name="eu.darken.apl.alerts.ui.create.CreateSquawkAlertFragment"
+        tools:layout="@layout/alerts_create_squawk">
+        <argument
+            android:name="squawk"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="note"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </dialog>
+    <dialog
+        android:id="@+id/createCallsignAlertFragment"
+        android:name="eu.darken.apl.alerts.ui.create.CreateCallsignAlertFragment"
+        tools:layout="@layout/alerts_create_callsign">
+        <argument
+            android:name="callsign"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="note"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </dialog>
+
 
 </navigation>

@@ -13,6 +13,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.stream.Collectors
 import javax.inject.Inject
 
 
@@ -42,10 +43,10 @@ class AirplanesLiveEndpoint @Inject constructor(
         log(TAG) { "getByHexes(hexes=$hexes)" }
         if (hexes.isEmpty()) return@withContext emptySet()
         hexes
+            .chunkToCommaArgs(limit = 1000)
             .map { api.getAircraftByHex(it).throwForErrors() }
             .toList()
-            .map { it.ac }
-            .flatten()
+            .flatMap { it.ac }
     }
 
     suspend fun getBySquawk(
@@ -66,10 +67,10 @@ class AirplanesLiveEndpoint @Inject constructor(
         log(TAG) { "getByCallsigns(callsigns=$callsigns)" }
         if (callsigns.isEmpty()) return@withContext emptySet()
         callsigns
+            .chunkToCommaArgs(limit = 1000)
             .map { api.getAircraftByCallsign(it).throwForErrors() }
             .toList()
-            .map { it.ac }
-            .flatten()
+            .flatMap { it.ac }
     }
 
     suspend fun getByRegistration(
@@ -78,10 +79,10 @@ class AirplanesLiveEndpoint @Inject constructor(
         log(TAG) { "getByRegistration(registrations=$registrations)" }
         if (registrations.isEmpty()) return@withContext emptySet()
         registrations
+            .chunkToCommaArgs(limit = 1000)
             .map { api.getAircraftByRegistration(it).throwForErrors() }
             .toList()
-            .map { it.ac }
-            .flatten()
+            .flatMap { it.ac }
     }
 
     suspend fun getByAirframe(
@@ -124,6 +125,14 @@ class AirplanesLiveEndpoint @Inject constructor(
             radius = radius.toInt()
         ).ac
     }
+
+    private fun Collection<String>.chunkToCommaArgs(limit: Int = 30) = this
+        .chunked(limit)
+        .map { chunk ->
+            chunk.stream()
+                .map { it.toString() }
+                .collect(Collectors.joining(","))
+        }
 
     private fun <T : AirplanesLiveApi.BaseResponse> T.throwForErrors(): T = this.also {
         if (it.message != "No error") throw AirplanesLiveApiException(it.message)

@@ -3,7 +3,6 @@ package eu.darken.apl.map.ui
 import android.Manifest
 import android.os.Bundle
 import android.view.View
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
@@ -103,14 +102,6 @@ class MapFragment : Fragment3(R.layout.map_fragment) {
     override fun onPause() {
         super.onPause()
         ui.webview.onPause()
-    }
-
-    private val onBackPressedcallback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            ui.webview.apply {
-                if (canGoBack()) goBack()
-            }
-        }
     }
 
     companion object {

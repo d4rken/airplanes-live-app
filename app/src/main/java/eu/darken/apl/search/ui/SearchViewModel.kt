@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.datastore.valueBlocking
-import eu.darken.apl.common.debug.logging.Logging
+import eu.darken.apl.common.debug.logging.Logging.Priority.INFO
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.flow.combine
 import eu.darken.apl.common.flow.replayingShare
@@ -18,6 +18,7 @@ import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.main.core.GeneralSettings
 import eu.darken.apl.main.core.aircraft.AircraftHex
+import eu.darken.apl.main.core.aircraft.SquawkCode
 import eu.darken.apl.map.core.AirplanesLive
 import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.search.core.SearchQuery
@@ -46,21 +47,28 @@ class SearchViewModel @Inject constructor(
 ) : ViewModel3(dispatcherProvider) {
 
     private val args by handle.navArgs<SearchFragmentArgs>()
-    private val targetAircraft: Set<AircraftHex>?
-        get() = args.targetAircraft?.toSet()
+    private val targetHexes: Set<AircraftHex>?
+        get() = args.targetHexes?.toSet()
+    private val targetSquawks: Set<SquawkCode>?
+        get() = args.targetSquawks?.toSet()
 
 
     init {
-        log(TAG, Logging.Priority.INFO) { "targetAircraft=$targetAircraft" }
+        log(TAG, INFO) { "targetHexes=$targetHexes, targetSquawks=$targetSquawks" }
     }
 
     val events = SingleLiveEvent<SearchEvents>()
 
     private val currentInput = MutableStateFlow(
         when {
-            targetAircraft != null -> Input(
+            targetHexes != null -> Input(
                 mode = State.Mode.HEX,
-                raw = targetAircraft!!.joinToString(","),
+                raw = targetHexes!!.joinToString(","),
+            )
+
+            targetSquawks != null -> Input(
+                mode = State.Mode.SQUAWK,
+                raw = targetSquawks!!.joinToString(","),
             )
 
             else -> Input(
@@ -93,7 +101,7 @@ class SearchViewModel @Inject constructor(
             State.Mode.POSITION -> SearchQuery.Position()
         }.also { log(TAG) { "Mapped raw query: '$input' to $it" } }
     }
-        .map { searchRepo.search(it) }
+        .map { searchRepo.liveSearch(it) }
         .flatMapLatest { it }
         .replayingShare(viewModelScope)
 

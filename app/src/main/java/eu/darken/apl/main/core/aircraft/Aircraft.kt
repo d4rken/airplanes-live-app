@@ -1,9 +1,10 @@
 package eu.darken.apl.main.core.aircraft
 
 import android.location.Location
+import java.time.Instant
 
 interface Aircraft {
-    val hex: String
+    val hex: AircraftHex
     val airframe: Airframe?
     val registration: Registration?
     val callsign: Callsign?
@@ -19,4 +20,6 @@ interface Aircraft {
         get() = registration ?: hex
 
     val location: Location?
+
+    val seenAt: Instant
 }

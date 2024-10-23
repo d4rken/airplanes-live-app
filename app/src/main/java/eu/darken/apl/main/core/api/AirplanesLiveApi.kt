@@ -167,7 +167,7 @@ interface AirplanesLiveApi {
         @Json(name = "rssi") val rssi: Double
     ) : eu.darken.apl.main.core.aircraft.Aircraft {
 
-        val seenAt: Instant = Instant.now().minusSeconds(seenSecondsAgo.toLong())
+        override val seenAt: Instant = Instant.now().minusSeconds(seenSecondsAgo.toLong())
 
         override val location: Location?
             get() {

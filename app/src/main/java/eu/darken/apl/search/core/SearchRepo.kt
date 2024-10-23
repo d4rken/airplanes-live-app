@@ -2,10 +2,13 @@ package eu.darken.apl.search.core
 
 import android.location.Location
 import androidx.core.text.isDigitsOnly
+import eu.darken.apl.common.collections.mutate
+import eu.darken.apl.common.coroutine.AppScope
 import eu.darken.apl.common.debug.logging.Logging.Priority.ERROR
 import eu.darken.apl.common.debug.logging.asLog
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
+import eu.darken.apl.common.flow.DynamicStateFlow
 import eu.darken.apl.common.flow.combine
 import eu.darken.apl.main.core.aircraft.Aircraft
 import eu.darken.apl.main.core.aircraft.AircraftHex
@@ -15,22 +18,27 @@ import eu.darken.apl.main.core.aircraft.Registration
 import eu.darken.apl.main.core.aircraft.SquawkCode
 import eu.darken.apl.main.core.api.AirplanesLiveEndpoint
 import eu.darken.apl.main.core.api.getByLocation
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
-import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class SearchRepo @Inject constructor(
+    @AppScope private val appScope: CoroutineScope,
     private val endpoint: AirplanesLiveEndpoint,
 ) {
 
-    private val acCache: MutableMap<AircraftHex, Aircraft> = ConcurrentHashMap()
+    private val internalCache = DynamicStateFlow<Map<AircraftHex, Aircraft>>(TAG, appScope) {
+        emptyMap()
+    }
+
+    val cache: Flow<Map<AircraftHex, Aircraft>> = internalCache.flow
 
     data class Result(
         val aircraft: Collection<Aircraft>,
@@ -38,7 +46,7 @@ class SearchRepo @Inject constructor(
         val error: Throwable? = null,
     )
 
-    suspend fun search(query: SearchQuery): Flow<Result> {
+    suspend fun liveSearch(query: SearchQuery): Flow<Result> {
         log(TAG) { "search($query)" }
 
         val squawks = mutableSetOf<SquawkCode>()
@@ -151,9 +159,13 @@ class SearchRepo @Inject constructor(
         }
             .onEach { result ->
                 if (result.aircraft.isNotEmpty()) {
-                    val beforeSize = acCache.size
-                    acCache.putAll(result.aircraft.associateBy { it.hex })
-                    log(TAG) { "Aircraft cache updated (before=$beforeSize, after=${acCache.size})" }
+                    val before = internalCache.value()
+                    val after = internalCache.updateBlocking {
+                        mutate {
+                            putAll(result.aircraft.associateBy { it.hex })
+                        }
+                    }
+                    log(TAG) { "Aircraft cache updated (before=${before.size}, after=${after.size})" }
                 }
             }
             .catch {
@@ -162,9 +174,7 @@ class SearchRepo @Inject constructor(
             }
     }
 
-    fun getByHex(hex: AircraftHex): Flow<Aircraft?> {
-        return flowOf(acCache[hex])
-    }
+    suspend fun search(query: SearchQuery): Result = liveSearch(query).last()
 
     companion object {
         private val TAG = logTag("Search", "Repo")

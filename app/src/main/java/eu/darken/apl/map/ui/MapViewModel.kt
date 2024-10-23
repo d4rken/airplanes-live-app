@@ -14,6 +14,9 @@ import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.main.core.aircraft.AircraftHex
 import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.map.core.MapSettings
+import eu.darken.apl.search.core.SearchQuery
+import eu.darken.apl.search.core.SearchRepo
+import getBasicAlertNote
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
@@ -22,11 +25,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MapViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
     handle: SavedStateHandle,
     dispatcherProvider: DispatcherProvider,
+    @ApplicationContext private val context: Context,
     private val mapSettings: MapSettings,
     private val webpageTool: WebpageTool,
+    private val searchRepo: SearchRepo,
 ) : ViewModel3(dispatcherProvider = dispatcherProvider) {
 
     private val args = MapFragmentArgs.fromSavedStateHandle(handle)
@@ -72,14 +76,16 @@ class MapViewModel @Inject constructor(
     fun showInSearch(hex: AircraftHex) {
         log(TAG) { "showInSearch($hex)" }
         MapFragmentDirections.actionMapToSearch(
-            targetAircraft = arrayOf(hex)
+            targetHexes = arrayOf(hex)
         ).navigate()
     }
 
-    fun addAlert(hex: AircraftHex) {
+    fun addAlert(hex: AircraftHex) = launch {
         log(TAG) { "addAlert($hex)" }
-        MapFragmentDirections.actionMapToAlerts(
-            targetAircraft = arrayOf(hex)
+        val ac = searchRepo.search(SearchQuery.Hex(hex)).aircraft.single()
+        MapFragmentDirections.actionMapToCreateHexAlertFragment(
+            hex = hex,
+            note = ac.getBasicAlertNote(context)
         ).navigate()
     }
 

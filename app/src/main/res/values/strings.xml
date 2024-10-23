@@ -26,6 +26,8 @@
 
     <string name="common_callsign_label">Callsign</string>
     <string name="common_squawk_label">Squawk</string>
+    <string name="common_hex_label">Hexcode</string>
+    <string name="common_airframe_label">Airframe</string>
     <string name="common_start_feeding_action">Start feeding</string>
 
     <string name="generic_loading_label_0">Soon™</string>
@@ -130,16 +132,27 @@
         <item quantity="other">You have %d triggered alerts</item>
     </plurals>
     <string name="alerts_list_addnew_msg">Create your first aircraft alert now!</string>
-    <string name="alerts_add_alert_type_title">New alert type</string>
-    <string name="alerts_add_alert_type_label_hexcode">Aircraft hex code </string>
+    <string name="alerts_add_alert_type_label_hexcode">Aircraft (hex code) </string>
     <string name="alerts_add_alert_type_label_squawk">Transponder code (SQUAWK)</string>
+    <string name="alerts_add_alert_type_label_callsign">Callsign / Flight</string>
     <string name="alerts_add_hexcode_title">New hexcode alert</string>
     <string name="alerts_add_hexcode_msg">Enter the hexcode of the aircraft you want alerts for.</string>
     <string name="alerts_add_squawk_title">New squawk alert</string>
     <string name="alerts_add_squawk_msg">Enter the transpoder code you want to be alerted of.</string>
-    <string name="alerts_item_squawk_subtitle">Transponder code</string>
-    <string name="alerts_item_hexcode_subtitle">ICAO 24-bit address</string>
-    <plurals name="alerts_aircraft_spotted">
+    <string name="alerts_add_callsign_title">Create callsign alert</string>
+    <string name="alerts_add_callsign_msg">Enter the callsign (flight number) you want alerts for.</string>
+    <string name="alerts_item_squawk_subtitle">Transponder code (squawk)</string>
+    <string name="alerts_item_hexcode_subtitle">Aircraft (ICAO hex)</string>
+    <string name="alerts_item_callsign_subtitle">Flight (callsign)</string>
+    <string name="alerts_aircraft_last_spotted">Last spotted at %s</string>
+    <string name="alerts_aircraft_spotted">Aircraft is being tracked</string>
+    <string name="alerts_aircraft_not_spotted">Aircraft was not spotted</string>
+    <plurals name="alerts_aircrafts_spotted">
+        <item quantity="zero">%1$d matching aircraft have been spotted</item>
+        <item quantity="one">%1$d matching aircraft has been spotted</item>
+        <item quantity="other">%1$d matching aircraft have been spotted</item>
+    </plurals>
+    <plurals name="alerts_aircrafts_last_spotted">
         <item quantity="zero">%1$d matching aircraft have been spotted</item>
         <item quantity="one">%1$d matching aircraft has been spotted</item>
         <item quantity="other">%1$d matching aircraft have been spotted</item>

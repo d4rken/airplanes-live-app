@@ -1,4 +1,4 @@
-package eu.darken.apl.alerts.core.config.db
+package eu.darken.apl.alerts.core.db.types
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import eu.darken.apl.alerts.core.AlertId
+import eu.darken.apl.alerts.core.db.AlertsDatabase
 import eu.darken.apl.common.debug.logging.log
 import kotlinx.coroutines.flow.Flow
 

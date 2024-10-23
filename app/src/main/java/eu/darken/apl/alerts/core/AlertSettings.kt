@@ -1,4 +1,4 @@
-package eu.darken.apl.alerts.core.config
+package eu.darken.apl.alerts.core
 
 import android.content.Context
 import androidx.datastore.core.DataStore

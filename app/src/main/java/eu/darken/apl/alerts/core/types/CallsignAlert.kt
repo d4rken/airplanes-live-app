@@ -1,29 +1,32 @@
 package eu.darken.apl.alerts.core.types
 
 import eu.darken.apl.alerts.core.AlertId
-import eu.darken.apl.alerts.core.db.types.SquawkAlertEntity
+import eu.darken.apl.alerts.core.db.types.CallsignAlertEntity
 import eu.darken.apl.alerts.core.history.AlertCheck
 import eu.darken.apl.main.core.aircraft.Aircraft
-import eu.darken.apl.main.core.aircraft.SquawkCode
+import eu.darken.apl.main.core.aircraft.Callsign
 
-data class SquawkAlert(
-    private val entity: SquawkAlertEntity,
+
+data class CallsignAlert(
+    private val entity: CallsignAlertEntity,
 ) : AircraftAlert {
     override val id: AlertId
         get() = entity.id
+
     override val note: String
         get() = entity.userNote
 
-    val code: SquawkCode
-        get() = entity.code
+    val callsign: Callsign
+        get() = entity.callsign
 
     data class Status(
-        override val alert: SquawkAlert,
+        override val alert: CallsignAlert,
         override val lastCheck: AlertCheck?,
         override val lastHit: AlertCheck?,
         override val tracked: Set<Aircraft> = emptySet(),
     ) : AircraftAlert.Status {
-        val squawk: SquawkCode
-            get() = alert.code
+
+        val callsign: Callsign
+            get() = alert.callsign
     }
 }

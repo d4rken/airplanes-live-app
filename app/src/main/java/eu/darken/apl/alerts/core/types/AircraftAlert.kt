@@ -1,8 +1,8 @@
 package eu.darken.apl.alerts.core.types
 
 import eu.darken.apl.alerts.core.AlertId
+import eu.darken.apl.alerts.core.history.AlertCheck
 import eu.darken.apl.main.core.aircraft.Aircraft
-import java.time.Instant
 
 sealed interface AircraftAlert {
     val id: AlertId
@@ -15,12 +15,9 @@ sealed interface AircraftAlert {
         val note: String
             get() = alert.note
 
-        val tracked: Set<Tracked>
+        val lastCheck: AlertCheck?
+        val lastHit: AlertCheck?
 
-        data class Tracked(
-            val triggeredAt: Instant,
-            val updatedAt: Instant,
-            val aircraft: Aircraft,
-        )
+        val tracked: Set<Aircraft>
     }
 }

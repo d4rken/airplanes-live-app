@@ -1,14 +1,10 @@
 package eu.darken.apl.alerts.ui
 
 import android.os.Bundle
-import android.text.InputFilter
-import android.text.InputType
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,7 +14,6 @@ import eu.darken.apl.common.lists.setupDefaults
 import eu.darken.apl.common.uix.Fragment3
 import eu.darken.apl.common.viewbinding.viewBinding
 import eu.darken.apl.databinding.AlertsListFragmentBinding
-import eu.darken.apl.databinding.CommonTextinputWithCommentDialogBinding
 import eu.darken.apl.main.ui.MainActivity
 
 
@@ -75,16 +70,18 @@ class AlertsListFragment : Fragment3(R.layout.alerts_list_fragment) {
 
     private fun showAlertOptions() {
         MaterialAlertDialogBuilder(requireContext()).apply {
-            setTitle(R.string.alerts_add_alert_type_title)
+            setTitle(R.string.alerts_list_add_title)
 
             val options = arrayOf(
+                getString(R.string.alerts_add_alert_type_label_callsign),
                 getString(R.string.alerts_add_alert_type_label_hexcode),
-                getString(R.string.alerts_add_alert_type_label_squawk)
+                getString(R.string.alerts_add_alert_type_label_squawk),
             )
-            setSingleChoiceItems(options, -1) { dialog, which ->
+            setItems(options) { dialog, which ->
                 when (which) {
-                    0 -> showHexCodeDialog()
-                    1 -> showSquawkDialog()
+                    0 -> AlertsListFragmentDirections.actionAlertsToCreateCallsignAlertFragment().navigate()
+                    1 -> AlertsListFragmentDirections.actionAlertsToCreateHexAlertFragment().navigate()
+                    2 -> AlertsListFragmentDirections.actionAlertsToCreateSquawkAlertFragment().navigate()
                 }
                 dialog.dismiss()
             }
@@ -92,53 +89,4 @@ class AlertsListFragment : Fragment3(R.layout.alerts_list_fragment) {
         }.show()
     }
 
-    private fun showHexCodeDialog() {
-        val layout = CommonTextinputWithCommentDialogBinding.inflate(layoutInflater, null, false).apply {
-            inputLayout.hint = "1ABEEF"
-            inputValue.isAllCaps = true
-        }
-        val dialog = MaterialAlertDialogBuilder(requireContext()).apply {
-            setTitle(R.string.alerts_add_hexcode_title)
-            setMessage(R.string.alerts_add_hexcode_msg)
-            setView(layout.root)
-            setPositiveButton(R.string.general_add_action) { _, _ ->
-                vm.addHexAlert(
-                    hex = layout.inputValue.text.toString(),
-                    note = layout.commentValue.text.toString(),
-                )
-            }
-            setNegativeButton(R.string.general_cancel_action) { dialog, _ -> dialog.dismiss() }
-        }.show()
-
-        val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-        positiveButton.isEnabled = false
-        layout.inputValue.addTextChangedListener { positiveButton.isEnabled = (it?.length ?: 0) > 5 }
-    }
-
-    private fun showSquawkDialog() {
-        val layout = CommonTextinputWithCommentDialogBinding.inflate(layoutInflater, null, false).apply {
-            inputLayout.hint = "7700"
-            inputValue.apply {
-                inputType = InputType.TYPE_CLASS_NUMBER
-                filters = arrayOf(InputFilter.LengthFilter(4))
-            }
-        }
-
-        val dialog = MaterialAlertDialogBuilder(requireContext()).apply {
-            setTitle(R.string.alerts_add_squawk_title)
-            setMessage(R.string.alerts_add_squawk_msg)
-            setView(layout.root)
-            setPositiveButton(R.string.general_add_action) { _, _ ->
-                vm.addSquawkAlert(
-                    squawk = layout.inputValue.text.toString(),
-                    note = layout.commentValue.text.toString(),
-                )
-            }
-            setNegativeButton(R.string.general_cancel_action) { dialog, _ -> dialog.dismiss() }
-        }.show()
-
-        val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-        positiveButton.isEnabled = false
-        layout.inputValue.addTextChangedListener { positiveButton.isEnabled = (it?.length ?: 0) == 4 }
-    }
 }

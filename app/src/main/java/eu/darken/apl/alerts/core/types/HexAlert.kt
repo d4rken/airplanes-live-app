@@ -1,7 +1,9 @@
 package eu.darken.apl.alerts.core.types
 
 import eu.darken.apl.alerts.core.AlertId
-import eu.darken.apl.alerts.core.config.db.HexAlertEntity
+import eu.darken.apl.alerts.core.db.types.HexAlertEntity
+import eu.darken.apl.alerts.core.history.AlertCheck
+import eu.darken.apl.main.core.aircraft.Aircraft
 import eu.darken.apl.main.core.aircraft.AircraftHex
 
 
@@ -19,7 +21,9 @@ data class HexAlert(
 
     data class Status(
         override val alert: HexAlert,
-        override val tracked: Set<AircraftAlert.Status.Tracked> = emptySet(),
+        override val lastCheck: AlertCheck?,
+        override val lastHit: AlertCheck?,
+        override val tracked: Set<Aircraft> = emptySet(),
     ) : AircraftAlert.Status {
 
         val hex: AircraftHex

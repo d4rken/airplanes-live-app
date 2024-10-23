@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import eu.darken.apl.R
+import eu.darken.apl.alerts.core.types.CallsignAlert
 import eu.darken.apl.alerts.core.types.HexAlert
 import eu.darken.apl.alerts.core.types.SquawkAlert
 import eu.darken.apl.common.getQuantityString
@@ -26,13 +27,16 @@ class AlertActionDialog : BottomSheetDialogFragment2() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        ui.showMapAction.setOnClickListener { vm.showOnMap() }
-        ui.showSearchAction.setOnClickListener { vm.showInSearch() }
-        ui.removeFeederAction.setOnClickListener { vm.removeAlert() }
+        ui.primaryEditAction.setOnClickListener {
 
+        }
         ui.noteInput.addTextChangedListener {
             vm.updateNote(it.toString())
         }
+
+        ui.showMapAction.setOnClickListener { vm.showOnMap() }
+        ui.showSearchAction.setOnClickListener { vm.showInSearch() }
+        ui.removeFeederAction.setOnClickListener { vm.removeAlert() }
 
         vm.state.observe2(ui) { (status) ->
             when (status) {
@@ -40,19 +44,30 @@ class AlertActionDialog : BottomSheetDialogFragment2() {
                     icon.setImageResource(R.drawable.ic_hexagon_multiple_24)
                     primary.text = status.hex
                     secondary.text = getString(R.string.alerts_item_hexcode_subtitle)
+                    tertiary.text = getString(
+                        if (status.tracked.isNotEmpty()) R.string.alerts_aircraft_spotted else R.string.alerts_aircraft_not_spotted
+                    )
+                }
+
+                is CallsignAlert.Status -> {
+                    icon.setImageResource(R.drawable.ic_bullhorn_24)
+                    primary.text = status.callsign
+                    secondary.text = getString(R.string.alerts_item_callsign_subtitle)
+                    tertiary.text = getString(
+                        if (status.tracked.isNotEmpty()) R.string.alerts_aircraft_spotted else R.string.alerts_aircraft_not_spotted
+                    )
                 }
 
                 is SquawkAlert.Status -> {
                     icon.setImageResource(R.drawable.ic_router_wireless_24)
                     primary.text = status.squawk
                     secondary.text = getString(R.string.alerts_item_squawk_subtitle)
+                    tertiary.text = requireContext().getQuantityString(
+                        R.plurals.alerts_aircrafts_spotted,
+                        status.tracked.size
+                    )
                 }
             }
-
-            tertiary.text = requireContext().getQuantityString(
-                R.plurals.alerts_aircraft_spotted,
-                status.tracked.size
-            )
 
             if (noteInput.text?.isEmpty() == true) {
                 noteInput.setText(status.note)

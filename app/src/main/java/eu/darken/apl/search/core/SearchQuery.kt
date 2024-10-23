@@ -14,11 +14,16 @@ sealed interface SearchQuery {
     }
 
     data class Hex(val hexes: Set<AircraftHex> = emptySet()) : SearchQuery {
+        constructor(hex: AircraftHex) : this(setOf(hex))
+
         override val isEmpty: Boolean
             get() = hexes.isEmpty()
     }
 
     data class Callsign(val signs: Set<eu.darken.apl.main.core.aircraft.Callsign> = emptySet()) : SearchQuery {
+
+        constructor(callsign: eu.darken.apl.main.core.aircraft.Callsign) : this(setOf(callsign))
+
         override val isEmpty: Boolean
             get() = signs.isEmpty()
     }
@@ -29,6 +34,9 @@ sealed interface SearchQuery {
     }
 
     data class Squawk(val codes: Set<SquawkCode> = emptySet()) : SearchQuery {
+
+        constructor(code: SquawkCode) : this(setOf(code))
+
         override val isEmpty: Boolean
             get() = codes.isEmpty()
     }

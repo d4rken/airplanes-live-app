@@ -1,4 +1,4 @@
-package eu.darken.apl.alerts.core.config.db
+package eu.darken.apl.alerts.core.db.types
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import eu.darken.apl.alerts.core.AlertId
+import eu.darken.apl.alerts.core.db.AlertsDatabase
 import eu.darken.apl.common.debug.logging.log
 import kotlinx.coroutines.flow.Flow
 
@@ -15,11 +16,8 @@ interface HexAlertsDao {
     @Query("SELECT * FROM alerts_hex WHERE id = :alertId")
     suspend fun get(alertId: AlertId): HexAlertEntity?
 
-    @Query("SELECT * FROM alerts_hex")
-    fun getAll(): List<HexAlertEntity>
-
     @Query("SELECT * FROM alerts_hex ORDER BY id DESC LIMIT 1")
-    fun firehose(): Flow<HexAlertEntity?>
+    fun latest(): Flow<HexAlertEntity?>
 
     @Query("SELECT * FROM alerts_hex ORDER BY id")
     fun current(): Flow<List<HexAlertEntity>>

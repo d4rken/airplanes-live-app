@@ -1,4 +1,4 @@
-package eu.darken.apl.alerts.core.config.db
+package eu.darken.apl.alerts.core.db.types
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

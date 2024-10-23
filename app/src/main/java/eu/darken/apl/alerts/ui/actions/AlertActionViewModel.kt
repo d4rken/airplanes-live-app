@@ -6,6 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.darken.apl.alerts.core.AlertId
 import eu.darken.apl.alerts.core.AlertsRepo
 import eu.darken.apl.alerts.core.types.AircraftAlert
+import eu.darken.apl.alerts.core.types.CallsignAlert
+import eu.darken.apl.alerts.core.types.HexAlert
+import eu.darken.apl.alerts.core.types.SquawkAlert
 import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.log
@@ -14,9 +17,13 @@ import eu.darken.apl.common.flow.replayingShare
 import eu.darken.apl.common.livedata.SingleLiveEvent
 import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
+import eu.darken.apl.map.core.MapOptions
+import eu.darken.apl.search.core.SearchQuery
+import eu.darken.apl.search.core.SearchRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
@@ -31,6 +38,7 @@ class AlertActionViewModel @Inject constructor(
     dispatcherProvider: DispatcherProvider,
     private val alertsRepo: AlertsRepo,
     private val webpageTool: WebpageTool,
+    private val searchRepo: SearchRepo,
 ) : ViewModel3(dispatcherProvider) {
 
     private val navArgs by handle.navArgs<AlertActionDialogArgs>()
@@ -80,12 +88,42 @@ class AlertActionViewModel @Inject constructor(
 
     fun showOnMap() = launch {
         log(TAG) { "showOnMap()" }
-        TODO()
+        AlertActionDialogDirections.actionAlertActionDialogToMap(
+            mapOptions = MapOptions(
+                filter = when (val alertStatus = status.first()) {
+                    is HexAlert.Status -> {
+                        MapOptions.Filter(icaos = setOf(alertStatus.hex))
+                    }
+
+                    is SquawkAlert.Status -> {
+                        val hexes = searchRepo.search(SearchQuery.Squawk(alertStatus.squawk))
+                        MapOptions.Filter(icaos = hexes.aircraft.map { it.hex }.toSet())
+                    }
+
+                    is CallsignAlert.Status -> {
+                        val hexes = searchRepo.search(SearchQuery.Callsign(alertStatus.callsign))
+                        MapOptions.Filter(icaos = hexes.aircraft.map { it.hex }.toSet())
+                    }
+                }
+            )
+        ).navigate()
     }
 
     fun showInSearch() = launch {
         log(TAG) { "showInSearch()" }
-        TODO()
+        when (val alertStatus = status.first()) {
+            is HexAlert.Status -> AlertActionDialogDirections.actionAlertActionDialogToSearch(
+                targetHexes = arrayOf(alertStatus.hex)
+            )
+
+            is SquawkAlert.Status -> AlertActionDialogDirections.actionAlertActionDialogToSearch(
+                targetSquawks = arrayOf(alertStatus.squawk)
+            )
+
+            is CallsignAlert.Status -> AlertActionDialogDirections.actionAlertActionDialogToSearch(
+                targetCallsigns = arrayOf(alertStatus.callsign)
+            )
+        }.navigate()
     }
 
     fun updateNote(note: String) = launch {

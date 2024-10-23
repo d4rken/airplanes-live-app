@@ -21,3 +21,9 @@ allprojects {
 tasks.register("clean").configure {
     delete("build")
 }
+
+//subprojects {
+//    tasks.matching { it.name.contains("kapt") }.configureEach {
+//        enabled = false
+//    }
+//}
