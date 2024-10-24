@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/alert_icon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@drawable/ic_hexagon_multiple_24"
             app:layout_constraintBottom_toBottomOf="@id/subtitle"
             app:layout_constraintStart_toStartOf="parent"
@@ -76,7 +76,7 @@
             android:id="@+id/thumbnail"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintDimensionRatio="420:280"
             app:layout_constraintEnd_toStartOf="@id/info_container"
             app:layout_constraintStart_toStartOf="parent"
@@ -97,8 +97,9 @@
                 style="@style/TextAppearance.Material3.BodyLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toStartOf="@id/squawk_value"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/flight_label"
+                app:layout_constraintEnd_toEndOf="@id/flight_label"
+                app:layout_constraintStart_toStartOf="@id/flight_label"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="CFG846" />
 
@@ -108,8 +109,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/common_callsign_label"
-                app:layout_constraintEnd_toEndOf="@id/flight_value"
-                app:layout_constraintStart_toStartOf="@id/flight_value"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/squawk_value"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/flight_value" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -117,8 +119,9 @@
                 style="@style/TextAppearance.Material3.BodyLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toStartOf="@id/type_value"
-                app:layout_constraintStart_toEndOf="@id/flight_value"
+                app:layout_constraintBottom_toTopOf="@id/squawk_label"
+                app:layout_constraintEnd_toEndOf="@id/squawk_label"
+                app:layout_constraintStart_toStartOf="@id/squawk_label"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="7700" />
 
@@ -128,8 +131,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/common_squawk_label"
-                app:layout_constraintEnd_toEndOf="@id/squawk_value"
-                app:layout_constraintStart_toStartOf="@id/squawk_value"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/type_label"
+                app:layout_constraintStart_toEndOf="@id/flight_label"
                 app:layout_constraintTop_toBottomOf="@id/squawk_value" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -137,10 +141,11 @@
                 style="@style/TextAppearance.Material3.BodyLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/squawk_value"
+                app:layout_constraintBottom_toTopOf="@id/type_label"
+                app:layout_constraintEnd_toEndOf="@id/type_label"
+                app:layout_constraintStart_toStartOf="@id/type_label"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="7700" />
+                tools:text="A320N" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/type_label"
@@ -148,8 +153,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/common_airframe_label"
-                app:layout_constraintEnd_toEndOf="@id/type_value"
-                app:layout_constraintStart_toStartOf="@id/type_value"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/squawk_label"
                 app:layout_constraintTop_toBottomOf="@id/type_value" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -29,10 +29,20 @@ class AlertMonitor @Inject constructor(
             }
         }
         alertsRepo.callsignAlerts.first().let { alerts ->
-            // TODO
+            val results = searchRepo.search(SearchQuery.Callsign(alerts.map { it.callsign }.toSet()))
+            // TODO filter for position
+            alerts.forEach { alert ->
+                val result = results.aircraft.firstOrNull { it.callsign == alert.callsign }
+                historyRepo.addCheck(alert.id, if (result != null) 1 else 0)
+            }
         }
         alertsRepo.squawkAlerts.first().let { alerts ->
-            // TODO
+            val results = searchRepo.search(SearchQuery.Squawk(alerts.map { it.code }.toSet()))
+            // TODO filter for position
+            alerts.forEach { alert ->
+                val result = results.aircraft.firstOrNull { it.squawk == alert.code }
+                historyRepo.addCheck(alert.id, if (result != null) 1 else 0)
+            }
         }
     }
 

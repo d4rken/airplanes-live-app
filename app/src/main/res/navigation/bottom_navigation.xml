@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_alerts_to_createCallsignAlertFragment"
             app:destination="@id/createCallsignAlertFragment" />
+        <action
+            android:id="@+id/action_alerts_to_map"
+            app:destination="@id/map" />
     </fragment>
     <dialog
         android:id="@+id/alertActionDialog"

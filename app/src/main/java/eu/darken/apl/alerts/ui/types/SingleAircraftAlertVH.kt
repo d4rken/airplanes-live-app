@@ -37,11 +37,13 @@ class SingleAircraftAlertVH(parent: ViewGroup) :
             is HexAlert.Status -> {
                 title.text = status.hex.uppercase()
                 subtitle.text = getString(R.string.alerts_item_hexcode_subtitle)
+                alertIcon.setImageResource(R.drawable.ic_hexagon_multiple_24)
             }
 
             is CallsignAlert.Status -> {
                 title.text = status.callsign.uppercase()
                 subtitle.text = getString(R.string.alerts_item_callsign_subtitle)
+                alertIcon.setImageResource(R.drawable.ic_bullhorn_24)
             }
 
             is SquawkAlert.Status -> {
@@ -69,15 +71,15 @@ class SingleAircraftAlertVH(parent: ViewGroup) :
 
         alertStatus.apply {
             text = when {
-                status.tracked.isNotEmpty() -> getString(R.string.alerts_aircraft_spotted)
+                status.tracked.isNotEmpty() -> getString(R.string.alerts_single_aircraft_spotted)
 
                 status.lastHit != null -> {
                     val text = status.lastHit!!.checkAt.atZone(ZoneId.systemDefault())
                         .format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
-                    getString(R.string.alerts_aircraft_last_spotted, text)
+                    getString(R.string.alerts_single_aircraft_last_spotted, text)
                 }
 
-                else -> getString(R.string.alerts_aircraft_not_spotted)
+                else -> getString(R.string.alerts_single_aircraft_not_spotted)
             }
             isGone = status.tracked.isNotEmpty()
         }

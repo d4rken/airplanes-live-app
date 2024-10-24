@@ -9,9 +9,13 @@ import eu.darken.apl.alerts.core.types.CallsignAlert
 import eu.darken.apl.alerts.core.types.HexAlert
 import eu.darken.apl.alerts.core.types.SquawkAlert
 import eu.darken.apl.alerts.ui.AlertsListAdapter
+import eu.darken.apl.common.getQuantityString
 import eu.darken.apl.common.lists.BindableVH
+import eu.darken.apl.common.lists.differ.update
+import eu.darken.apl.common.lists.setupDefaults
 import eu.darken.apl.common.planespotters.PlanespottersMeta
 import eu.darken.apl.databinding.AlertsListMultiItemBinding
+import eu.darken.apl.main.core.aircraft.Aircraft
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -24,7 +28,13 @@ class MultiAircraftAlertVH(parent: ViewGroup) :
         parent
     ), BindableVH<MultiAircraftAlertVH.Item, AlertsListMultiItemBinding> {
 
-    override val viewBinding = lazy { AlertsListMultiItemBinding.bind(itemView) }
+    private val subAdapter by lazy { MultiAircraftAdapter() }
+
+    override val viewBinding = lazy {
+        AlertsListMultiItemBinding.bind(itemView).apply {
+            list.setupDefaults(subAdapter, dividers = true)
+        }
+    }
 
     override val onBindData: AlertsListMultiItemBinding.(
         item: Item,
@@ -38,27 +48,47 @@ class MultiAircraftAlertVH(parent: ViewGroup) :
             is SquawkAlert.Status -> status.squawk.uppercase()
         }
 
-        val lastPing = status.tracked.maxOfOrNull { it.seenAt } ?: status.lastHit?.checkAt
-
-        lastTriggered.text = lastPing?.let {
-            DateUtils.getRelativeTimeSpanString(
-                it.toEpochMilli(),
-                Instant.now().toEpochMilli(),
-                DateUtils.MINUTE_IN_MILLIS
-            ).toString()
-        } ?: ""
+        lastTriggered.apply {
+            val lastPing = status.tracked.maxOfOrNull { it.seenAt } ?: status.lastHit?.checkAt
+            text = lastPing?.let {
+                DateUtils.getRelativeTimeSpanString(
+                    it.toEpochMilli(),
+                    Instant.now().toEpochMilli(),
+                    DateUtils.MINUTE_IN_MILLIS
+                ).toString()
+            } ?: ""
+            setTextColor(
+                when {
+                    status.tracked.isNotEmpty() -> getColorForAttr(com.google.android.material.R.attr.colorPrimary)
+                    status.lastHit != null -> getColorForAttr(com.google.android.material.R.attr.colorSecondary)
+                    else -> getColorForAttr(com.google.android.material.R.attr.colorError)
+                }
+            )
+        }
 
         alertStatus.apply {
-            text = when {
-                status.tracked.isNotEmpty() -> getString(R.string.alerts_aircraft_spotted)
-
-                status.lastHit != null -> {
-                    val text = status.lastHit!!.checkAt.atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
-                    getString(R.string.alerts_aircraft_last_spotted, text)
+            when {
+                status.tracked.isNotEmpty() -> {
+                    text = ""
+                    isGone = true
                 }
 
-                else -> getString(R.string.alerts_aircraft_not_spotted)
+                status.lastHit != null -> {
+                    val dateText = status.lastHit!!.checkAt.atZone(ZoneId.systemDefault())
+                        .format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
+                    text = context.getQuantityString(
+                        R.plurals.alerts_multi_aircrafts_last_spotted,
+                        status.lastHit!!.aircraftCount,
+                        status.lastHit!!.aircraftCount,
+                        dateText
+                    )
+                    isGone = false
+                }
+
+                else -> {
+                    text = getString(R.string.alerts_multi_aircraft_not_spotted)
+                    isGone = false
+                }
             }
             setTextColor(
                 when {
@@ -67,6 +97,18 @@ class MultiAircraftAlertVH(parent: ViewGroup) :
                     else -> getColorForAttr(com.google.android.material.R.attr.colorError)
                 }
             )
+        }
+
+        run {
+            val acItems = status.tracked.map { ac ->
+                AircraftVH.Item(
+                    ac = ac,
+                    onTap = { item.onAircraftTap(it) },
+                    onThumbnail = { item.onThumbnail(it) }
+                )
+            }
+            subAdapter.update(acItems)
+            list.isGone = acItems.isEmpty()
         }
 
         noteBox.isGone = status.note.isBlank()
@@ -80,6 +122,7 @@ class MultiAircraftAlertVH(parent: ViewGroup) :
     data class Item(
         val status: AircraftAlert.Status,
         val onTap: (Item) -> Unit,
+        val onAircraftTap: (Aircraft) -> Unit,
         val onThumbnail: (PlanespottersMeta) -> Unit,
     ) : AlertsListAdapter.Item {
         override val stableId: Long

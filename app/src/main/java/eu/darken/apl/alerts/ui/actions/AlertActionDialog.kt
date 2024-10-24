@@ -12,7 +12,6 @@ import eu.darken.apl.R
 import eu.darken.apl.alerts.core.types.CallsignAlert
 import eu.darken.apl.alerts.core.types.HexAlert
 import eu.darken.apl.alerts.core.types.SquawkAlert
-import eu.darken.apl.common.getQuantityString
 import eu.darken.apl.common.uix.BottomSheetDialogFragment2
 import eu.darken.apl.databinding.AlertsActionDialogBinding
 
@@ -44,28 +43,18 @@ class AlertActionDialog : BottomSheetDialogFragment2() {
                     icon.setImageResource(R.drawable.ic_hexagon_multiple_24)
                     primary.text = status.hex
                     secondary.text = getString(R.string.alerts_item_hexcode_subtitle)
-                    tertiary.text = getString(
-                        if (status.tracked.isNotEmpty()) R.string.alerts_aircraft_spotted else R.string.alerts_aircraft_not_spotted
-                    )
                 }
 
                 is CallsignAlert.Status -> {
                     icon.setImageResource(R.drawable.ic_bullhorn_24)
                     primary.text = status.callsign
                     secondary.text = getString(R.string.alerts_item_callsign_subtitle)
-                    tertiary.text = getString(
-                        if (status.tracked.isNotEmpty()) R.string.alerts_aircraft_spotted else R.string.alerts_aircraft_not_spotted
-                    )
                 }
 
                 is SquawkAlert.Status -> {
                     icon.setImageResource(R.drawable.ic_router_wireless_24)
                     primary.text = status.squawk
                     secondary.text = getString(R.string.alerts_item_squawk_subtitle)
-                    tertiary.text = requireContext().getQuantityString(
-                        R.plurals.alerts_aircrafts_spotted,
-                        status.tracked.size
-                    )
                 }
             }
 

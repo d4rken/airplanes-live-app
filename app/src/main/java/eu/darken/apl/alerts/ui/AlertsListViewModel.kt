@@ -16,6 +16,7 @@ import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.main.core.aircraft.AircraftHex
+import eu.darken.apl.map.core.MapOptions
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.callbackFlow
@@ -42,6 +43,7 @@ class AlertsListViewModel @Inject constructor(
 
     private val refreshTimer = callbackFlow {
         while (isActive) {
+            refresh()
             send(Unit)
             delay(60 * 1000)
         }
@@ -54,7 +56,7 @@ class AlertsListViewModel @Inject constructor(
         alertsRepo.isRefreshing
     ) { _, alerts, isRefreshing ->
         val items = alerts
-            .sortedByDescending { it.lastHit?.checkAt }
+            .sortedBy { alert -> alert.note.takeIf { it.isNotBlank() } ?: "ZZZZ" }
             .map { alert ->
                 when (alert) {
                     is HexAlert.Status -> SingleAircraftAlertVH.Item(
@@ -72,9 +74,15 @@ class AlertsListViewModel @Inject constructor(
                     is SquawkAlert.Status -> MultiAircraftAlertVH.Item(
                         status = alert,
                         onTap = { AlertsListFragmentDirections.actionAlertsToAlertActionDialog(alert.id).navigate() },
+                        onAircraftTap = {
+                            AlertsListFragmentDirections.actionAlertsToMap(
+                                mapOptions = MapOptions(
+                                    filter = MapOptions.Filter(icaos = setOf(it.hex))
+                                )
+                            ).navigate()
+                        },
                         onThumbnail = { launch { webpageTool.open(it.link) } },
                     )
-
                 }
             }
         State(

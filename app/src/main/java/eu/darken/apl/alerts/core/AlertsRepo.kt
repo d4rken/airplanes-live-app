@@ -103,6 +103,10 @@ class AlertsRepo @Inject constructor(
                     alert = alert,
                     lastCheck = alertsHistory.getLastCheck(alert.id),
                     lastHit = alertsHistory.getLastHit(alert.id),
+                    tracked = searchCache.values
+                        .filter { it.squawk == alert.code }
+                        .toSet()
+                        .also { if (it.isNotEmpty()) log(TAG) { "Matched $alert to $it" } }
                 )
             }
             .run {

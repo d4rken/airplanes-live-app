@@ -6,6 +6,8 @@
     <string name="msg_what_up_this_is_another_fragment">What up! This is another fragment!</string>
     <string name="general_error_label">Error</string>
 
+    <string name="general_success_msg">Success</string>
+
     <string name="general_accept_action">Accept</string>
     <string name="general_share_action">Share</string>
     <string name="general_done_action">Done</string>
@@ -144,18 +146,14 @@
     <string name="alerts_item_squawk_subtitle">Transponder code (squawk)</string>
     <string name="alerts_item_hexcode_subtitle">Aircraft (ICAO hex)</string>
     <string name="alerts_item_callsign_subtitle">Flight (callsign)</string>
-    <string name="alerts_aircraft_last_spotted">Last spotted at %s</string>
-    <string name="alerts_aircraft_spotted">Aircraft is being tracked</string>
-    <string name="alerts_aircraft_not_spotted">Aircraft was not spotted</string>
-    <plurals name="alerts_aircrafts_spotted">
-        <item quantity="zero">%1$d matching aircraft have been spotted</item>
-        <item quantity="one">%1$d matching aircraft has been spotted</item>
-        <item quantity="other">%1$d matching aircraft have been spotted</item>
-    </plurals>
-    <plurals name="alerts_aircrafts_last_spotted">
-        <item quantity="zero">%1$d matching aircraft have been spotted</item>
-        <item quantity="one">%1$d matching aircraft has been spotted</item>
-        <item quantity="other">%1$d matching aircraft have been spotted</item>
+    <string name="alerts_single_aircraft_last_spotted">Last spotted at %s</string>
+    <string name="alerts_single_aircraft_spotted">Aircraft is being tracked</string>
+    <string name="alerts_single_aircraft_not_spotted">Aircraft was not spotted</string>
+    <string name="alerts_multi_aircraft_not_spotted">No matching aircraft were spotted</string>
+    <plurals name="alerts_multi_aircrafts_last_spotted">
+        <item quantity="zero">%1$d matching aircraft have been spotted at %2$s</item>
+        <item quantity="one">%1$d matching aircraft has been spotted at %2$s</item>
+        <item quantity="other">%1$d matching aircraft have been spotted at %2$s</item>
     </plurals>
     <string name="alerts_remove_action">Delete alert</string>
     <string name="alerts_remove_confirmation_title">Confirmation</string>
