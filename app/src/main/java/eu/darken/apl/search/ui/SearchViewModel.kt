@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import eu.darken.apl.alerts.core.AlertsRepo
 import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.datastore.valueBlocking
@@ -44,6 +45,7 @@ class SearchViewModel @Inject constructor(
     private val webpageTool: WebpageTool,
     private val locationManager2: LocationManager2,
     private val generalSettings: GeneralSettings,
+    private val alertRepo: AlertsRepo,
 ) : ViewModel3(dispatcherProvider) {
 
     private val args by handle.navArgs<SearchFragmentArgs>()
@@ -119,9 +121,10 @@ class SearchViewModel @Inject constructor(
     val state: LiveData<State> = combine(
         currentInput,
         currentSearch.throttleLatest(500),
+        alertRepo.alerts,
         generalSettings.searchLocationDismissed.flow,
         locationManager2.state,
-    ) { input, result, locationDismissed, locationState ->
+    ) { input, result, alerts, locationDismissed, locationState ->
         val items = mutableListOf<SearchAdapter.Item>()
 
         if (!locationDismissed && (locationState as? LocationManager2.State.Unavailable)?.isPermissionIssue == true) {
@@ -155,6 +158,7 @@ class SearchViewModel @Inject constructor(
             ?.map { ac ->
                 AircraftResultVH.Item(
                     aircraft = ac,
+                    alerts = alerts.filter { it.matches(ac) },
                     distanceInMeter = if (locationState is LocationManager2.State.Available && ac.location != null) {
                         locationState.location.distanceTo(ac.location!!)
                     } else {

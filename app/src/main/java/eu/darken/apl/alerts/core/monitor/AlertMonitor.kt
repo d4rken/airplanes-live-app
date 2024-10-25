@@ -24,7 +24,7 @@ class AlertMonitor @Inject constructor(
             val results = searchRepo.search(SearchQuery.Hex(alerts.map { it.hex }.toSet()))
             // TODO filter for position
             alerts.forEach { alert ->
-                val result = results.aircraft.firstOrNull { it.hex == alert.hex }
+                val result = results.aircraft.firstOrNull { alert.matches(it) }
                 historyRepo.addCheck(alert.id, if (result != null) 1 else 0)
             }
         }
@@ -32,7 +32,7 @@ class AlertMonitor @Inject constructor(
             val results = searchRepo.search(SearchQuery.Callsign(alerts.map { it.callsign }.toSet()))
             // TODO filter for position
             alerts.forEach { alert ->
-                val result = results.aircraft.firstOrNull { it.callsign == alert.callsign }
+                val result = results.aircraft.firstOrNull { alert.matches(it) }
                 historyRepo.addCheck(alert.id, if (result != null) 1 else 0)
             }
         }
@@ -40,7 +40,7 @@ class AlertMonitor @Inject constructor(
             val results = searchRepo.search(SearchQuery.Squawk(alerts.map { it.code }.toSet()))
             // TODO filter for position
             alerts.forEach { alert ->
-                val result = results.aircraft.firstOrNull { it.squawk == alert.code }
+                val result = results.aircraft.firstOrNull { alert.matches(it) }
                 historyRepo.addCheck(alert.id, if (result != null) 1 else 0)
             }
         }

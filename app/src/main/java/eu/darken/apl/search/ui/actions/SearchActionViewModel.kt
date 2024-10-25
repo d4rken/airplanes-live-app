@@ -5,8 +5,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import eu.darken.apl.alerts.core.AlertsRepo
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.log
+import eu.darken.apl.common.flow.combine
 import eu.darken.apl.common.flow.replayingShare
 import eu.darken.apl.common.livedata.SingleLiveEvent
 import eu.darken.apl.common.navigation.navArgs
@@ -20,7 +22,6 @@ import eu.darken.apl.map.core.MapOptions
 import getBasicAlertNote
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 
@@ -30,6 +31,7 @@ class SearchActionViewModel @Inject constructor(
     dispatcherProvider: DispatcherProvider,
     @ApplicationContext private val context: Context,
     private val aircraftRepo: AircraftRepo,
+    private val alertRepo: AlertsRepo,
 ) : ViewModel3(dispatcherProvider) {
 
     private val navArgs by handle.navArgs<SearchActionDialogArgs>()
@@ -44,21 +46,15 @@ class SearchActionViewModel @Inject constructor(
 
     init {
         log(TAG) { "Loading for $aircraftHex" }
-//        feederRepo.feeders
-//            .map { feeders -> feeders.singleOrNull { it.id == feederId } }
-//            .filter { it == null }
-//            .take(1)
-//            .onEach {
-//                log(TAG) { "App data for $feederId is no longer available" }
-//                popNavStack()
-//            }
-//            .launchInViewModel()
     }
 
-    val state = aircraft
-        .map { ac ->
+    val state = combine(
+        alertRepo.hexAlerts,
+        aircraft,
+    ) { hexAlerts, ac ->
             State(
                 aircraft = ac,
+                hasAlert = hexAlerts.any { it.matches(ac) }
             )
         }
         .asLiveData2()
@@ -76,12 +72,13 @@ class SearchActionViewModel @Inject constructor(
         log(TAG) { "addAlert()" }
         val ac = aircraft.first()
         SearchActionDialogDirections.actionSearchActionToCreateHexAlertFragment(
-            hex = aircraftHex,
+            hex = aircraftHex.uppercase(),
             note = ac.getBasicAlertNote(context)
         ).navigate()
     }
 
     data class State(
         val aircraft: Aircraft,
+        val hasAlert: Boolean,
     )
 }

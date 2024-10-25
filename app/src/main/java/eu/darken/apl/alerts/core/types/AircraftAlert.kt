@@ -5,8 +5,11 @@ import eu.darken.apl.alerts.core.history.AlertCheck
 import eu.darken.apl.main.core.aircraft.Aircraft
 
 sealed interface AircraftAlert {
+
     val id: AlertId
     val note: String
+
+    fun matches(ac: Aircraft): Boolean
 
     sealed interface Status {
         val alert: AircraftAlert

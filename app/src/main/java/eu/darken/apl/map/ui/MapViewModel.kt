@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import eu.darken.apl.alerts.core.AlertsRepo
+import eu.darken.apl.alerts.core.types.AircraftAlert
 import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.Logging.Priority.INFO
@@ -11,7 +13,9 @@ import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.livedata.SingleLiveEvent
 import eu.darken.apl.common.permissions.Permission
 import eu.darken.apl.common.uix.ViewModel3
+import eu.darken.apl.main.core.AircraftRepo
 import eu.darken.apl.main.core.aircraft.AircraftHex
+import eu.darken.apl.main.core.findByHex
 import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.map.core.MapSettings
 import eu.darken.apl.search.core.SearchQuery
@@ -31,6 +35,8 @@ class MapViewModel @Inject constructor(
     private val mapSettings: MapSettings,
     private val webpageTool: WebpageTool,
     private val searchRepo: SearchRepo,
+    private val alertsRepo: AlertsRepo,
+    private val aircraftRepo: AircraftRepo,
 ) : ViewModel3(dispatcherProvider = dispatcherProvider) {
 
     private val args = MapFragmentArgs.fromSavedStateHandle(handle)
@@ -41,11 +47,13 @@ class MapViewModel @Inject constructor(
 
     val state = combine(
         refreshTrigger,
+        alertsRepo.alerts,
         currentOptions.onEach { log(TAG, INFO) { "New MapOptions: $it" } },
-    ) { _, options ->
+    ) { _, alerts, options ->
 
         State(
             options = options,
+            alerts = alerts,
         )
     }.asLiveData2()
 
@@ -82,7 +90,7 @@ class MapViewModel @Inject constructor(
 
     fun addAlert(hex: AircraftHex) = launch {
         log(TAG) { "addAlert($hex)" }
-        val ac = searchRepo.search(SearchQuery.Hex(hex)).aircraft.single()
+        val ac = aircraftRepo.findByHex(hex) ?: searchRepo.search(SearchQuery.Hex(hex)).aircraft.single()
         MapFragmentDirections.actionMapToCreateHexAlertFragment(
             hex = hex,
             note = ac.getBasicAlertNote(context)
@@ -91,5 +99,6 @@ class MapViewModel @Inject constructor(
 
     data class State(
         val options: MapOptions,
+        val alerts: Collection<AircraftAlert>,
     )
 }

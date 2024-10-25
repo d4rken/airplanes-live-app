@@ -19,6 +19,10 @@ data class CallsignAlert(
     val callsign: Callsign
         get() = entity.callsign
 
+    override fun matches(ac: Aircraft): Boolean {
+        return ac.callsign?.lowercase() == callsign.lowercase()
+    }
+
     data class Status(
         override val alert: CallsignAlert,
         override val lastCheck: AlertCheck?,

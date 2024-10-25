@@ -54,6 +54,12 @@ class AlertsRepo @Inject constructor(
         .map { alerts -> alerts.map { SquawkAlert(it) } }
         .replayingShare(appScope)
 
+    val alerts: Flow<List<AircraftAlert>> = combine(
+        hexAlerts,
+        callsignAlerts,
+        squawkAlerts
+    ) { hex, callsign, squawk -> (hex + callsign + squawk) }
+
     val status: Flow<Collection<AircraftAlert.Status>> = combine(
         refreshTrigger,
         alertsHistory.firehose,

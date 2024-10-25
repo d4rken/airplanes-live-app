@@ -29,7 +29,7 @@ class SearchActionDialog : BottomSheetDialogFragment2() {
         vm.state.observe2(ui) { state ->
             val aircraft = state.aircraft
 
-            title.text = "${aircraft.label} (${aircraft.hex.uppercase()})"
+            title.text = "${aircraft.label} (#${aircraft.hex.uppercase()})"
             subtitle.apply {
                 text = aircraft.description
                 aircraft.operator?.let { append(" from $it") }
@@ -49,6 +49,8 @@ class SearchActionDialog : BottomSheetDialogFragment2() {
                 load(aircraft)
                 onViewImageListener = { webpageTool.open(it.link) }
             }
+
+            addAlertAction.isEnabled = !state.hasAlert
         }
 
         ui.showMapAction.setOnClickListener { vm.showMap() }

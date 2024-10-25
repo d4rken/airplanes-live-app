@@ -19,6 +19,10 @@ data class HexAlert(
     val hex: AircraftHex
         get() = entity.hexCode
 
+    override fun matches(ac: Aircraft): Boolean {
+        return ac.hex.lowercase() == hex.lowercase()
+    }
+
     data class Status(
         override val alert: HexAlert,
         override val lastCheck: AlertCheck?,

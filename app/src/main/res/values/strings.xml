@@ -155,10 +155,7 @@
     <string name="search_page_label">Search</string>
     <string name="search_search_by_aircraft">Search by aircraft</string>
     <string name="search_aircraft_search_label">Aircraft search</string>
-    <plurals name="search_found_x_aircraft">
-        <item quantity="one">Found %d aircraft</item>
-        <item quantity="other">Found %d aircraft</item>
-    </plurals>
+
     <string name="search_location_prompt_title">Airplance distance</string>
     <string name="search_location_prompt_body">Results will be sorted by their distance from you if you grant location permission.</string>
     <string name="general_xdistance_away_label">%s away</string>
@@ -175,6 +172,11 @@
     <string name="search_progress_title">Searching</string>
     <string name="search_progress_body">Found %d so far. Still searching…</string>
     <string name="search_summary_x_aircraft">%d aircraft found</string>
+
+    <plurals name="search_aircraft_matching_alerts_desc">
+        <item quantity="one">You have %d matching alert.</item>
+        <item quantity="other">You have %d matching alerts.</item>
+    </plurals>
     <string name="common_show_on_map">Show on map</string>
     <string name="common_show_in_search">Show in search</string>
     <string name="common_add_alert">Add alert</string>

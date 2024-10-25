@@ -15,6 +15,7 @@ class MapWebInterface @AssistedInject constructor(
         fun onUrlChanged(newUrl: String)
         fun onShowInSearch(hex: AircraftHex)
         fun onAddAlert(hex: AircraftHex)
+        fun getAlertCount(hex: AircraftHex): Int
     }
 
     @JavascriptInterface
@@ -35,6 +36,11 @@ class MapWebInterface @AssistedInject constructor(
     @JavascriptInterface
     fun onAddAlert(hex: String) {
         listener.onAddAlert(hex)
+    }
+
+    @JavascriptInterface
+    fun getAlertCount(hex: String): Int {
+        return listener.getAlertCount(hex)
     }
 
     @AssistedFactory

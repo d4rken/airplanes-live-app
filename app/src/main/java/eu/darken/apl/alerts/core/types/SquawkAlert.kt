@@ -17,6 +17,10 @@ data class SquawkAlert(
     val code: SquawkCode
         get() = entity.code
 
+    override fun matches(ac: Aircraft): Boolean {
+        return ac.squawk?.lowercase() == code.lowercase()
+    }
+
     data class Status(
         override val alert: SquawkAlert,
         override val lastCheck: AlertCheck?,

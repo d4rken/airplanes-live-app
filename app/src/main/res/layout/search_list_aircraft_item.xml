@@ -52,7 +52,7 @@
             android:layout_width="0dp"
             android:layout_height="72dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/alerts_info"
             app:layout_constraintDimensionRatio="420:280"
             app:layout_constraintEnd_toStartOf="@id/info_container"
             app:layout_constraintStart_toStartOf="parent"
@@ -109,6 +109,19 @@
                 app:layout_constraintTop_toBottomOf="@id/squawk_value" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/alerts_info"
+            style="@style/TextAppearance.Material3.LabelSmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/thumbnail"
+            tools:text="You have 8 matching alerts." />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

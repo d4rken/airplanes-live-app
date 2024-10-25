@@ -38,7 +38,6 @@ class MapFragment : Fragment3(R.layout.map_fragment) {
             log(TAG) { "locationPermissionLauncher: $isGranted" }
             if (isGranted) vm.homeMap()
         }
-//        requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedcallback)
         super.onCreate(savedInstanceState)
     }
 
@@ -77,6 +76,7 @@ class MapFragment : Fragment3(R.layout.map_fragment) {
 
         vm.state.observe2(ui) { state ->
             mapHandler.loadMap(state.options)
+            mapHandler.updateAlerts(state.alerts)
         }
 
         vm.events.observe2 { event ->

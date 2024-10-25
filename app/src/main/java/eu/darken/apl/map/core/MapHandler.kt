@@ -11,6 +11,8 @@ import android.webkit.WebViewClient
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import eu.darken.apl.alerts.core.types.AircraftAlert
+import eu.darken.apl.alerts.core.types.HexAlert
 import eu.darken.apl.common.debug.logging.Logging.Priority.INFO
 import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
 import eu.darken.apl.common.debug.logging.Logging.Priority.WARN
@@ -55,6 +57,11 @@ class MapHandler @AssistedInject constructor(
         override fun onAddAlert(hex: AircraftHex) {
             sendEvent(Event.AddAlert(hex))
         }
+
+        override fun getAlertCount(hex: AircraftHex): Int = currentAlerts
+            .filterIsInstance<HexAlert>()
+            .count { it.hex.lowercase() == hex.lowercase() }
+            .also { log(TAG) { "getAlertCount($hex) -> $it" } }
     }
 
     init {
@@ -156,6 +163,13 @@ class MapHandler @AssistedInject constructor(
         log(TAG) { "clickHome()" }
         val jsCode = "document.getElementById('H').click();"
         webView.evaluateJavascript(jsCode, null)
+    }
+
+    private val currentAlerts = mutableSetOf<AircraftAlert>()
+    fun updateAlerts(alerts: Collection<AircraftAlert>) {
+        log(TAG) { "updateAlerts(size=${alerts.size})" }
+        currentAlerts.clear()
+        currentAlerts.addAll(alerts)
     }
 
 
