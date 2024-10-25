@@ -84,7 +84,7 @@ class AlertsRepo @Inject constructor(
                 )
             }
             .run {
-                log(TAG) { "Got ${this.size} hex alerts:\n${this.joinToString("\n")}" }
+                log(TAG) { "Got ${this.size} hex alerts" }
                 status.addAll(this)
             }
         callsignAlerts
@@ -100,7 +100,7 @@ class AlertsRepo @Inject constructor(
                 )
             }
             .run {
-                log(TAG) { "Got ${this.size} callsign alerts:\n${this.joinToString("\n")}" }
+                log(TAG) { "Got ${this.size} callsign alerts" }
                 status.addAll(this)
             }
         squawkAlerts
@@ -116,7 +116,7 @@ class AlertsRepo @Inject constructor(
                 )
             }
             .run {
-                log(TAG) { "Got ${this.size} squawk alerts:\n${this.joinToString("\n")}" }
+                log(TAG) { "Got ${this.size} squawk alerts" }
                 status.addAll(this)
             }
         status
