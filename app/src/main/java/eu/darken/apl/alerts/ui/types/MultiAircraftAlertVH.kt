@@ -9,7 +9,6 @@ import eu.darken.apl.alerts.core.types.CallsignAlert
 import eu.darken.apl.alerts.core.types.HexAlert
 import eu.darken.apl.alerts.core.types.SquawkAlert
 import eu.darken.apl.alerts.ui.AlertsListAdapter
-import eu.darken.apl.common.getQuantityString
 import eu.darken.apl.common.lists.BindableVH
 import eu.darken.apl.common.lists.differ.update
 import eu.darken.apl.common.lists.setupDefaults
@@ -17,9 +16,6 @@ import eu.darken.apl.common.planespotters.PlanespottersMeta
 import eu.darken.apl.databinding.AlertsListMultiItemBinding
 import eu.darken.apl.main.core.aircraft.Aircraft
 import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 
 class MultiAircraftAlertVH(parent: ViewGroup) :
@@ -56,44 +52,11 @@ class MultiAircraftAlertVH(parent: ViewGroup) :
                     Instant.now().toEpochMilli(),
                     DateUtils.MINUTE_IN_MILLIS
                 ).toString()
-            } ?: ""
+            } ?: getString(R.string.alerts_spotted_never_label)
             setTextColor(
                 when {
                     status.tracked.isNotEmpty() -> getColorForAttr(com.google.android.material.R.attr.colorPrimary)
                     status.lastHit != null -> getColorForAttr(com.google.android.material.R.attr.colorSecondary)
-                    else -> getColorForAttr(com.google.android.material.R.attr.colorError)
-                }
-            )
-        }
-
-        alertStatus.apply {
-            when {
-                status.tracked.isNotEmpty() -> {
-                    text = ""
-                    isGone = true
-                }
-
-                status.lastHit != null -> {
-                    val dateText = status.lastHit!!.checkAt.atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
-                    text = context.getQuantityString(
-                        R.plurals.alerts_multi_aircrafts_last_spotted,
-                        status.lastHit!!.aircraftCount,
-                        status.lastHit!!.aircraftCount,
-                        dateText
-                    )
-                    isGone = false
-                }
-
-                else -> {
-                    text = getString(R.string.alerts_multi_aircraft_not_spotted)
-                    isGone = false
-                }
-            }
-            setTextColor(
-                when {
-                    status.tracked.isNotEmpty() -> getColorForAttr(com.google.android.material.R.attr.colorPrimary)
-                    status.lastCheck != null -> getColorForAttr(com.google.android.material.R.attr.colorSecondary)
                     else -> getColorForAttr(com.google.android.material.R.attr.colorError)
                 }
             )

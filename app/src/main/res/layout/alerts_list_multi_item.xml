@@ -60,18 +60,6 @@
             app:layout_constraintTop_toTopOf="@id/title"
             tools:text="5min ago" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/alert_status"
-            style="@style/TextAppearance.Material3.BodyMedium"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@id/list"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subtitle"
-            tools:text="There are no active events for this alert." />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"
             android:layout_width="match_parent"
@@ -81,7 +69,7 @@
             app:layout_constraintBottom_toTopOf="@id/note_box"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/alert_status" />
+            app:layout_constraintTop_toBottomOf="@id/subtitle" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/note_box"

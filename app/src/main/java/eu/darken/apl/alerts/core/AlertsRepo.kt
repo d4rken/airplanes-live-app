@@ -15,10 +15,10 @@ import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.flow.combine
 import eu.darken.apl.common.flow.replayingShare
+import eu.darken.apl.main.core.AircraftRepo
 import eu.darken.apl.main.core.aircraft.AircraftHex
 import eu.darken.apl.main.core.aircraft.Callsign
 import eu.darken.apl.main.core.aircraft.SquawkCode
-import eu.darken.apl.search.core.SearchRepo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.Flow
@@ -37,7 +37,7 @@ class AlertsRepo @Inject constructor(
     private val settings: AlertSettings,
     private val alertsDatabase: AlertsDatabase,
     private val alertsHistory: AlertHistoryRepo,
-    private val searchRepo: SearchRepo,
+    private val aircraftRepo: AircraftRepo,
 ) {
 
     private val refreshTrigger = MutableStateFlow(UUID.randomUUID())
@@ -57,12 +57,12 @@ class AlertsRepo @Inject constructor(
     val status: Flow<Collection<AircraftAlert.Status>> = combine(
         refreshTrigger,
         alertsHistory.firehose,
-        searchRepo.cache,
+        aircraftRepo.aircraft,
         hexAlerts,
         callsignAlerts,
         squawkAlerts,
-    ) { _, _, searchCache, hexAlerts, callsignAlerts, squawkAlerts ->
-        log(TAG) { "Search cache size ${searchCache.size}" }
+    ) { _, _, aircraft, hexAlerts, callsignAlerts, squawkAlerts ->
+        log(TAG) { "Search cache size ${aircraft.size}" }
 
         val status = mutableSetOf<AircraftAlert.Status>()
         hexAlerts
@@ -71,7 +71,7 @@ class AlertsRepo @Inject constructor(
                     alert = alert,
                     lastCheck = alertsHistory.getLastCheck(alert.id),
                     lastHit = alertsHistory.getLastHit(alert.id),
-                    tracked = searchCache.values
+                    tracked = aircraft.values
                         .filter { it.hex == alert.hex }
                         .toSet()
                         .also { if (it.isNotEmpty()) log(TAG) { "Matched $alert to $it" } }
@@ -87,7 +87,7 @@ class AlertsRepo @Inject constructor(
                     alert = alert,
                     lastCheck = alertsHistory.getLastCheck(alert.id),
                     lastHit = alertsHistory.getLastHit(alert.id),
-                    tracked = searchCache.values
+                    tracked = aircraft.values
                         .filter { it.callsign == alert.callsign }
                         .toSet()
                         .also { if (it.isNotEmpty()) log(TAG) { "Matched $alert to $it" } }
@@ -103,7 +103,7 @@ class AlertsRepo @Inject constructor(
                     alert = alert,
                     lastCheck = alertsHistory.getLastCheck(alert.id),
                     lastHit = alertsHistory.getLastHit(alert.id),
-                    tracked = searchCache.values
+                    tracked = aircraft.values
                         .filter { it.squawk == alert.code }
                         .toSet()
                         .also { if (it.isNotEmpty()) log(TAG) { "Matched $alert to $it" } }

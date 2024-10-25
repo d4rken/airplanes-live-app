@@ -26,6 +26,7 @@
     <string name="common_sponsor_action">Sponsor development</string>
     <string name="common_sponsor_description">Say thanks and incentivize further app development.</string>
 
+    <string name="common_registration_label">Registration</string>
     <string name="common_callsign_label">Callsign</string>
     <string name="common_squawk_label">Squawk</string>
     <string name="common_hex_label">Hexcode</string>
@@ -146,15 +147,7 @@
     <string name="alerts_item_squawk_subtitle">Transponder code (squawk)</string>
     <string name="alerts_item_hexcode_subtitle">Aircraft (ICAO hex)</string>
     <string name="alerts_item_callsign_subtitle">Flight (callsign)</string>
-    <string name="alerts_single_aircraft_last_spotted">Last spotted at %s</string>
-    <string name="alerts_single_aircraft_spotted">Aircraft is being tracked</string>
-    <string name="alerts_single_aircraft_not_spotted">Aircraft was not spotted</string>
-    <string name="alerts_multi_aircraft_not_spotted">No matching aircraft were spotted</string>
-    <plurals name="alerts_multi_aircrafts_last_spotted">
-        <item quantity="zero">%1$d matching aircraft have been spotted at %2$s</item>
-        <item quantity="one">%1$d matching aircraft has been spotted at %2$s</item>
-        <item quantity="other">%1$d matching aircraft have been spotted at %2$s</item>
-    </plurals>
+    <string name="alerts_spotted_never_label">Never</string>
     <string name="alerts_remove_action">Delete alert</string>
     <string name="alerts_remove_confirmation_title">Confirmation</string>
     <string name="alerts_remove_confirmation_message">Delete this alert?</string>

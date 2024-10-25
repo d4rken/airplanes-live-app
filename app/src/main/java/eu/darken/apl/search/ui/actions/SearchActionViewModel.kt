@@ -12,11 +12,11 @@ import eu.darken.apl.common.livedata.SingleLiveEvent
 import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.feeder.ui.actions.FeederActionEvents
+import eu.darken.apl.main.core.AircraftRepo
 import eu.darken.apl.main.core.aircraft.Aircraft
 import eu.darken.apl.main.core.aircraft.AircraftHex
+import eu.darken.apl.main.core.getByHex
 import eu.darken.apl.map.core.MapOptions
-import eu.darken.apl.search.core.SearchRepo
-import eu.darken.apl.search.core.getByHex
 import getBasicAlertNote
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
@@ -29,14 +29,14 @@ class SearchActionViewModel @Inject constructor(
     handle: SavedStateHandle,
     dispatcherProvider: DispatcherProvider,
     @ApplicationContext private val context: Context,
-    private val searchRepo: SearchRepo,
+    private val aircraftRepo: AircraftRepo,
 ) : ViewModel3(dispatcherProvider) {
 
     private val navArgs by handle.navArgs<SearchActionDialogArgs>()
     private val aircraftHex: AircraftHex
         get() = navArgs.hex
 
-    private val aircraft = searchRepo.getByHex(aircraftHex)
+    private val aircraft = aircraftRepo.getByHex(aircraftHex)
         .filterNotNull()
         .replayingShare(viewModelScope)
 

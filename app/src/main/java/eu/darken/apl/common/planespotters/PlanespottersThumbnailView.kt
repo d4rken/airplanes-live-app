@@ -13,6 +13,7 @@ import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.planespotters.coil.PlanespottersImage
 import eu.darken.apl.databinding.CommonPlanespottersThumbnailViewBinding
+import eu.darken.apl.main.core.aircraft.AircraftHex
 
 class PlanespottersThumbnailView @JvmOverloads constructor(
     context: Context,
@@ -25,7 +26,13 @@ class PlanespottersThumbnailView @JvmOverloads constructor(
 
     var onViewImageListener: ((PlanespottersMeta) -> Unit)? = null
 
+    val currentHex: AircraftHex?
+        get() = currentImage?.meta?.hex
+
+    private var currentImage: PlanespottersImage? = null
+
     fun setImage(image: PlanespottersImage?) = ui.apply {
+        currentImage = image
         log(VERBOSE) { "setImage($image)" }
         thumbnail.apply {
             setImageDrawable(image)

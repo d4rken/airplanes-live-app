@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?selectableItemBackground"
+    android:background="?colorSurfaceContainerHigh"
+    android:foreground="?selectableItemBackground"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -38,31 +39,31 @@
             android:layout_height="wrap_content"
             android:text="@string/common_callsign_label"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/squawk_value"
+            app:layout_constraintEnd_toStartOf="@id/registration_value"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/flight_value" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/squawk_value"
+            android:id="@+id/registration_value"
             style="@style/TextAppearance.Material3.BodyLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/squawk_label"
-            app:layout_constraintEnd_toEndOf="@id/squawk_label"
-            app:layout_constraintStart_toStartOf="@id/squawk_label"
+            app:layout_constraintBottom_toTopOf="@id/registration_label"
+            app:layout_constraintEnd_toEndOf="@id/registration_label"
+            app:layout_constraintStart_toStartOf="@id/registration_label"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="7700" />
+            tools:text="N542AP" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/squawk_label"
+            android:id="@+id/registration_label"
             style="@style/TextAppearance.Material3.LabelSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/common_squawk_label"
+            android:text="@string/common_registration_label"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/type_label"
             app:layout_constraintStart_toEndOf="@id/flight_label"
-            app:layout_constraintTop_toBottomOf="@id/squawk_value" />
+            app:layout_constraintTop_toBottomOf="@id/registration_value" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/type_value"
@@ -83,8 +84,9 @@
             android:text="@string/common_airframe_label"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/squawk_label"
+            app:layout_constraintStart_toEndOf="@id/registration_label"
             app:layout_constraintTop_toBottomOf="@id/type_value" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

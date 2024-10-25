@@ -1,10 +1,10 @@
-package eu.darken.apl.search.core
+package eu.darken.apl.main.core
 
 import eu.darken.apl.main.core.aircraft.Aircraft
 import eu.darken.apl.main.core.aircraft.AircraftHex
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-fun SearchRepo.getByHex(hex: AircraftHex): Flow<Aircraft?> = cache.map { acs ->
+fun AircraftRepo.getByHex(hex: AircraftHex): Flow<Aircraft?> = aircraft.map { acs ->
     acs[hex]
 }

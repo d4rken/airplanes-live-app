@@ -2,14 +2,13 @@ package eu.darken.apl.search.core
 
 import android.location.Location
 import androidx.core.text.isDigitsOnly
-import eu.darken.apl.common.collections.mutate
 import eu.darken.apl.common.coroutine.AppScope
 import eu.darken.apl.common.debug.logging.Logging.Priority.ERROR
 import eu.darken.apl.common.debug.logging.asLog
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
-import eu.darken.apl.common.flow.DynamicStateFlow
 import eu.darken.apl.common.flow.combine
+import eu.darken.apl.main.core.AircraftRepo
 import eu.darken.apl.main.core.aircraft.Aircraft
 import eu.darken.apl.main.core.aircraft.AircraftHex
 import eu.darken.apl.main.core.aircraft.Airframe
@@ -32,13 +31,8 @@ import javax.inject.Singleton
 class SearchRepo @Inject constructor(
     @AppScope private val appScope: CoroutineScope,
     private val endpoint: AirplanesLiveEndpoint,
+    private val aircraftRepo: AircraftRepo,
 ) {
-
-    private val internalCache = DynamicStateFlow<Map<AircraftHex, Aircraft>>(TAG, appScope) {
-        emptyMap()
-    }
-
-    val cache: Flow<Map<AircraftHex, Aircraft>> = internalCache.flow
 
     data class Result(
         val aircraft: Collection<Aircraft>,
@@ -47,7 +41,7 @@ class SearchRepo @Inject constructor(
     )
 
     suspend fun liveSearch(query: SearchQuery): Flow<Result> {
-        log(TAG) { "search($query)" }
+        log(TAG) { "liveSearch($query)" }
 
         val squawks = mutableSetOf<SquawkCode>()
         val hexes = mutableSetOf<AircraftHex>()
@@ -158,18 +152,10 @@ class SearchRepo @Inject constructor(
             )
         }
             .onEach { result ->
-                if (result.aircraft.isNotEmpty()) {
-                    val before = internalCache.value()
-                    val after = internalCache.updateBlocking {
-                        mutate {
-                            putAll(result.aircraft.associateBy { it.hex })
-                        }
-                    }
-                    log(TAG) { "Aircraft cache updated (before=${before.size}, after=${after.size})" }
-                }
+                aircraftRepo.update(result.aircraft)
             }
             .catch {
-                log(TAG, ERROR) { "search($query) failed:\n${it.asLog()}" }
+                log(TAG, ERROR) { "liveSearch($query) failed:\n${it.asLog()}" }
                 emit(Result(aircraft = emptySet(), searching = false, error = it))
             }
     }

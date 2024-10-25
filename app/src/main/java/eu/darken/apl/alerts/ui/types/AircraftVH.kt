@@ -30,7 +30,7 @@ class AircraftVH(parent: ViewGroup) :
 
         infoContainer.apply {
             flightValue.text = ac.callsign
-            squawkValue.text = ac.squawk
+            registrationValue.text = ac.registration
             typeValue.text = ac.airframe
         }
 

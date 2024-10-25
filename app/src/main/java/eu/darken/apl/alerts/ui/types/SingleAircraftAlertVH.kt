@@ -11,12 +11,10 @@ import eu.darken.apl.alerts.core.types.SquawkAlert
 import eu.darken.apl.alerts.ui.AlertsListAdapter
 import eu.darken.apl.common.lists.BindableVH
 import eu.darken.apl.common.planespotters.PlanespottersMeta
+import eu.darken.apl.common.planespotters.coil.AircraftThumbnailQuery
 import eu.darken.apl.common.planespotters.load
 import eu.darken.apl.databinding.AlertsListSingleItemBinding
 import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 
 class SingleAircraftAlertVH(parent: ViewGroup) :
@@ -32,6 +30,7 @@ class SingleAircraftAlertVH(parent: ViewGroup) :
         payloads: List<Any>
     ) -> Unit = { item, _ ->
         val status = item.status
+        val aircraft = status.tracked.singleOrNull()
 
         when (status) {
             is HexAlert.Status -> {
@@ -59,7 +58,7 @@ class SingleAircraftAlertVH(parent: ViewGroup) :
                     Instant.now().toEpochMilli(),
                     DateUtils.MINUTE_IN_MILLIS
                 ).toString()
-            } ?: ""
+            } ?: getString(R.string.alerts_spotted_never_label)
             setTextColor(
                 when {
                     status.tracked.isNotEmpty() -> getColorForAttr(com.google.android.material.R.attr.colorPrimary)
@@ -69,34 +68,32 @@ class SingleAircraftAlertVH(parent: ViewGroup) :
             )
         }
 
-        alertStatus.apply {
-            text = when {
-                status.tracked.isNotEmpty() -> getString(R.string.alerts_single_aircraft_spotted)
-
-                status.lastHit != null -> {
-                    val text = status.lastHit!!.checkAt.atZone(ZoneId.systemDefault())
-                        .format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT))
-                    getString(R.string.alerts_single_aircraft_last_spotted, text)
+        infoContainer.apply {
+            when {
+                aircraft != null -> {
+                    firstValue.text = aircraft.callsign ?: "?"
+                    secondValue.text = aircraft.registration ?: "?"
+                    thirdValue.text = aircraft.airframe ?: "?"
+                    fourthValue.text = aircraft.squawk ?: "?"
+                    thumbnail.load(aircraft)
+                    isGone = false
                 }
 
-                else -> getString(R.string.alerts_single_aircraft_not_spotted)
-            }
-            isGone = status.tracked.isNotEmpty()
-        }
+                status is HexAlert.Status -> {
+                    firstValue.text = "?"
+                    secondValue.text = "?"
+                    thirdValue.text = "?"
+                    fourthValue.text = "?"
+                    thumbnail.load(AircraftThumbnailQuery(hex = status.hex))
+                    isGone = false
+                }
 
-        thumbnail.apply {
-            status.tracked.firstOrNull()?.let { load(it) }
-            onViewImageListener = { item.onThumbnail(it) }
-            isGone = status.tracked.size != 1
-        }
-
-        infoContainer.apply {
-            isGone = status.tracked.size != 1
-            status.tracked.firstOrNull()?.let { aircraft ->
-                flightValue.text = aircraft.callsign
-                squawkValue.text = aircraft.squawk
-                typeValue.text = aircraft.airframe
+                else -> {
+                    isGone = true
+                }
             }
+
+            thumbnail.onViewImageListener = { item.onThumbnail(it) }
         }
 
         noteBox.isGone = status.note.isBlank()

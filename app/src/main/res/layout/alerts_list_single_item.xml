@@ -61,102 +61,134 @@
             app:layout_constraintTop_toTopOf="@id/title"
             tools:text="5min ago" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/alert_status"
-            style="@style/TextAppearance.Material3.BodyMedium"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subtitle"
-            tools:text="%1$d matching aircraft have been spotted" />
-
-        <eu.darken.apl.common.planespotters.PlanespottersThumbnailView
-            android:id="@+id/thumbnail"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintDimensionRatio="420:280"
-            app:layout_constraintEnd_toStartOf="@id/info_container"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/alert_status" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/info_container"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="@id/thumbnail"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/thumbnail"
-            app:layout_constraintTop_toTopOf="@id/thumbnail">
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toTopOf="@id/note_box"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/subtitle">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/flight_value"
-                style="@style/TextAppearance.Material3.BodyLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/flight_label"
-                app:layout_constraintEnd_toEndOf="@id/flight_label"
-                app:layout_constraintStart_toStartOf="@id/flight_label"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="CFG846" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/flight_label"
-                style="@style/TextAppearance.Material3.LabelSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/common_callsign_label"
+            <eu.darken.apl.common.planespotters.PlanespottersThumbnailView
+                android:id="@+id/thumbnail"
+                android:layout_width="0dp"
+                android:layout_height="96dp"
+                app:layout_constraintDimensionRatio="420:280"
+                app:layout_constraintEnd_toStartOf="@id/info_box"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/squawk_value"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/flight_value" />
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/squawk_value"
-                style="@style/TextAppearance.Material3.BodyLarge"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/info_box"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/squawk_label"
-                app:layout_constraintEnd_toEndOf="@id/squawk_label"
-                app:layout_constraintStart_toStartOf="@id/squawk_label"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="7700" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/squawk_label"
-                style="@style/TextAppearance.Material3.LabelSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/common_squawk_label"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/type_label"
-                app:layout_constraintStart_toEndOf="@id/flight_label"
-                app:layout_constraintTop_toBottomOf="@id/squawk_value" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/type_value"
-                style="@style/TextAppearance.Material3.BodyLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/type_label"
-                app:layout_constraintEnd_toEndOf="@id/type_label"
-                app:layout_constraintStart_toStartOf="@id/type_label"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="A320N" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/type_label"
-                style="@style/TextAppearance.Material3.LabelSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/common_airframe_label"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@id/thumbnail"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/squawk_label"
-                app:layout_constraintTop_toBottomOf="@id/type_value" />
+                app:layout_constraintStart_toEndOf="@id/thumbnail"
+                app:layout_constraintTop_toTopOf="@id/thumbnail">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/first_value"
+                    style="@style/TextAppearance.Material3.BodyLarge"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@id/first_label"
+                    app:layout_constraintEnd_toEndOf="@id/first_label"
+                    app:layout_constraintStart_toStartOf="@id/first_label"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="CFG846" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/first_label"
+                    style="@style/TextAppearance.Material3.LabelSmall"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="@string/common_callsign_label"
+                    app:layout_constraintBottom_toTopOf="@id/third_value"
+                    app:layout_constraintEnd_toStartOf="@id/second_label"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/first_value" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/second_value"
+                    style="@style/TextAppearance.Material3.BodyLarge"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@id/second_label"
+                    app:layout_constraintEnd_toEndOf="@id/second_label"
+                    app:layout_constraintStart_toStartOf="@id/second_label"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="N542AP" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/second_label"
+                    style="@style/TextAppearance.Material3.LabelSmall"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="@string/common_registration_label"
+                    app:layout_constraintBottom_toTopOf="@id/fourth_value"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/first_label"
+                    app:layout_constraintTop_toBottomOf="@id/second_value" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/third_value"
+                    style="@style/TextAppearance.Material3.BodyLarge"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintBottom_toTopOf="@id/third_label"
+                    app:layout_constraintEnd_toEndOf="@id/third_label"
+                    app:layout_constraintStart_toStartOf="@id/third_label"
+                    app:layout_constraintTop_toBottomOf="@id/first_label"
+                    tools:text="A320N" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/third_label"
+                    style="@style/TextAppearance.Material3.LabelSmall"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="@string/common_airframe_label"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/fourth_label"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/third_value" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/fourth_value"
+                    style="@style/TextAppearance.Material3.BodyLarge"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintBottom_toTopOf="@id/fourth_label"
+                    app:layout_constraintEnd_toEndOf="@id/fourth_label"
+                    app:layout_constraintStart_toStartOf="@id/fourth_label"
+                    app:layout_constraintTop_toBottomOf="@id/second_label"
+                    tools:text="A320N" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/fourth_label"
+                    style="@style/TextAppearance.Material3.LabelSmall"
+                    android:layout_width="0dp"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="@string/common_squawk_label"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/third_label"
+                    app:layout_constraintTop_toBottomOf="@id/fourth_value" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.card.MaterialCardView
@@ -168,7 +200,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/thumbnail">
+            app:layout_constraintTop_toBottomOf="@id/info_container">
 
             <LinearLayout
                 android:layout_width="match_parent"

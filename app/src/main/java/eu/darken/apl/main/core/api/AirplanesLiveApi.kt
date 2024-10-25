@@ -135,46 +135,56 @@ interface AirplanesLiveApi {
     @JsonClass(generateAdapter = true)
     data class Aircraft(
         @Json(name = "hex") override val hex: AircraftHex,
-        @Json(name = "type") val type: String?,
-        @Json(name = "flight") override val callsign: Callsign?,
         @Json(name = "r") override val registration: Registration?,
+        @Json(name = "flight") override val callsign: Callsign?,
+
+        @Json(name = "ownOp") override val operator: String?,
         @Json(name = "t") override val airframe: Airframe?,
         @Json(name = "desc") override val description: String?,
-        @Json(name = "ownOp") override val operator: String?,
-        @Json(name = "alt_baro") override val altitude: String?, // Altitude in feet or "ground"
-        @Json(name = "lat") val latitude: String?,
-        @Json(name = "lon") val longitude: String?,
-        @Json(name = "baro_rate") val rateBaro: Int?,
-        @Json(name = "geom_rate") val rateGeometric: Int?,
-        @Json(name = "gs") val groundSpeed: Float?, // ground speed in knots
-        @Json(name = "ias") val indicatedAirSpeed: Int?, // indicated air speed in knots
-        @Json(name = "tas") val trueAirSpeed: Int?, // true air speed in knots
-        @Json(name = "mach") val mach: Double?,
+
+        @Json(name = "squawk") override val squawk: SquawkCode?,
+        @Json(name = "emergency") override val emergency: String?,
+
         @Json(name = "oat") val oat: Int?, // outer/static air temperature (C)
         @Json(name = "tat") val tat: Int?, // total air temperature (C)
-        @Json(name = "track") val track: Float?, // true track over ground in degrees (0-359)
+        @Json(name = "alt_baro") override val altitude: String?, // Altitude in feet or "ground"
+        @Json(name = "baro_rate") val rateBaro: Int?,
+        @Json(name = "geom_rate") val rateGeometric: Int?,
+        @Json(name = "gs") override val groundSpeed: Float?, // ground speed in knots
+        @Json(name = "ias") override val indicatedAirSpeed: Int?, // indicated air speed in knots
         @Json(name = "mag_heading") val headingMagnetic: Double?, // Heading, degrees clockwise from magnetic north
         @Json(name = "true_heading") val headingTrue: Double?, // Heading, degrees clockwise from true north
-        @Json(name = "squawk") override val squawk: SquawkCode?,
-        @Json(name = "emergency") val emergency: String?,
-        @Json(name = "category") val category: String?,
+        @Json(name = "lat") val latitude: String?,
+        @Json(name = "lon") val longitude: String?,
+        @Json(name = "track") val track: Float?, // true track over ground in degrees (0-359)
         @Json(name = "rr_lat") val roughLat: Double?, // If no ADS-B or MLAT position available, a rough estimated position for the aircraft based on the receiver’s estimated coordinates.
         @Json(name = "rr_lon") val roughLon: Double?, // If no ADS-B or MLAT position available, a rough estimated position for the aircraft based on the receiver’s estimated coordinates.
         @Json(name = "lastPosition") val lastPosition: LastPosition?,
+
         @Json(name = "version") val version: Int?,
-        @Json(name = "messages") val messages: Int,
-        @Json(name = "seen") val seenSecondsAgo: Double,
-        @Json(name = "rssi") val rssi: Double
+
+        @Json(name = "messages") override val messages: Int,
+        @Json(name = "rssi") override val rssi: Double,
+        @Json(name = "seen") val seenSecondsAgo: Double
     ) : eu.darken.apl.main.core.aircraft.Aircraft {
 
         override val seenAt: Instant = Instant.now().minusSeconds(seenSecondsAgo.toLong())
+
+        override val outsideTemp: Int?
+            get() = oat ?: tat
+
+        override val altitudeRate: Int?
+            get() = rateBaro ?: rateGeometric
+
+        override val trackheading: Double?
+            get() = headingMagnetic ?: headingTrue
 
         override val location: Location?
             get() {
                 val convLat = this@Aircraft.latitude?.toDouble() ?: return null
                 val convLong = this@Aircraft.longitude?.toDouble() ?: return null
 
-                return Location("manual").apply {
+                return Location("apl").apply {
                     latitude = convLat
                     longitude = convLong
                 }
@@ -190,7 +200,7 @@ interface AirplanesLiveApi {
         )
 
         override fun toString(): String {
-            return "Aircraft($hex, $registration, $type)"
+            return "Aircraft($hex, $registration, $airframe)"
         }
     }
 

@@ -16,32 +16,32 @@ import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.planespotters.PlanespottersMeta
 import eu.darken.apl.common.planespotters.api.PlanespottersEndpoint
-import eu.darken.apl.main.core.aircraft.Aircraft
 import retrofit2.HttpException
 import javax.inject.Inject
 
 class PlanespottersFetcher(
-    private val aircraft: Aircraft,
+    private val data: AircraftThumbnailQuery,
     private val options: Options,
     private val imageLoader: ImageLoader,
     private val endpoint: PlanespottersEndpoint,
 ) : Fetcher {
 
     override suspend fun fetch(): FetchResult {
-        log(TAG, VERBOSE) { "Fetching $aircraft with $options " }
+        log(TAG, VERBOSE) { "Fetching $data with $options " }
 
-        val photos = if (aircraft.registration != null) {
-            endpoint.getPhotosByRegistration(aircraft.registration!!)
+        val photos = if (data.registration != null) {
+            endpoint.getPhotosByRegistration(data.registration)
         } else {
-            endpoint.getPhotosByHex(aircraft.hex)
+            endpoint.getPhotosByHex(data.hex)
         }
-        log(TAG, VERBOSE) { "Got ${photos.size} photos for $aircraft with $options, picking first. " }
+        log(TAG, VERBOSE) { "Got ${photos.size} photos for $data with $options, picking first. " }
 
         // TODO maybe a slideshow of pictures?
         val photo = photos.firstOrNull() ?: return DrawableResult(
             drawable = PlanespottersImage(
                 AppCompatResources.getDrawable(options.context, R.drawable.aircraft_photo_unavailable)!!,
                 PlanespottersMeta(
+                    hex = data.hex,
                     author = "?",
                     link = "https://www.planespotters.net",
                 ),
@@ -75,6 +75,7 @@ class PlanespottersFetcher(
             drawable = PlanespottersImage(
                 result.drawable,
                 PlanespottersMeta(
+                    hex = data.hex,
                     author = photo.photographer,
                     link = photo.link,
                 ),
@@ -86,14 +87,14 @@ class PlanespottersFetcher(
 
     class Factory @Inject constructor(
         private val planespottersEndpoint: PlanespottersEndpoint,
-    ) : Fetcher.Factory<Aircraft> {
+    ) : Fetcher.Factory<AircraftThumbnailQuery> {
 
         override fun create(
-            aircraft: Aircraft,
+            data: AircraftThumbnailQuery,
             options: Options,
             imageLoader: ImageLoader,
         ): Fetcher = PlanespottersFetcher(
-            aircraft,
+            data,
             options,
             imageLoader,
             planespottersEndpoint,

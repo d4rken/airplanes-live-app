@@ -1,0 +1,136 @@
+{
+  "formatVersion": 1,
+  "database": {
+	"version": 1,
+	"identityHash": "f90ba6751856ad02a9481d4b25b6959e",
+	"entities": [
+	  {
+		"tableName": "aircraft_cache",
+		"createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`hex` TEXT NOT NULL, `registration` TEXT, `flight` TEXT, `operator` TEXT, `airframe` TEXT, `description` TEXT, `squawk` TEXT, `emergency` TEXT, `temperature_outside` INTEGER, `altitude` TEXT, `altitude_rate` INTEGER, `speed_ground` REAL, `speed_air` INTEGER, `track` REAL, `location` TEXT, `messages` INTEGER NOT NULL, `seen_at` INTEGER NOT NULL, `rssi` REAL NOT NULL, PRIMARY KEY(`hex`))",
+		"fields": [
+		  {
+			"fieldPath": "hex",
+			"columnName": "hex",
+			"affinity": "TEXT",
+			"notNull": true
+		  },
+		  {
+			"fieldPath": "registration",
+			"columnName": "registration",
+			"affinity": "TEXT",
+			"notNull": false
+		  },
+		  {
+			"fieldPath": "callsign",
+			"columnName": "flight",
+			"affinity": "TEXT",
+			"notNull": false
+		  },
+		  {
+			"fieldPath": "operator",
+			"columnName": "operator",
+			"affinity": "TEXT",
+			"notNull": false
+		  },
+		  {
+			"fieldPath": "airframe",
+			"columnName": "airframe",
+			"affinity": "TEXT",
+			"notNull": false
+		  },
+		  {
+			"fieldPath": "description",
+			"columnName": "description",
+			"affinity": "TEXT",
+			"notNull": false
+		  },
+		  {
+			"fieldPath": "squawk",
+			"columnName": "squawk",
+			"affinity": "TEXT",
+			"notNull": false
+		  },
+		  {
+			"fieldPath": "emergency",
+			"columnName": "emergency",
+			"affinity": "TEXT",
+			"notNull": false
+		  },
+		  {
+			"fieldPath": "outsideTemp",
+			"columnName": "temperature_outside",
+			"affinity": "INTEGER",
+			"notNull": false
+		  },
+		  {
+			"fieldPath": "altitude",
+			"columnName": "altitude",
+			"affinity": "TEXT",
+			"notNull": false
+		  },
+		  {
+			"fieldPath": "altitudeRate",
+			"columnName": "altitude_rate",
+			"affinity": "INTEGER",
+			"notNull": false
+		  },
+		  {
+			"fieldPath": "groundSpeed",
+			"columnName": "speed_ground",
+			"affinity": "REAL",
+			"notNull": false
+		  },
+		  {
+			"fieldPath": "indicatedAirSpeed",
+			"columnName": "speed_air",
+			"affinity": "INTEGER",
+			"notNull": false
+		  },
+		  {
+			"fieldPath": "trackheading",
+			"columnName": "track",
+			"affinity": "REAL",
+			"notNull": false
+		  },
+		  {
+			"fieldPath": "location",
+			"columnName": "location",
+			"affinity": "TEXT",
+			"notNull": false
+		  },
+		  {
+			"fieldPath": "messages",
+			"columnName": "messages",
+			"affinity": "INTEGER",
+			"notNull": true
+		  },
+		  {
+			"fieldPath": "seenAt",
+			"columnName": "seen_at",
+			"affinity": "INTEGER",
+			"notNull": true
+		  },
+		  {
+			"fieldPath": "rssi",
+			"columnName": "rssi",
+			"affinity": "REAL",
+			"notNull": true
+		  }
+		],
+		"primaryKey": {
+		  "autoGenerate": false,
+		  "columnNames": [
+			"hex"
+		  ]
+		},
+		"indices": [],
+		"foreignKeys": []
+	  }
+	],
+	"views": [],
+	"setupQueries": [
+	  "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+	  "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f90ba6751856ad02a9481d4b25b6959e')"
+	]
+  }
+}
