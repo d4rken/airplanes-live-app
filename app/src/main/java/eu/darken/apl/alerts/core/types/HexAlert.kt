@@ -20,7 +20,7 @@ data class HexAlert(
         get() = entity.hexCode
 
     override fun matches(ac: Aircraft): Boolean {
-        return ac.hex.lowercase() == hex.lowercase()
+        return ac.hex.uppercase() == hex.uppercase()
     }
 
     data class Status(

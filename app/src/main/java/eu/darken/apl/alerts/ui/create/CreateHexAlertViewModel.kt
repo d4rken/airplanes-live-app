@@ -30,7 +30,7 @@ class CreateHexAlertViewModel @Inject constructor(
 
     fun create(hex: AircraftHex, note: String) = launch {
         log(TAG) { "create($hex, $note)" }
-        alertsRepo.createHexAlert(hex.lowercase(), note.trim())
+        alertsRepo.createHexAlert(hex.uppercase(), note.trim())
         popNavStack()
     }
 }

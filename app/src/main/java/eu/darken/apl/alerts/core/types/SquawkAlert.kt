@@ -18,7 +18,7 @@ data class SquawkAlert(
         get() = entity.code
 
     override fun matches(ac: Aircraft): Boolean {
-        return ac.squawk?.lowercase() == code.lowercase()
+        return ac.squawk?.uppercase() == code.uppercase()
     }
 
     data class Status(

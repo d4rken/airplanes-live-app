@@ -134,7 +134,7 @@ interface AirplanesLiveApi {
 
     @JsonClass(generateAdapter = true)
     data class Aircraft(
-        @Json(name = "hex") override val hex: AircraftHex,
+        @Json(name = "hex") val rawHex: AircraftHex,
         @Json(name = "r") override val registration: Registration?,
         @Json(name = "flight") override val callsign: Callsign?,
 
@@ -167,6 +167,9 @@ interface AirplanesLiveApi {
         @Json(name = "rssi") override val rssi: Double,
         @Json(name = "seen") val seenSecondsAgo: Double
     ) : eu.darken.apl.main.core.aircraft.Aircraft {
+
+        override val hex: AircraftHex
+            get() = rawHex.uppercase()
 
         override val seenAt: Instant = Instant.now().minusSeconds(seenSecondsAgo.toLong())
 

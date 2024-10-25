@@ -20,7 +20,7 @@ data class CallsignAlert(
         get() = entity.callsign
 
     override fun matches(ac: Aircraft): Boolean {
-        return ac.callsign?.lowercase() == callsign.lowercase()
+        return ac.callsign?.uppercase() == callsign.uppercase()
     }
 
     data class Status(

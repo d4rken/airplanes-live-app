@@ -60,7 +60,7 @@ class MapHandler @AssistedInject constructor(
 
         override fun getAlertCount(hex: AircraftHex): Int = currentAlerts
             .filterIsInstance<HexAlert>()
-            .count { it.hex.lowercase() == hex.lowercase() }
+            .count { it.hex.uppercase() == hex.uppercase() }
             .also { log(TAG) { "getAlertCount($hex) -> $it" } }
     }
 
