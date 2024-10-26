@@ -18,6 +18,24 @@ Their privacy policy can be found here: https://airplanes.live/privacy/
 Aircraft related media is provided by the [planespotters.net project](https://www.planespotters.net).
 Their privacy policy can be found here: https://www.planespotters.net/legal/privacypolicy
 
+## Permission
+
+### INTERNET
+
+Internet is required to get aircraft related data from servers.
+This permission is mandatory, without internet access, the app will not work as I can't retrieve any data.
+
+### ACCESS_COARSE_LOCATION
+
+This permission allows the app to obtain a rough estimation of your current location (2-4km accuracy).
+If you grant this permission, the app can calculate and display how far an aircraft is away from you.
+Granting it is optional, but will disable some features.
+
+### POST_NOTIFICATIONS
+
+This permission allows the app to notify you when a plane matches an alert you set up.
+Granting it is optional, but will disable some features.
+
 ## Debug log
 
 The app has a debug log feature that can be used to assist troubleshooting efforts.
