@@ -29,7 +29,7 @@ class SearchActionDialog : BottomSheetDialogFragment2() {
         vm.state.observe2(ui) { state ->
             val aircraft = state.aircraft
 
-            title.text = "${aircraft.label} (#${aircraft.hex.uppercase()})"
+            title.text = "${aircraft.registration} (#${aircraft.hex.uppercase()})"
             subtitle.apply {
                 text = aircraft.description
                 aircraft.operator?.let { append(" from $it") }

@@ -9,6 +9,7 @@ import eu.darken.apl.common.planespotters.PlanespottersMeta
 import eu.darken.apl.common.planespotters.load
 import eu.darken.apl.databinding.SearchListAircraftItemBinding
 import eu.darken.apl.main.core.aircraft.Aircraft
+import eu.darken.apl.main.core.aircraft.messageTypeLabel
 import eu.darken.apl.search.ui.SearchAdapter
 
 
@@ -26,15 +27,22 @@ class AircraftResultVH(parent: ViewGroup) :
     ) -> Unit = { item, _ ->
         val aircraft = item.aircraft
 
-        title.text = "${aircraft.label} (#${aircraft.hex.uppercase()})"
+        title.text = "${aircraft.registration} (#${aircraft.hex.uppercase()})"
         subtitle.apply {
             text = aircraft.description
             aircraft.operator?.let { append(" from $it") }
         }
         distance.apply {
-            text = item.distanceInMeter?.let {
-                getString(R.string.general_xdistance_away_label, "${(it / 1000).toInt()}km")
+            if (item.distanceInMeter != null) {
+                val distText = getString(
+                    R.string.general_xdistance_away_label,
+                    "${(item.distanceInMeter / 1000).toInt()}km"
+                )
+                text = "$distText (${aircraft.messageTypeLabel})"
+            } else {
+                text = aircraft.messageTypeLabel
             }
+
             isGone = item.distanceInMeter == null
         }
 
@@ -69,6 +77,6 @@ class AircraftResultVH(parent: ViewGroup) :
         val onThumbnail: (PlanespottersMeta) -> Unit,
     ) : SearchAdapter.Item {
         override val stableId: Long
-            get() = aircraft.id.hashCode().toLong()
+            get() = aircraft.hex.hashCode().toLong()
     }
 }

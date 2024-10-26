@@ -135,6 +135,8 @@ interface AirplanesLiveApi {
     @JsonClass(generateAdapter = true)
     data class Aircraft(
         @Json(name = "hex") val rawHex: AircraftHex,
+        @Json(name = "type") override val messageType: String,
+        @Json(name = "dbFlags") override val dbFlags: Int?,
         @Json(name = "r") override val registration: Registration?,
         @Json(name = "flight") override val callsign: Callsign?,
 
@@ -184,8 +186,8 @@ interface AirplanesLiveApi {
 
         override val location: Location?
             get() {
-                val convLat = this@Aircraft.latitude?.toDouble() ?: return null
-                val convLong = this@Aircraft.longitude?.toDouble() ?: return null
+                val convLat = latitude?.toDouble() ?: roughLat ?: return null
+                val convLong = longitude?.toDouble() ?: roughLon ?: return null
 
                 return Location("apl").apply {
                     latitude = convLat

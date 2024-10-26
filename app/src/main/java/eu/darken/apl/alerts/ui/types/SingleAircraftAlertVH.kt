@@ -14,6 +14,7 @@ import eu.darken.apl.common.planespotters.PlanespottersMeta
 import eu.darken.apl.common.planespotters.coil.AircraftThumbnailQuery
 import eu.darken.apl.common.planespotters.load
 import eu.darken.apl.databinding.AlertsListSingleItemBinding
+import eu.darken.apl.main.core.aircraft.messageTypeLabel
 import java.time.Instant
 
 
@@ -51,6 +52,13 @@ class SingleAircraftAlertVH(parent: ViewGroup) :
         }
 
         lastTriggered.apply {
+            setTextColor(
+                when {
+                    status.tracked.isNotEmpty() -> getColorForAttr(com.google.android.material.R.attr.colorPrimary)
+                    status.lastHit != null -> getColorForAttr(com.google.android.material.R.attr.colorSecondary)
+                    else -> getColorForAttr(com.google.android.material.R.attr.colorError)
+                }
+            )
             val lastPing = status.tracked.maxOfOrNull { it.seenAt } ?: status.lastHit?.checkAt
             text = lastPing?.let {
                 DateUtils.getRelativeTimeSpanString(
@@ -59,13 +67,21 @@ class SingleAircraftAlertVH(parent: ViewGroup) :
                     DateUtils.MINUTE_IN_MILLIS
                 ).toString()
             } ?: getString(R.string.alerts_spotted_never_label)
-            setTextColor(
-                when {
-                    status.tracked.isNotEmpty() -> getColorForAttr(com.google.android.material.R.attr.colorPrimary)
-                    status.lastHit != null -> getColorForAttr(com.google.android.material.R.attr.colorSecondary)
-                    else -> getColorForAttr(com.google.android.material.R.attr.colorError)
+        }
+
+        distance.apply {
+            text = when {
+                aircraft == null -> ""
+                item.distanceInMeter != null -> {
+                    val distText = getString(
+                        R.string.general_xdistance_away_label,
+                        "${(item.distanceInMeter / 1000).toInt()}km"
+                    )
+                    "$distText (${aircraft.messageTypeLabel})"
                 }
-            )
+
+                else -> aircraft.messageTypeLabel
+            }
         }
 
         infoContainer.apply {
@@ -106,6 +122,7 @@ class SingleAircraftAlertVH(parent: ViewGroup) :
 
     data class Item(
         val status: AircraftAlert.Status,
+        val distanceInMeter: Float?,
         val onTap: (Item) -> Unit,
         val onThumbnail: (PlanespottersMeta) -> Unit,
     ) : AlertsListAdapter.Item {

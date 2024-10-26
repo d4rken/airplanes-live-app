@@ -19,9 +19,7 @@ import eu.darken.apl.main.core.aircraft.Aircraft
 import eu.darken.apl.main.core.aircraft.AircraftHex
 import eu.darken.apl.main.core.getByHex
 import eu.darken.apl.map.core.MapOptions
-import getBasicAlertNote
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 
@@ -52,11 +50,11 @@ class SearchActionViewModel @Inject constructor(
         alertRepo.hexAlerts,
         aircraft,
     ) { hexAlerts, ac ->
-            State(
-                aircraft = ac,
-                hasAlert = hexAlerts.any { it.matches(ac) }
-            )
-        }
+        State(
+            aircraft = ac,
+            hasAlert = hexAlerts.any { it.matches(ac) }
+        )
+    }
         .asLiveData2()
 
     fun showMap() {
@@ -70,10 +68,8 @@ class SearchActionViewModel @Inject constructor(
 
     fun addAlert() = launch {
         log(TAG) { "addAlert()" }
-        val ac = aircraft.first()
         SearchActionDialogDirections.actionSearchActionToCreateHexAlertFragment(
             hex = aircraftHex.uppercase(),
-            note = ac.getBasicAlertNote(context)
         ).navigate()
     }
 

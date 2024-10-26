@@ -13,6 +13,7 @@ import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.Logging.Priority.INFO
 import eu.darken.apl.common.debug.logging.log
+import eu.darken.apl.common.location.LocationManager2
 import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.main.core.aircraft.AircraftHex
@@ -31,6 +32,7 @@ class AlertsListViewModel @Inject constructor(
     private val alertsRepo: AlertsRepo,
     private val alertMonitor: AlertMonitor,
     private val webpageTool: WebpageTool,
+    private val locationManager2: LocationManager2,
 ) : ViewModel3(dispatcherProvider = dispatcherProvider) {
 
     private val args by handle.navArgs<AlertsListFragmentArgs>()
@@ -53,20 +55,31 @@ class AlertsListViewModel @Inject constructor(
     val state = combine(
         refreshTimer,
         alertsRepo.status,
+        locationManager2.state,
         alertsRepo.isRefreshing
-    ) { _, alerts, isRefreshing ->
+    ) { _, alerts, locationState, isRefreshing ->
         val items = alerts
             .sortedBy { alert -> alert.note.takeIf { it.isNotBlank() } ?: "ZZZZ" }
             .map { alert ->
                 when (alert) {
                     is HexAlert.Status -> SingleAircraftAlertVH.Item(
                         status = alert,
+                        distanceInMeter = run {
+                            if (locationState !is LocationManager2.State.Available) return@run null
+                            val location = alert.tracked.firstOrNull()?.location ?: return@run null
+                            locationState.location.distanceTo(location)
+                        },
                         onTap = { AlertsListFragmentDirections.actionAlertsToAlertActionDialog(alert.id).navigate() },
                         onThumbnail = { launch { webpageTool.open(it.link) } },
                     )
 
                     is CallsignAlert.Status -> SingleAircraftAlertVH.Item(
                         status = alert,
+                        distanceInMeter = run {
+                            if (locationState !is LocationManager2.State.Available) return@run null
+                            val location = alert.tracked.firstOrNull()?.location ?: return@run null
+                            locationState.location.distanceTo(location)
+                        },
                         onTap = { AlertsListFragmentDirections.actionAlertsToAlertActionDialog(alert.id).navigate() },
                         onThumbnail = { launch { webpageTool.open(it.link) } },
                     )

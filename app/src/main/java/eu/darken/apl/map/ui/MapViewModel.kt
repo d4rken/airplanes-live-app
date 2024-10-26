@@ -20,7 +20,6 @@ import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.map.core.MapSettings
 import eu.darken.apl.search.core.SearchQuery
 import eu.darken.apl.search.core.SearchRepo
-import getBasicAlertNote
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
@@ -90,10 +89,9 @@ class MapViewModel @Inject constructor(
 
     fun addAlert(hex: AircraftHex) = launch {
         log(TAG) { "addAlert($hex)" }
-        val ac = aircraftRepo.findByHex(hex) ?: searchRepo.search(SearchQuery.Hex(hex)).aircraft.single()
+        aircraftRepo.findByHex(hex) ?: searchRepo.search(SearchQuery.Hex(hex)).aircraft.single()
         MapFragmentDirections.actionMapToCreateHexAlertFragment(
             hex = hex,
-            note = ac.getBasicAlertNote(context)
         ).navigate()
     }
 

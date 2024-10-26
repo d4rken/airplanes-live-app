@@ -17,6 +17,8 @@ import java.time.Instant
 )
 data class CachedAircraftEntity(
     @PrimaryKey @ColumnInfo(name = "hex") override val hex: AircraftHex,
+    @ColumnInfo(name = "message_type") override val messageType: String,
+    @ColumnInfo(name = "db_flags") override val dbFlags: Int?,
     @ColumnInfo(name = "registration") override val registration: Registration?,
     @ColumnInfo(name = "flight") override val callsign: Callsign?,
 
@@ -37,12 +39,14 @@ data class CachedAircraftEntity(
 
     @ColumnInfo(name = "messages") override val messages: Int,
     @ColumnInfo(name = "seen_at") override val seenAt: Instant,
-    @ColumnInfo(name = "rssi") override val rssi: Double
+    @ColumnInfo(name = "rssi") override val rssi: Double,
 ) : Aircraft
 
 
 internal fun Aircraft.toEntity() = CachedAircraftEntity(
     hex = this.hex,
+    messageType = this.messageType,
+    dbFlags = this.dbFlags,
     registration = this.registration,
     callsign = this.callsign,
     operator = this.operator,
