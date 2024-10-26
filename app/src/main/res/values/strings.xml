@@ -137,7 +137,7 @@
     <string name="alerts_list_addnew_msg">Create your first aircraft alert now!</string>
     <string name="alerts_add_alert_type_label_hexcode">Aircraft (hex code) </string>
     <string name="alerts_add_alert_type_label_squawk">Transponder code (SQUAWK)</string>
-    <string name="alerts_add_alert_type_label_callsign">Callsign / Flight</string>
+    <string name="alerts_add_alert_type_label_callsign">Flight (callsign)</string>
     <string name="alerts_add_hexcode_title">New hexcode alert</string>
     <string name="alerts_add_hexcode_msg">Enter the hexcode of the aircraft you want alerts for.</string>
     <string name="alerts_add_squawk_title">New squawk alert</string>

@@ -26,9 +26,6 @@ class AlertActionDialog : BottomSheetDialogFragment2() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        ui.primaryEditAction.setOnClickListener {
-
-        }
         ui.noteInput.addTextChangedListener {
             vm.updateNote(it.toString())
         }
