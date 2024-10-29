@@ -49,15 +49,17 @@ fun PlanespottersThumbnailView.load(
 }
 
 
-fun Aircraft.toPlanespottersQuery() = AircraftThumbnailQuery(
+fun Aircraft.toPlanespottersQuery(large: Boolean = false) = AircraftThumbnailQuery(
     hex = this.hex,
     registration = this.registration,
+    large = large,
 )
 
 fun PlanespottersThumbnailView.load(
-    aircraft: Aircraft?
+    aircraft: Aircraft?,
+    large: Boolean = false,
 ): Disposable? = if (aircraft != null) {
-    load(aircraft.toPlanespottersQuery())
+    load(aircraft.toPlanespottersQuery(large = large))
 } else {
     setImage(null)
     null

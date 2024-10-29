@@ -30,7 +30,7 @@ class SearchActionDialog : BottomSheetDialogFragment2() {
             val aircraft = state.aircraft
 
             aircraftDetails.apply {
-                setAircraft(aircraft)
+                setAircraft(aircraft, state.distanceInMeter)
                 onThumbnailClicked = { webpageTool.open(it.link) }
             }
 

@@ -8,7 +8,6 @@ import androidx.annotation.StyleRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
-import eu.darken.apl.R
 import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.planespotters.coil.PlanespottersImage
@@ -35,7 +34,7 @@ class PlanespottersThumbnailView @JvmOverloads constructor(
             isInvisible = image == null
         }
         author.apply {
-            text = image?.meta?.author?.let { context.getString(R.string.general_photo_author_label, it) }
+            text = image?.meta?.getCaption(context)
             isInvisible = image == null
         }
         if (image != null) {

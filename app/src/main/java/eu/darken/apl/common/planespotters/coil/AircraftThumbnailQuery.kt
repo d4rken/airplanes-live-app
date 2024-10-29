@@ -6,4 +6,5 @@ import eu.darken.apl.main.core.aircraft.Registration
 data class AircraftThumbnailQuery(
     val hex: AircraftHex,
     val registration: Registration? = null,
+    val large: Boolean = false,
 )

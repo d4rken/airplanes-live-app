@@ -12,6 +12,7 @@ import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.flow.combine
 import eu.darken.apl.common.flow.replayingShare
 import eu.darken.apl.common.livedata.SingleLiveEvent
+import eu.darken.apl.common.location.LocationManager2
 import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.feeder.ui.actions.FeederActionEvents
@@ -31,6 +32,7 @@ class SearchActionViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val aircraftRepo: AircraftRepo,
     private val alertRepo: AlertsRepo,
+    private val locationManager2: LocationManager2,
 ) : ViewModel3(dispatcherProvider) {
 
     private val navArgs by handle.navArgs<SearchActionDialogArgs>()
@@ -50,9 +52,15 @@ class SearchActionViewModel @Inject constructor(
     val state = combine(
         alertRepo.hexAlerts,
         aircraft,
-    ) { hexAlerts, ac ->
+        locationManager2.state,
+    ) { hexAlerts, ac, locationState ->
         State(
             aircraft = ac,
+            distanceInMeter = run {
+                if (locationState !is LocationManager2.State.Available) return@run null
+                val location = ac.location ?: return@run null
+                locationState.location.distanceTo(location)
+            },
             alert = hexAlerts.firstOrNull { it.matches(ac) }
         )
     }
@@ -79,6 +87,7 @@ class SearchActionViewModel @Inject constructor(
 
     data class State(
         val aircraft: Aircraft,
+        val distanceInMeter: Float?,
         val alert: AircraftAlert?,
     )
 }

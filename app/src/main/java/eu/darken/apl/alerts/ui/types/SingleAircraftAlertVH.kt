@@ -87,7 +87,15 @@ class SingleAircraftAlertVH(parent: ViewGroup) :
             }
 
             firstValue.text = aircraft?.callsign ?: "?"
-            secondValue.text = aircraft?.squawk ?: "?"
+            secondValue.apply {
+                text = aircraft?.squawk ?: "?"
+                setTextColor(
+                    when {
+                        aircraft?.squawk?.startsWith("7") == true -> getColorForAttr(com.google.android.material.R.attr.colorError)
+                        else -> getColorForAttr(com.google.android.material.R.attr.colorControlNormal)
+                    }
+                )
+            }
             thirdValue.text = when {
                 item.distanceInMeter != null -> "${(item.distanceInMeter / 1000).toInt()} km"
 

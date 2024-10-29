@@ -11,6 +11,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import eu.darken.apl.R
 import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
 import eu.darken.apl.common.debug.logging.log
+import eu.darken.apl.common.getColorForAttr
+import eu.darken.apl.common.getString
 import eu.darken.apl.common.planespotters.PlanespottersMeta
 import eu.darken.apl.common.planespotters.load
 import eu.darken.apl.databinding.CommonAircraftDetailsViewBinding
@@ -42,31 +44,31 @@ class AircraftDetailsView @JvmOverloads constructor(
                         get() = "mlat"
                     override val dbFlags: Int?
                         get() = null
-                    override val registration: Registration?
+                    override val registration: Registration
                         get() = "REGISTR"
-                    override val callsign: Callsign?
+                    override val callsign: Callsign
                         get() = "CALLSIGN"
-                    override val operator: String?
+                    override val operator: String
                         get() = "Some airplane operator company"
-                    override val airframe: Airframe?
+                    override val airframe: Airframe
                         get() = "AIRCR"
-                    override val description: String?
+                    override val description: String
                         get() = "Two wings and a motor"
-                    override val squawk: SquawkCode?
+                    override val squawk: SquawkCode
                         get() = "9999"
-                    override val emergency: String?
+                    override val emergency: String
                         get() = "none"
-                    override val outsideTemp: Int?
+                    override val outsideTemp: Int
                         get() = 11
-                    override val altitude: String?
+                    override val altitude: String
                         get() = "ground"
-                    override val altitudeRate: Int?
+                    override val altitudeRate: Int
                         get() = 0
-                    override val groundSpeed: Float?
+                    override val groundSpeed: Float
                         get() = 0f
-                    override val indicatedAirSpeed: Int?
+                    override val indicatedAirSpeed: Int
                         get() = 12
-                    override val trackheading: Double?
+                    override val trackheading: Double
                         get() = 301.5
                     override val location: Location?
                         get() = null
@@ -90,11 +92,14 @@ class AircraftDetailsView @JvmOverloads constructor(
     ) = ui.apply {
         log(VERBOSE) { "setAircraft(${aircraft.hex}, $distanceInMeter)" }
 
-        airframe.text = aircraft.description
-        operator.text = aircraft.operator
+        airframe.text = aircraft.description ?: getString(R.string.aircraft_details_description_unknown)
+        operator.text = aircraft.operator ?: getString(R.string.aircraft_details_operator_unknown)
 
         distanceAway.text = when {
-            distanceInMeter != null -> "${(distanceInMeter / 1000).toInt()} km"
+            distanceInMeter != null -> getString(
+                R.string.general_xdistance_away_label,
+                "${(distanceInMeter / 1000).toInt()} km",
+            )
 
             else -> ""
         }
@@ -104,7 +109,7 @@ class AircraftDetailsView @JvmOverloads constructor(
             Instant.now().toEpochMilli(),
             DateUtils.MINUTE_IN_MILLIS
         ).toString()
-        messageType.text = context.getString(
+        messageType.text = getString(
             R.string.aircraft_details_datasource_x,
             aircraft.messageTypeLabel
         )
@@ -112,11 +117,20 @@ class AircraftDetailsView @JvmOverloads constructor(
         firstValue.text = aircraft.callsign?.takeIf { it.isNotBlank() } ?: "?"
         secondValue.text = aircraft.registration ?: "?"
         thirdValue.text = "#${aircraft.hex.uppercase()}"
-        fourthValue.text = aircraft.squawk ?: "?"
+        fourthValue.apply {
+            text = aircraft.squawk ?: "?"
+            setTextColor(
+                when {
+                    aircraft.squawk?.startsWith("7") == true -> getColorForAttr(com.google.android.material.R.attr.colorError)
+                    else -> getColorForAttr(com.google.android.material.R.attr.colorControlNormal)
+                }
+            )
+        }
         fifthValue.text = "${aircraft.altitude ?: "?"} ft"
         sixthValue.text = "${aircraft.indicatedAirSpeed ?: aircraft.groundSpeed ?: "?"} kts"
-        thumbnail.load(aircraft)
-
-        thumbnail.onViewImageListener = { onThumbnailClicked?.invoke(it) }
+        thumbnail.apply {
+            load(aircraft, large = true)
+            onViewImageListener = { onThumbnailClicked?.invoke(it) }
+        }
     }
 }

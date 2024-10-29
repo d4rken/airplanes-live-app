@@ -36,7 +36,7 @@ class PlanespottersEndpoint @Inject constructor(
 
     suspend fun getPhotosByHex(
         hex: AircraftHex,
-    ): Collection<PlanespottersApi.Photo> = withContext(dispatcherProvider.IO) {
+    ): List<PlanespottersApi.Photo> = withContext(dispatcherProvider.IO) {
         log(TAG) { "getPhotosByHex(hex=$hex)" }
 
         api.getPhotosByHex(hex)
@@ -46,7 +46,7 @@ class PlanespottersEndpoint @Inject constructor(
 
     suspend fun getPhotosByRegistration(
         registration: Registration,
-    ): Collection<PlanespottersApi.Photo> = withContext(dispatcherProvider.IO) {
+    ): List<PlanespottersApi.Photo> = withContext(dispatcherProvider.IO) {
         log(TAG) { "getPhotosByRegistration(registration=$registration)" }
 
         api.getPhotosByRegistration(registration)

@@ -36,13 +36,13 @@ class PlanespottersFetcher(
         }
         log(TAG, VERBOSE) { "Got ${photos.size} photos for $data with $options, picking first. " }
 
-        // TODO maybe a slideshow of pictures?
+
         val photo = photos.firstOrNull() ?: return DrawableResult(
             drawable = PlanespottersImage(
                 AppCompatResources.getDrawable(options.context, R.drawable.aircraft_photo_unavailable)!!,
                 PlanespottersMeta(
                     hex = data.hex,
-                    author = "?",
+                    author = null,
                     link = "https://www.planespotters.net",
                 ),
             ),
@@ -51,8 +51,8 @@ class PlanespottersFetcher(
         )
 
         val request = ImageRequest.Builder(options.context).apply {
-            val largeHeight = options.size.height.pxOrElse { 128 } > photo.thumbnail.size.height
-            val largeWidth = options.size.width.pxOrElse { 128 } > photo.thumbnail.size.width
+            val largeHeight = data.large || options.size.height.pxOrElse { 128 } > photo.thumbnail.size.height
+            val largeWidth = data.large || options.size.width.pxOrElse { 128 } > photo.thumbnail.size.width
             val bestSize = if (largeHeight || largeWidth) {
                 log(TAG) { "Picking large thumbnail" }
                 photo.thumbnailLarge
