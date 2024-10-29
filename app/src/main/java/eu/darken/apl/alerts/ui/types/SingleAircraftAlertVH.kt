@@ -14,6 +14,7 @@ import eu.darken.apl.common.planespotters.PlanespottersMeta
 import eu.darken.apl.common.planespotters.coil.AircraftThumbnailQuery
 import eu.darken.apl.common.planespotters.load
 import eu.darken.apl.databinding.AlertsListSingleItemBinding
+import eu.darken.apl.main.core.aircraft.Aircraft
 import eu.darken.apl.main.core.aircraft.messageTypeLabel
 import java.time.Instant
 
@@ -31,17 +32,19 @@ class SingleAircraftAlertVH(parent: ViewGroup) :
         payloads: List<Any>
     ) -> Unit = { item, _ ->
         val status = item.status
-        val aircraft = status.tracked.singleOrNull()
+        val aircraft = item.aircraft
 
         when (status) {
             is HexAlert.Status -> {
-                title.text = status.hex.uppercase()
+                title.text = aircraft?.registration ?: "?"
+                title2.text = "| ${status.hex.uppercase()}"
                 subtitle.text = getString(R.string.alerts_item_hexcode_subtitle)
                 alertIcon.setImageResource(R.drawable.ic_hexagon_multiple_24)
             }
 
             is CallsignAlert.Status -> {
                 title.text = status.callsign.uppercase()
+                title2.text = "| #${aircraft?.hex?.uppercase() ?: "?"}"
                 subtitle.text = getString(R.string.alerts_item_callsign_subtitle)
                 alertIcon.setImageResource(R.drawable.ic_bullhorn_24)
             }
@@ -69,47 +72,29 @@ class SingleAircraftAlertVH(parent: ViewGroup) :
             } ?: getString(R.string.alerts_spotted_never_label)
         }
 
-        distance.apply {
-            text = when {
-                aircraft == null -> ""
-                item.distanceInMeter != null -> {
-                    val distText = getString(
-                        R.string.general_xdistance_away_label,
-                        "${(item.distanceInMeter / 1000).toInt()}km"
-                    )
-                    "$distText (${aircraft.messageTypeLabel})"
-                }
-
-                else -> aircraft.messageTypeLabel
-            }
-        }
+        extraInfo.text = aircraft?.messageTypeLabel ?: ""
 
         infoContainer.apply {
-            when {
-                aircraft != null -> {
-                    firstValue.text = aircraft.callsign ?: "?"
-                    secondValue.text = aircraft.registration ?: "?"
-                    thirdValue.text = aircraft.airframe ?: "?"
-                    fourthValue.text = aircraft.squawk ?: "?"
-                    thumbnail.load(aircraft)
-                    isGone = false
+            thumbnail.apply {
+                if (aircraft != null) {
+                    load(aircraft)
+                } else if (status is HexAlert.Status) {
+                    load(AircraftThumbnailQuery(hex = status.hex))
+                } else {
+                    load(null)
                 }
-
-                status is HexAlert.Status -> {
-                    firstValue.text = "?"
-                    secondValue.text = "?"
-                    thirdValue.text = "?"
-                    fourthValue.text = "?"
-                    thumbnail.load(AircraftThumbnailQuery(hex = status.hex))
-                    isGone = false
-                }
-
-                else -> {
-                    isGone = true
-                }
+                onViewImageListener = { item.onThumbnail(it) }
             }
 
-            thumbnail.onViewImageListener = { item.onThumbnail(it) }
+            firstValue.text = aircraft?.callsign ?: "?"
+            secondValue.text = aircraft?.squawk ?: "?"
+            thirdValue.text = when {
+                item.distanceInMeter != null -> "${(item.distanceInMeter / 1000).toInt()} km"
+
+                else -> "?"
+            }
+
+            infoText.text = aircraft?.description ?: "?"
         }
 
         noteBox.isGone = status.note.isBlank()
@@ -122,6 +107,7 @@ class SingleAircraftAlertVH(parent: ViewGroup) :
 
     data class Item(
         val status: AircraftAlert.Status,
+        val aircraft: Aircraft?,
         val distanceInMeter: Float?,
         val onTap: (Item) -> Unit,
         val onThumbnail: (PlanespottersMeta) -> Unit,

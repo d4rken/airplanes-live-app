@@ -16,7 +16,9 @@ import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.location.LocationManager2
 import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
+import eu.darken.apl.main.core.AircraftRepo
 import eu.darken.apl.main.core.aircraft.AircraftHex
+import eu.darken.apl.main.core.findByHex
 import eu.darken.apl.map.core.MapOptions
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
@@ -33,6 +35,7 @@ class AlertsListViewModel @Inject constructor(
     private val alertMonitor: AlertMonitor,
     private val webpageTool: WebpageTool,
     private val locationManager2: LocationManager2,
+    private val aircraftRepo: AircraftRepo,
 ) : ViewModel3(dispatcherProvider = dispatcherProvider) {
 
     private val args by handle.navArgs<AlertsListFragmentArgs>()
@@ -64,6 +67,7 @@ class AlertsListViewModel @Inject constructor(
                 when (alert) {
                     is HexAlert.Status -> SingleAircraftAlertVH.Item(
                         status = alert,
+                        aircraft = aircraftRepo.findByHex(alert.hex),
                         distanceInMeter = run {
                             if (locationState !is LocationManager2.State.Available) return@run null
                             val location = alert.tracked.firstOrNull()?.location ?: return@run null
@@ -75,6 +79,7 @@ class AlertsListViewModel @Inject constructor(
 
                     is CallsignAlert.Status -> SingleAircraftAlertVH.Item(
                         status = alert,
+                        aircraft = aircraftRepo.findByHex(alert.callsign),
                         distanceInMeter = run {
                             if (locationState !is LocationManager2.State.Available) return@run null
                             val location = alert.tracked.firstOrNull()?.location ?: return@run null

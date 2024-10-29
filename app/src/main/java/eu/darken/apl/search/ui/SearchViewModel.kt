@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.darken.apl.alerts.core.AlertsRepo
+import eu.darken.apl.alerts.core.types.HexAlert
 import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.datastore.valueBlocking
@@ -158,7 +159,7 @@ class SearchViewModel @Inject constructor(
             ?.map { ac ->
                 AircraftResultVH.Item(
                     aircraft = ac,
-                    alerts = alerts.filter { it.matches(ac) },
+                    alert = alerts.filterIsInstance<HexAlert>().firstOrNull { it.matches(ac) },
                     distanceInMeter = if (locationState is LocationManager2.State.Available && ac.location != null) {
                         locationState.location.distanceTo(ac.location!!)
                     } else {
@@ -178,9 +179,10 @@ class SearchViewModel @Inject constructor(
                             )
                         ).navigate()
                     },
-                    onThumbnail = {
-                        launch { webpageTool.open(it.link) }
-                    }
+                    onThumbnail = { launch { webpageTool.open(it.link) } },
+                    onAlert = {
+                        SearchFragmentDirections.actionSearchToAlertActionDialog(it.id).navigate()
+                    },
                 )
             }
             ?.sortedBy { it.distanceInMeter ?: Float.MAX_VALUE }

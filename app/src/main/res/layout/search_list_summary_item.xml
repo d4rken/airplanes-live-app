@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:paddingHorizontal="16dp"
     android:paddingTop="4dp"
-    android:paddingBottom="4dp">
+    android:paddingBottom="8dp">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/aircraft_count"

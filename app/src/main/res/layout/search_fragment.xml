@@ -83,7 +83,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/search_option_hex"
                     style="@style/SearchTypeButton"
-                    app:icon="@drawable/ic_hexagon_24" />
+                    app:icon="@drawable/ic_hexagon_multiple_24" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/search_option_callsign"

@@ -27,27 +27,28 @@ class AircraftResultVH(parent: ViewGroup) :
     ) -> Unit = { item, _ ->
         val aircraft = item.aircraft
 
-        title.text = "${aircraft.registration} (#${aircraft.hex.uppercase()})"
-        subtitle.apply {
-            text = aircraft.description
-            aircraft.operator?.let { append(" from $it") }
-        }
-        distance.apply {
-            if (item.distanceInMeter != null) {
-                val distText = getString(
-                    R.string.general_xdistance_away_label,
-                    "${(item.distanceInMeter / 1000).toInt()}km"
-                )
-                text = "$distText (${aircraft.messageTypeLabel})"
-            } else {
-                text = aircraft.messageTypeLabel
-            }
-
-            isGone = item.distanceInMeter == null
+        thumbnail.apply {
+            load(aircraft)
+            thumbnail.onViewImageListener = { item.onThumbnail(it) }
         }
 
-        flightValue.text = aircraft.callsign ?: "?"
-        squawkValue.text = aircraft.squawk ?: "?"
+        title.text = aircraft.registration ?: "?"
+        title2.text = "| #${aircraft.hex}"
+        subtitle.text = when {
+            aircraft.description != null -> aircraft.description
+            else -> "?"
+        }
+        extraInfo.text = aircraft.messageTypeLabel
+
+        firstValue.text = aircraft.callsign?.takeIf { it.isNotBlank() } ?: "?"
+
+        secondValue.text = aircraft.squawk ?: "?"
+
+        thirdValue.text = when {
+            item.distanceInMeter != null -> "${(item.distanceInMeter / 1000).toInt()} km"
+
+            else -> "?"
+        }
 
         root.apply {
             setOnClickListener { item.onTap() }
@@ -57,24 +58,20 @@ class AircraftResultVH(parent: ViewGroup) :
             }
         }
 
-        thumbnail.apply {
-            load(aircraft)
-            onViewImageListener = { item.onThumbnail(it) }
-        }
-
-        alertsInfo.apply {
-            isGone = item.alerts.isEmpty()
-            text = getQuantityString(R.plurals.search_aircraft_matching_alerts_desc, item.alerts.size)
+        alertRibbon.apply {
+            isGone = item.alert == null
+            setOnClickListener { item.onAlert(item.alert!!) }
         }
     }
 
     data class Item(
         val aircraft: Aircraft,
-        val alerts: Collection<AircraftAlert>,
+        val alert: AircraftAlert?,
         val distanceInMeter: Float?,
         val onTap: () -> Unit,
         val onLongPress: () -> Unit,
         val onThumbnail: (PlanespottersMeta) -> Unit,
+        val onAlert: (AircraftAlert) -> Unit,
     ) : SearchAdapter.Item {
         override val stableId: Long
             get() = aircraft.hex.hashCode().toLong()

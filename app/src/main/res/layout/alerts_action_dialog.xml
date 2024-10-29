@@ -29,24 +29,36 @@
 
         <TextView
             android:id="@+id/primary"
-            style="@style/TextAppearance.Material3.BodyLarge"
-            android:layout_width="0dp"
+            style="@style/TextAppearance.Material3.TitleMedium"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:ellipsize="end"
             android:singleLine="true"
             android:textIsSelectable="true"
             app:layout_constraintBottom_toTopOf="@id/secondary"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/primary2"
             app:layout_constraintStart_toEndOf="@id/icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="1ABEEFF" />
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/primary2"
+            style="@style/TextAppearance.Material3.LabelMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/primary"
+            app:layout_constraintTop_toTopOf="@id/primary"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            tools:text="| #C2B549" />
+
         <TextView
             android:id="@+id/secondary"
-            style="@style/TextAppearance.Material3.LabelSmall"
+            style="@style/TextAppearance.Material3.BodyMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -69,16 +81,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16dp"
         android:orientation="vertical"
         android:paddingBottom="16dp">
+
+        <eu.darken.apl.main.ui.AircraftDetailsView
+            android:id="@+id/aircraft_details"
+            android:layout_width="match_parent"
+            android:background="?colorSurfaceContainerLow"
+            android:layout_height="wrap_content" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/note_layout"
             style="@style/Widget.Material3.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
             android:hint="@string/alerts_note_label">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -94,18 +112,10 @@
             style="@style/Widget.Material3.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/common_show_on_map"
             app:icon="@drawable/ic_map_24"
-            app:iconGravity="textStart" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/show_search_action"
-            style="@style/Widget.Material3.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/common_show_in_search"
-            app:icon="@drawable/ic_airplane_search_24"
             app:iconGravity="textStart" />
 
         <com.google.android.material.button.MaterialButton
@@ -113,6 +123,7 @@
             style="@style/Widget.Material3.Button.TonalButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
             android:text="@string/alerts_remove_action"
             android:textColor="?colorOnErrorContainer"
             app:backgroundTint="?colorErrorContainer"

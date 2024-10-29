@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import eu.darken.apl.alerts.core.AlertsRepo
+import eu.darken.apl.alerts.core.types.AircraftAlert
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.flow.combine
@@ -52,7 +53,7 @@ class SearchActionViewModel @Inject constructor(
     ) { hexAlerts, ac ->
         State(
             aircraft = ac,
-            hasAlert = hexAlerts.any { it.matches(ac) }
+            alert = hexAlerts.firstOrNull { it.matches(ac) }
         )
     }
         .asLiveData2()
@@ -66,15 +67,18 @@ class SearchActionViewModel @Inject constructor(
         ).navigate()
     }
 
-    fun addAlert() = launch {
-        log(TAG) { "addAlert()" }
-        SearchActionDialogDirections.actionSearchActionToCreateHexAlertFragment(
-            hex = aircraftHex.uppercase(),
-        ).navigate()
+    fun showAlert() = launch {
+        log(TAG) { "showAlert()" }
+        val alert = state.value?.alert
+        if (alert != null) {
+            SearchActionDialogDirections.actionSearchActionToAlertActionDialog(alert.id)
+        } else {
+            SearchActionDialogDirections.actionSearchActionToCreateHexAlertFragment(aircraftHex)
+        }.navigate()
     }
 
     data class State(
         val aircraft: Aircraft,
-        val hasAlert: Boolean,
+        val alert: AircraftAlert?,
     )
 }

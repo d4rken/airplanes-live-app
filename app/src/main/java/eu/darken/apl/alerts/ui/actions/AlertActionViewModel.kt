@@ -9,14 +9,18 @@ import eu.darken.apl.alerts.core.types.AircraftAlert
 import eu.darken.apl.alerts.core.types.CallsignAlert
 import eu.darken.apl.alerts.core.types.HexAlert
 import eu.darken.apl.alerts.core.types.SquawkAlert
-import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.flow.replayingShare
 import eu.darken.apl.common.livedata.SingleLiveEvent
+import eu.darken.apl.common.location.LocationManager2
 import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
+import eu.darken.apl.main.core.AircraftRepo
+import eu.darken.apl.main.core.aircraft.Aircraft
+import eu.darken.apl.main.core.findByCallsign
+import eu.darken.apl.main.core.findByHex
 import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.search.core.SearchQuery
 import eu.darken.apl.search.core.SearchRepo
@@ -37,8 +41,9 @@ class AlertActionViewModel @Inject constructor(
     handle: SavedStateHandle,
     dispatcherProvider: DispatcherProvider,
     private val alertsRepo: AlertsRepo,
-    private val webpageTool: WebpageTool,
     private val searchRepo: SearchRepo,
+    private val aircraftRepo: AircraftRepo,
+    private val locationManager2: LocationManager2,
 ) : ViewModel3(dispatcherProvider) {
 
     private val navArgs by handle.navArgs<AlertActionDialogArgs>()
@@ -66,12 +71,24 @@ class AlertActionViewModel @Inject constructor(
 
     val state = combine(
         trigger,
+        locationManager2.state,
         status,
-    ) { _, alert ->
+    ) { _, locationState, alert ->
 
+        val aircraft = when (alert) {
+            is HexAlert.Status -> alert.tracked.firstOrNull() ?: aircraftRepo.findByHex(alert.hex)
+            is CallsignAlert.Status -> alert.tracked.firstOrNull() ?: aircraftRepo.findByCallsign(alert.callsign)
+            is SquawkAlert.Status -> null
+        }
 
         State(
             status = alert,
+            aircraft = aircraft,
+            distanceInMeter = run {
+                if (locationState !is LocationManager2.State.Available) return@run null
+                val location = aircraft?.location ?: return@run null
+                locationState.location.distanceTo(location)
+            }
         )
     }
         .asLiveData2()
@@ -109,23 +126,6 @@ class AlertActionViewModel @Inject constructor(
         ).navigate()
     }
 
-    fun showInSearch() = launch {
-        log(TAG) { "showInSearch()" }
-        when (val alertStatus = status.first()) {
-            is HexAlert.Status -> AlertActionDialogDirections.actionAlertActionDialogToSearch(
-                targetHexes = arrayOf(alertStatus.hex)
-            )
-
-            is SquawkAlert.Status -> AlertActionDialogDirections.actionAlertActionDialogToSearch(
-                targetSquawks = arrayOf(alertStatus.squawk)
-            )
-
-            is CallsignAlert.Status -> AlertActionDialogDirections.actionAlertActionDialogToSearch(
-                targetCallsigns = arrayOf(alertStatus.callsign)
-            )
-        }.navigate()
-    }
-
     fun updateNote(note: String) = launch {
         log(TAG) { "updateNote($note)" }
         alertsRepo.updateNote(alertId, note.trim())
@@ -133,6 +133,8 @@ class AlertActionViewModel @Inject constructor(
 
     data class State(
         val status: AircraftAlert.Status,
+        val aircraft: Aircraft?,
+        val distanceInMeter: Float?,
     )
 
     companion object {

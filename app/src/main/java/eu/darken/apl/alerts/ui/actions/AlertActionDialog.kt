@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -12,11 +13,15 @@ import eu.darken.apl.R
 import eu.darken.apl.alerts.core.types.CallsignAlert
 import eu.darken.apl.alerts.core.types.HexAlert
 import eu.darken.apl.alerts.core.types.SquawkAlert
+import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.uix.BottomSheetDialogFragment2
 import eu.darken.apl.databinding.AlertsActionDialogBinding
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AlertActionDialog : BottomSheetDialogFragment2() {
+    @Inject lateinit var webpageTool: WebpageTool
+
     override val vm: AlertActionViewModel by viewModels()
     override lateinit var ui: AlertsActionDialogBinding
 
@@ -31,32 +36,40 @@ class AlertActionDialog : BottomSheetDialogFragment2() {
         }
 
         ui.showMapAction.setOnClickListener { vm.showOnMap() }
-        ui.showSearchAction.setOnClickListener { vm.showInSearch() }
         ui.removeFeederAction.setOnClickListener { vm.removeAlert() }
+        ui.aircraftDetails.onThumbnailClicked = { webpageTool.open(it.link) }
 
-        vm.state.observe2(ui) { (status) ->
-            when (status) {
+        vm.state.observe2(ui) { state ->
+            when (state.status) {
                 is HexAlert.Status -> {
                     icon.setImageResource(R.drawable.ic_hexagon_multiple_24)
-                    primary.text = status.hex
+                    primary.text = state.aircraft?.registration ?: "?"
+                    primary2.text = "| #${state.status.hex}"
                     secondary.text = getString(R.string.alerts_item_hexcode_subtitle)
+                    aircraftDetails.isGone = state.aircraft == null
+                    state.aircraft?.let { aircraftDetails.setAircraft(it, state.distanceInMeter) }
                 }
 
                 is CallsignAlert.Status -> {
                     icon.setImageResource(R.drawable.ic_bullhorn_24)
-                    primary.text = status.callsign
+                    primary.text = state.status.callsign
+                    primary2.text = "| #${state.aircraft?.hex}"
                     secondary.text = getString(R.string.alerts_item_callsign_subtitle)
+                    aircraftDetails.isGone = state.aircraft == null
+                    state.aircraft?.let { aircraftDetails.setAircraft(it, state.distanceInMeter) }
                 }
 
                 is SquawkAlert.Status -> {
                     icon.setImageResource(R.drawable.ic_router_wireless_24)
-                    primary.text = status.squawk
+                    primary.text = state.status.squawk
                     secondary.text = getString(R.string.alerts_item_squawk_subtitle)
+                    aircraftDetails.isGone = true
                 }
             }
 
+
             if (noteInput.text?.isEmpty() == true) {
-                noteInput.setText(status.note)
+                noteInput.setText(state.status.note)
             }
         }
 

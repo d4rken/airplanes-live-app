@@ -85,6 +85,9 @@
         <action
             android:id="@+id/action_search_to_searchAction"
             app:destination="@id/searchAction" />
+        <action
+            android:id="@+id/action_search_to_alertActionDialog"
+            app:destination="@id/alertActionDialog" />
     </fragment>
     <fragment
         android:id="@+id/map"
@@ -118,6 +121,9 @@
         <action
             android:id="@+id/action_searchAction_to_createHexAlertFragment"
             app:destination="@id/createHexAlertFragment" />
+        <action
+            android:id="@+id/action_searchAction_to_alertActionDialog"
+            app:destination="@id/alertActionDialog" />
     </dialog>
     <dialog
         android:id="@+id/createHexAlertFragment"

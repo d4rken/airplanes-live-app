@@ -26,10 +26,12 @@
     <string name="common_sponsor_action">Sponsor development</string>
     <string name="common_sponsor_description">Say thanks and incentivize further app development.</string>
 
+    <string name="common_last_seen_label">Last seen</string>
     <string name="common_registration_label">Registration</string>
     <string name="common_callsign_label">Callsign</string>
     <string name="common_squawk_label">Squawk</string>
     <string name="common_hex_label">Hexcode</string>
+    <string name="common_distance_label">Distance</string>
     <string name="common_airframe_label">Airframe</string>
     <string name="common_start_feeding_action">Start feeding</string>
 
@@ -144,13 +146,15 @@
     <string name="alerts_add_squawk_msg">Enter the transpoder code you want to be alerted of.</string>
     <string name="alerts_add_callsign_title">Create callsign alert</string>
     <string name="alerts_add_callsign_msg">Enter the callsign (flight number) you want alerts for.</string>
-    <string name="alerts_item_squawk_subtitle">Transponder code (squawk)</string>
-    <string name="alerts_item_hexcode_subtitle">Aircraft (ICAO hex)</string>
-    <string name="alerts_item_callsign_subtitle">Flight (callsign)</string>
+    <string name="alerts_item_squawk_subtitle">Transponder code (squawk) alert</string>
+    <string name="alerts_item_hexcode_subtitle">Aircraft alert</string>
+    <string name="alerts_item_callsign_subtitle">Flight alert</string>
     <string name="alerts_spotted_never_label">Never</string>
     <string name="alerts_remove_action">Delete alert</string>
     <string name="alerts_remove_confirmation_title">Confirmation</string>
     <string name="alerts_remove_confirmation_message">Delete this alert?</string>
+    <string name="alerts_alert_add_label">Add alert</string>
+    <string name="alerts_alert_edit_label">Edit alert</string>
 
     <string name="search_page_label">Search</string>
     <string name="search_search_by_aircraft">Search by aircraft</string>
@@ -179,6 +183,7 @@
     </plurals>
     <string name="common_show_on_map">Show on map</string>
     <string name="common_show_in_search">Show in search</string>
-    <string name="common_add_alert">Add alert</string>
     <string name="alerts_note_label">Note</string>
+    <string name="common_altitude_label">Altitude</string>
+    <string name="common_speed_label">Speed</string>
 </resources>

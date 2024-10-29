@@ -55,7 +55,12 @@ fun Aircraft.toPlanespottersQuery() = AircraftThumbnailQuery(
 )
 
 fun PlanespottersThumbnailView.load(
-    aircraft: Aircraft
-) = load(aircraft.toPlanespottersQuery())
+    aircraft: Aircraft?
+): Disposable? = if (aircraft != null) {
+    load(aircraft.toPlanespottersQuery())
+} else {
+    setImage(null)
+    null
+}
 
 private val TAG = logTag("Planespotters", "Extensions")

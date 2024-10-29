@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import eu.darken.apl.R
 import eu.darken.apl.common.WebpageTool
-import eu.darken.apl.common.planespotters.load
 import eu.darken.apl.common.uix.BottomSheetDialogFragment2
 import eu.darken.apl.databinding.SearchActionDialogBinding
 import javax.inject.Inject
@@ -29,32 +29,23 @@ class SearchActionDialog : BottomSheetDialogFragment2() {
         vm.state.observe2(ui) { state ->
             val aircraft = state.aircraft
 
-            title.text = "${aircraft.registration} (#${aircraft.hex.uppercase()})"
-            subtitle.apply {
-                text = aircraft.description
-                aircraft.operator?.let { append(" from $it") }
+            title.text = aircraft.registration ?: "?"
+            title2.text = "| #${aircraft.hex.uppercase()}"
+
+            aircraftDetails.apply {
+                setAircraft(aircraft)
+                onThumbnailClicked = { webpageTool.open(it.link) }
             }
 
-//            distance.apply {
-//                text = item?.distanceInMeter?.let {
-//                    getString(R.string.general_xdistance_away_label, "${(it / 1000).toInt()}km")
-//                }
-//                isGone = item.distanceInMeter == null
-//            }
-
-            flightValue.text = aircraft.callsign ?: "?"
-            squawkValue.text = aircraft.squawk ?: "?"
-
-            thumbnail.apply {
-                load(aircraft)
-                onViewImageListener = { webpageTool.open(it.link) }
+            addAlertAction.text = if (state.alert != null) {
+                getString(R.string.alerts_alert_edit_label)
+            } else {
+                getString(R.string.alerts_alert_add_label)
             }
-
-            addAlertAction.isEnabled = !state.hasAlert
         }
 
         ui.showMapAction.setOnClickListener { vm.showMap() }
-        ui.addAlertAction.setOnClickListener { vm.addAlert() }
+        ui.addAlertAction.setOnClickListener { vm.showAlert() }
 
         vm.events.observe2(ui) { event ->
 

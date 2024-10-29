@@ -94,7 +94,7 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
         }
 
         val adapter = SearchAdapter()
-        ui.list.setupDefaults(adapter, dividers = false)
+        ui.list.setupDefaults(adapter, dividers = true)
 
         vm.state.observe2(ui) { state ->
             adapter.update(state.items)
