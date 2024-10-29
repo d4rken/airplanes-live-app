@@ -4,18 +4,21 @@ import android.Manifest
 import android.content.Context
 import android.os.Bundle
 import android.text.InputType
+import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.selection.SelectionTracker
 import com.google.android.material.button.MaterialButtonToggleGroup
 import dagger.hilt.android.AndroidEntryPoint
 import eu.darken.apl.R
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.lists.differ.update
+import eu.darken.apl.common.lists.installListSelection
 import eu.darken.apl.common.lists.setupDefaults
 import eu.darken.apl.common.uix.Fragment3
 import eu.darken.apl.common.viewbinding.viewBinding
@@ -28,6 +31,8 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
 
     override val vm: SearchViewModel by viewModels()
     override val ui: SearchFragmentBinding by viewBinding()
+
+    private var tracker: SelectionTracker<String>? = null
 
     private lateinit var locationPermissionLauncher: ActivityResultLauncher<String>
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,6 +81,27 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
             }
         }
 
+        val adapter = SearchAdapter()
+        ui.list.setupDefaults(adapter, verticalDividers = true)
+
+        tracker = installListSelection(
+            adapter = adapter,
+            cabMenuRes = R.menu.menu_search_cab,
+            onSelected = { tracker: SelectionTracker<String>, item: MenuItem, selected: Collection<SearchAdapter.Item> ->
+                if (selected.isEmpty()) return@installListSelection false
+
+                when (item.itemId) {
+                    R.id.menu_show_on_map_action -> {
+                        vm.showOnMap(selected)
+                        tracker.clearSelection()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        )
+
         val modeListener = object : MaterialButtonToggleGroup.OnButtonCheckedListener {
             override fun onButtonChecked(view: MaterialButtonToggleGroup, checkedId: Int, isChecked: Boolean) {
                 if (!isChecked) return
@@ -92,9 +118,6 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
             }
 
         }
-
-        val adapter = SearchAdapter()
-        ui.list.setupDefaults(adapter, dividers = true)
 
         vm.state.observe2(ui) { state ->
             adapter.update(state.items)
@@ -176,6 +199,11 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
         }
 
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onDestroyView() {
+        tracker?.clearSelection()
+        super.onDestroyView()
     }
 
     companion object {

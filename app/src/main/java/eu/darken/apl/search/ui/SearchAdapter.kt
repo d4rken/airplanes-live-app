@@ -11,6 +11,7 @@ import eu.darken.apl.common.lists.differ.setupDiffer
 import eu.darken.apl.common.lists.modular.ModularAdapter
 import eu.darken.apl.common.lists.modular.mods.DataBinderMod
 import eu.darken.apl.common.lists.modular.mods.TypedVHCreatorMod
+import eu.darken.apl.common.lists.selection.SelectableItem
 import eu.darken.apl.search.ui.items.AircraftResultVH
 import eu.darken.apl.search.ui.items.LocationPromptVH
 import eu.darken.apl.search.ui.items.NoAircraftVH
@@ -28,12 +29,12 @@ class SearchAdapter @Inject constructor() :
     override fun getItemCount(): Int = data.size
 
     init {
-        modules.add(DataBinderMod(data))
-        modules.add(TypedVHCreatorMod({ data[it] is LocationPromptVH.Item }) { LocationPromptVH(it) })
-        modules.add(TypedVHCreatorMod({ data[it] is SearchingAircraftVH.Item }) { SearchingAircraftVH(it) })
-        modules.add(TypedVHCreatorMod({ data[it] is NoAircraftVH.Item }) { NoAircraftVH(it) })
-        modules.add(TypedVHCreatorMod({ data[it] is AircraftResultVH.Item }) { AircraftResultVH(it) })
-        modules.add(TypedVHCreatorMod({ data[it] is SummaryVH.Item }) { SummaryVH(it) })
+        addMod(DataBinderMod(data))
+        addMod(TypedVHCreatorMod({ data[it] is LocationPromptVH.Item }) { LocationPromptVH(it) })
+        addMod(TypedVHCreatorMod({ data[it] is SearchingAircraftVH.Item }) { SearchingAircraftVH(it) })
+        addMod(TypedVHCreatorMod({ data[it] is NoAircraftVH.Item }) { NoAircraftVH(it) })
+        addMod(TypedVHCreatorMod({ data[it] is AircraftResultVH.Item }) { AircraftResultVH(it) })
+        addMod(TypedVHCreatorMod({ data[it] is SummaryVH.Item }) { SummaryVH(it) })
     }
 
     abstract class BaseVH<Item : SearchAdapter.Item, VB : ViewBinding>(
@@ -41,5 +42,9 @@ class SearchAdapter @Inject constructor() :
         parent: ViewGroup
     ) : VH(layoutRes, parent), BindableVH<Item, VB>
 
-    interface Item : DifferItem
+    interface Item : DifferItem, SelectableItem {
+        override val itemSelectionKey: String?
+            get() = null
+    }
+
 }

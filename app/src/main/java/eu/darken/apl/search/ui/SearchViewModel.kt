@@ -170,15 +170,6 @@ class SearchViewModel @Inject constructor(
                             hex = ac.hex,
                         ).navigate()
                     },
-                    onLongPress = {
-                        SearchFragmentDirections.actionSearchToMap(
-                            mapOptions = MapOptions(
-                                filter = MapOptions.Filter(
-                                    icaos = setOf(ac.hex),
-                                )
-                            )
-                        ).navigate()
-                    },
                     onThumbnail = { launch { webpageTool.open(it.link) } },
                     onAlert = {
                         SearchFragmentDirections.actionSearchToAlertActionDialog(it.id).navigate()
@@ -228,6 +219,19 @@ class SearchViewModel @Inject constructor(
                 mode = mode,
             )
         )
+    }
+
+    fun showOnMap(items: Collection<SearchAdapter.Item>) {
+        log(TAG) { "showOnMap(${items.size} items)" }
+        val acs = items.filterIsInstance<AircraftResultVH.Item>().map { it.aircraft }
+        if (acs.isEmpty()) return
+        SearchFragmentDirections.actionSearchToMap(
+            mapOptions = MapOptions(
+                filter = MapOptions.Filter(
+                    icaos = acs.map { it.hex }.toSet(),
+                )
+            )
+        ).navigate()
     }
 
     data class State(

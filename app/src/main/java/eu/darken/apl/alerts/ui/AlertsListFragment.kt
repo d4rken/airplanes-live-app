@@ -46,7 +46,7 @@ class AlertsListFragment : Fragment3(R.layout.alerts_list_fragment) {
         ui.swipeRefreshContainer.setOnRefreshListener { vm.refresh() }
 
         val adapter = AlertsListAdapter()
-        ui.list.setupDefaults(adapter, dividers = false)
+        ui.list.setupDefaults(adapter, verticalDividers = false)
 
         vm.state.observe2(ui) { state ->
             swipeRefreshContainer.isInvisible = false

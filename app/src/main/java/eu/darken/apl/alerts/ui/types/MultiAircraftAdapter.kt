@@ -23,8 +23,8 @@ class MultiAircraftAdapter @Inject constructor() :
     override fun getItemCount(): Int = data.size
 
     init {
-        modules.add(DataBinderMod(data))
-        modules.add(TypedVHCreatorMod({ data[it] is AircraftVH.Item }) { AircraftVH(it) })
+        addMod(DataBinderMod(data))
+        addMod(TypedVHCreatorMod({ data[it] is AircraftVH.Item }) { AircraftVH(it) })
     }
 
     abstract class BaseVH<Item : MultiAircraftAdapter.Item, VB : ViewBinding>(

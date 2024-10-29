@@ -48,7 +48,7 @@ class FeederListFragment : Fragment3(R.layout.feeder_list_fragment) {
         ui.swipeRefreshContainer.setOnRefreshListener { vm.refresh() }
 
         val adapter = FeederListAdapter()
-        ui.list.setupDefaults(adapter, dividers = false)
+        ui.list.setupDefaults(adapter, verticalDividers = false)
 
         vm.state.observe2(ui) { state ->
             swipeRefreshContainer.isInvisible = false

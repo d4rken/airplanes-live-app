@@ -37,7 +37,7 @@ data class MapOptions(
                 .takeIf { it.isNotEmpty() }
                 ?.joinToString(",")
                 ?.let {
-                    urlExtra.append("&icao=$it")
+                    urlExtra.append("&icaoFilter=$it")
                     if (noIsolation == true) urlExtra.append("&noIsolation")
                 }
         }

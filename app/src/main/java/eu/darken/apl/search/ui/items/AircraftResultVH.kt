@@ -5,6 +5,7 @@ import androidx.core.view.isGone
 import eu.darken.apl.R
 import eu.darken.apl.alerts.core.types.AircraftAlert
 import eu.darken.apl.common.lists.BindableVH
+import eu.darken.apl.common.lists.selection.SelectableVH
 import eu.darken.apl.common.planespotters.PlanespottersMeta
 import eu.darken.apl.common.planespotters.load
 import eu.darken.apl.databinding.SearchListAircraftItemBinding
@@ -17,14 +18,23 @@ class AircraftResultVH(parent: ViewGroup) :
     SearchAdapter.BaseVH<AircraftResultVH.Item, SearchListAircraftItemBinding>(
         R.layout.search_list_aircraft_item,
         parent
-    ), BindableVH<AircraftResultVH.Item, SearchListAircraftItemBinding> {
+    ), BindableVH<AircraftResultVH.Item, SearchListAircraftItemBinding>, SelectableVH {
 
     override val viewBinding = lazy { SearchListAircraftItemBinding.bind(itemView) }
+
+    private var lastItem: Item? = null
+    override val itemSelectionKey: String?
+        get() = lastItem?.itemSelectionKey
+
+    override fun updatedSelectionState(selected: Boolean) {
+        itemView.isActivated = selected
+    }
 
     override val onBindData: SearchListAircraftItemBinding.(
         item: Item,
         payloads: List<Any>,
     ) -> Unit = { item, _ ->
+        lastItem = item
         val aircraft = item.aircraft
 
         thumbnail.apply {
@@ -58,13 +68,7 @@ class AircraftResultVH(parent: ViewGroup) :
             else -> "?"
         }
 
-        root.apply {
-            setOnClickListener { item.onTap() }
-            setOnLongClickListener {
-                item.onLongPress()
-                true
-            }
-        }
+        root.setOnClickListener { item.onTap() }
 
         alertRibbon.apply {
             isGone = item.alert == null
@@ -77,11 +81,12 @@ class AircraftResultVH(parent: ViewGroup) :
         val alert: AircraftAlert?,
         val distanceInMeter: Float?,
         val onTap: () -> Unit,
-        val onLongPress: () -> Unit,
         val onThumbnail: (PlanespottersMeta) -> Unit,
         val onAlert: (AircraftAlert) -> Unit,
     ) : SearchAdapter.Item {
         override val stableId: Long
             get() = aircraft.hex.hashCode().toLong()
+        override val itemSelectionKey: String
+            get() = aircraft.hex
     }
 }

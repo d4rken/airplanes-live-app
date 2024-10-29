@@ -3,14 +3,14 @@ package eu.darken.apl.common.lists.modular.mods
 import android.view.ViewGroup
 import eu.darken.apl.common.lists.modular.ModularAdapter
 
-class TypedVHCreatorMod<HolderT> constructor(
+class TypedVHCreatorMod<HolderT>(
     private val typeResolver: (Int) -> Boolean,
     private val factory: (ViewGroup) -> HolderT
 ) : ModularAdapter.Module.Typing,
     ModularAdapter.Module.Creator<HolderT> where HolderT : ModularAdapter.VH {
 
     private fun ModularAdapter<*>.determineOurViewType(): Int {
-        val typingModules = modules.filterIsInstance(ModularAdapter.Module.Typing::class.java)
+        val typingModules = mods.filterIsInstance<ModularAdapter.Module.Typing>()
         return typingModules.indexOf(this@TypedVHCreatorMod)
     }
 

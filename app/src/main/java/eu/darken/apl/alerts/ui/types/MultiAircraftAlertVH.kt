@@ -28,7 +28,7 @@ class MultiAircraftAlertVH(parent: ViewGroup) :
 
     override val viewBinding = lazy {
         AlertsListMultiItemBinding.bind(itemView).apply {
-            list.setupDefaults(subAdapter, dividers = true)
+            list.setupDefaults(subAdapter, verticalDividers = true)
         }
     }
 

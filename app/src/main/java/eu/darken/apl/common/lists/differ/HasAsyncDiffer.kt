@@ -1,8 +1,10 @@
 package eu.darken.apl.common.lists.differ
 
-interface HasAsyncDiffer<T : DifferItem> {
+import eu.darken.apl.common.lists.DataAdapter
 
-    val data: List<T>
+interface HasAsyncDiffer<T : DifferItem> : DataAdapter<T> {
+
+    override val data: List<T>
         get() = asyncDiffer.currentList
 
     val asyncDiffer: AsyncDiffer<*, T>

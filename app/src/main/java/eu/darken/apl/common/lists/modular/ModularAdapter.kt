@@ -7,7 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import eu.darken.apl.common.lists.BaseAdapter
 
 abstract class ModularAdapter<VH : ModularAdapter.VH> : BaseAdapter<VH>() {
-    val modules = mutableListOf<Module>()
+    private val modules = mutableListOf<Module>()
+
+    val mods: List<Module>
+        get() = modules
+
+    fun addMod(mod: Module, position: Int? = null) {
+        if (position != null) modules.add(position, mod) else modules.add(mod)
+    }
 
     init {
         modules.filterIsInstance<Module.Setup>().forEach { it.onAdapterReady(this) }
