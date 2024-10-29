@@ -186,4 +186,5 @@
     <string name="alerts_note_label">Note</string>
     <string name="common_altitude_label">Altitude</string>
     <string name="common_speed_label">Speed</string>
+    <string name="aircraft_details_datasource_x">Source: %s</string>
 </resources>

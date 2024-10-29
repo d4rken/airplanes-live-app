@@ -2,11 +2,13 @@ package eu.darken.apl.main.ui
 
 import android.content.Context
 import android.location.Location
+import android.text.format.DateUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import eu.darken.apl.R
 import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.planespotters.PlanespottersMeta
@@ -18,6 +20,7 @@ import eu.darken.apl.main.core.aircraft.Airframe
 import eu.darken.apl.main.core.aircraft.Callsign
 import eu.darken.apl.main.core.aircraft.Registration
 import eu.darken.apl.main.core.aircraft.SquawkCode
+import eu.darken.apl.main.core.aircraft.messageTypeLabel
 import java.time.Instant
 
 class AircraftDetailsView @JvmOverloads constructor(
@@ -40,31 +43,31 @@ class AircraftDetailsView @JvmOverloads constructor(
                     override val dbFlags: Int?
                         get() = null
                     override val registration: Registration?
-                        get() = null
+                        get() = "REGISTR"
                     override val callsign: Callsign?
-                        get() = null
+                        get() = "CALLSIGN"
                     override val operator: String?
-                        get() = null
+                        get() = "Some airplane operator company"
                     override val airframe: Airframe?
-                        get() = null
+                        get() = "AIRCR"
                     override val description: String?
-                        get() = null
+                        get() = "Two wings and a motor"
                     override val squawk: SquawkCode?
-                        get() = null
+                        get() = "9999"
                     override val emergency: String?
-                        get() = null
+                        get() = "none"
                     override val outsideTemp: Int?
-                        get() = null
+                        get() = 11
                     override val altitude: String?
-                        get() = null
+                        get() = "ground"
                     override val altitudeRate: Int?
-                        get() = null
+                        get() = 0
                     override val groundSpeed: Float?
-                        get() = null
+                        get() = 0f
                     override val indicatedAirSpeed: Int?
-                        get() = null
+                        get() = 12
                     override val trackheading: Double?
-                        get() = null
+                        get() = 301.5
                     override val location: Location?
                         get() = null
                     override val messages: Int
@@ -83,12 +86,28 @@ class AircraftDetailsView @JvmOverloads constructor(
 
     fun setAircraft(
         aircraft: Aircraft,
-        distance: Float? = null
+        distanceInMeter: Float? = null
     ) = ui.apply {
-        log(VERBOSE) { "setAircraft(${aircraft.hex}, $distance)" }
+        log(VERBOSE) { "setAircraft(${aircraft.hex}, $distanceInMeter)" }
 
         airframe.text = aircraft.description
         operator.text = aircraft.operator
+
+        distanceAway.text = when {
+            distanceInMeter != null -> "${(distanceInMeter / 1000).toInt()} km"
+
+            else -> ""
+        }
+
+        lastSeen.text = DateUtils.getRelativeTimeSpanString(
+            aircraft.seenAt.toEpochMilli(),
+            Instant.now().toEpochMilli(),
+            DateUtils.MINUTE_IN_MILLIS
+        ).toString()
+        messageType.text = context.getString(
+            R.string.aircraft_details_datasource_x,
+            aircraft.messageTypeLabel
+        )
 
         firstValue.text = aircraft.callsign?.takeIf { it.isNotBlank() } ?: "?"
         secondValue.text = aircraft.registration ?: "?"

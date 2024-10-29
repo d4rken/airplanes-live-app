@@ -29,9 +29,6 @@ class SearchActionDialog : BottomSheetDialogFragment2() {
         vm.state.observe2(ui) { state ->
             val aircraft = state.aircraft
 
-            title.text = aircraft.registration ?: "?"
-            title2.text = "| #${aircraft.hex.uppercase()}"
-
             aircraftDetails.apply {
                 setAircraft(aircraft)
                 onThumbnailClicked = { webpageTool.open(it.link) }

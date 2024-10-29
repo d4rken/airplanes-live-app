@@ -12,11 +12,11 @@
         style="@style/TextAppearance.Material3.TitleMedium"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="4dp"
         android:ellipsize="end"
-        android:paddingHorizontal="16dp"
         android:singleLine="true"
-        app:layout_constraintEnd_toStartOf="@id/distance"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="BOEING-VERTOL CH-47 Chinook" />
@@ -26,11 +26,13 @@
         style="@style/TextAppearance.Material3.TitleSmall"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="2dp"
         android:ellipsize="end"
-        android:paddingHorizontal="16dp"
         android:singleLine="true"
         android:translationY="-2dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/thumbnail"
+        app:layout_constraintEnd_toStartOf="@id/distance_away"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/airframe"
         tools:text="United States Coast Guard" />
@@ -39,7 +41,6 @@
         android:id="@+id/thumbnail"
         android:layout_width="0dp"
         android:layout_height="144dp"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="420:280"
         app:layout_constraintEnd_toStartOf="@id/info_box"
@@ -47,47 +48,53 @@
         app:layout_constraintTop_toBottomOf="@id/operator" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/distance"
+        android:id="@+id/distance_away"
         style="@style/TextAppearance.Material3.LabelMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/airframe"
-        app:layout_constraintTop_toTopOf="@id/airframe"
+        app:layout_constraintStart_toEndOf="@id/operator"
+        app:layout_constraintTop_toTopOf="@id/operator"
         tools:text="9999km away" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/message_type"
-        style="@style/TextAppearance.Material3.BodySmall"
-        android:layout_width="wrap_content"
+        android:id="@+id/last_seen"
+        style="@style/TextAppearance.Material3.LabelMedium"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="2dp"
+        android:gravity="start"
         app:layout_constraintBottom_toTopOf="@id/info_box"
         app:layout_constraintEnd_toEndOf="@id/info_box"
         app:layout_constraintStart_toStartOf="@id/info_box"
-        tools:text="MLAT" />
+        app:layout_constraintTop_toTopOf="@id/thumbnail"
+        tools:text="99 minutes ago" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/last_seen"
-        style="@style/TextAppearance.Material3.BodySmall"
-        android:layout_width="wrap_content"
+        android:id="@+id/message_type"
+        style="@style/TextAppearance.Material3.LabelSmall"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:gravity="end"
+        app:layout_constraintBottom_toBottomOf="@id/thumbnail"
         app:layout_constraintEnd_toEndOf="@id/info_box"
         app:layout_constraintStart_toStartOf="@id/info_box"
         app:layout_constraintTop_toBottomOf="@id/info_box"
-        tools:text="Last seen 900min ago" />
-
+        tools:text="Source: MLAT" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/info_box"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="8dp"
-        app:layout_constraintBottom_toBottomOf="@id/thumbnail"
+        android:layout_marginTop="2dp"
+        app:layout_constraintBottom_toTopOf="@id/message_type"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/thumbnail"
-        app:layout_constraintTop_toTopOf="@id/thumbnail">
+        app:layout_constraintTop_toBottomOf="@id/last_seen">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/first_value"

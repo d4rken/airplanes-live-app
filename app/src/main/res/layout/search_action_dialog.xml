@@ -1,66 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="56dp"
     android:orientation="vertical">
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:backgroundTint="?colorSurfaceVariant"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:paddingVertical="8dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/title"
-            style="@style/TextAppearance.Material3.TitleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@id/title2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="LZ-LAJ" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/title2"
-            style="@style/TextAppearance.Material3.LabelMedium"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            app:layout_constraintBottom_toBottomOf="@id/title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/title"
-            app:layout_constraintTop_toTopOf="@id/title"
-            app:layout_constraintVertical_chainStyle="spread_inside"
-            tools:text="| #C2B549" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/subtitle"
-            style="@style/TextAppearance.Material3.LabelMedium"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="@string/search_aircraft_search_label"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/title"
-            app:layout_constraintTop_toBottomOf="@id/title" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <eu.darken.apl.main.ui.AircraftDetailsView
         android:id="@+id/aircraft_details"
         android:layout_width="match_parent"
-        android:background="?colorSurfaceContainerLow"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="?colorSurfaceContainerLow" />
 
     <LinearLayout
         android:layout_width="match_parent"
