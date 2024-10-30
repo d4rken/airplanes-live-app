@@ -76,9 +76,9 @@ class MainFragment : Fragment3(R.layout.main_fragment) {
                         true
                     }
 
-                    R.id.alerts -> {
-                        if (!navController.popBackStack(R.id.alerts, false)) {
-                            navController.navigate(R.id.alerts)
+                    R.id.watchlist -> {
+                        if (!navController.popBackStack(R.id.watchlist, false)) {
+                            navController.navigate(R.id.watchlist)
                         }
                         true
                     }

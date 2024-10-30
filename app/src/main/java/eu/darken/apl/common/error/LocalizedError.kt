@@ -21,13 +21,13 @@ fun Throwable.localized(c: Context): LocalizedError = when {
     this is HasLocalizedError -> this.getLocalizedError(c)
     localizedMessage != null -> LocalizedError(
         throwable = this,
-        label = caString { "${c.getString(R.string.general_error_label)}: ${this::class.simpleName!!}" },
+        label = caString { "${c.getString(R.string.common_error_label)}: ${this::class.simpleName!!}" },
         description = caString { localizedMessage ?: getStackTracePeek() },
     )
 
     else -> LocalizedError(
         throwable = this,
-        label = caString { "${c.getString(R.string.general_error_label)}: ${this::class.simpleName!!}" },
+        label = caString { "${c.getString(R.string.common_error_label)}: ${this::class.simpleName!!}" },
         description = caString { getStackTracePeek() },
     )
 }

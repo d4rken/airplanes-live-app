@@ -6,7 +6,7 @@
         android:id="@+id/action_reload_map"
         android:icon="@drawable/ic_refresh_24"
         android:orderInCategory="100"
-        android:title="@string/general_refresh_action"
+        android:title="@string/common_refresh_action"
         app:showAsAction="ifRoom" />
 
     <item

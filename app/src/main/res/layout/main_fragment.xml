@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/general_internet_unavailable_message"
+            android:text="@string/common_internet_unavailable_message"
             android:textColor="?colorOnErrorContainer" />
 
     </FrameLayout>

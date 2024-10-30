@@ -77,8 +77,8 @@ internal fun WebView.setupShowInSearch() {
     evaluateJavascript(jsCode, null)
 }
 
-internal fun WebView.setupAddAlert() {
-    log(MapHandler.TAG) { "Setting up 'Add alert' button and creating hook" }
+internal fun WebView.setupAddWatch() {
+    log(MapHandler.TAG) { "Setting up 'Add watch' button and creating hook" }
     val jsCode = """
         var alertCountInterval = null;
         
@@ -103,7 +103,7 @@ internal fun WebView.setupAddAlert() {
                     
                     var button = document.createElement('button');
                     button.id = 'android_add_alert';
-                    button.textContent = 'Add alert';
+                    button.textContent = 'Add to watchlist';
                     button.style = 'margin-top: 10px; width: 100%';
                     targetDiv.parentNode.insertBefore(button, targetDiv.nextSibling);
                     
@@ -111,7 +111,7 @@ internal fun WebView.setupAddAlert() {
                     
                     button.addEventListener('click', function() {
                         if (hex === "N/A" || window.getComputedStyle(infoBlockDiv).display === "none") return;
-                        Android.onAddAlert(hex);
+                        Android.onAddWatch(hex);
                         button.disabled = true;
                     });
                     
@@ -135,12 +135,12 @@ internal fun WebView.setupAddAlert() {
         })();
         
         function updateAlertCount(button, hex) {
-            var alertCount = Android.getAlertCount(hex);
+            var alertCount = Android.getWatchCount(hex);
             if (alertCount > 0) {
-                button.textContent = 'Alert exists';
+                button.textContent = 'Already on watchlist';
                 button.disabled = true;
             } else {
-                button.textContent = 'Add alert';
+                button.textContent = 'Add to watchlist';
                 button.disabled = false;
             }
         }

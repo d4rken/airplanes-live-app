@@ -15,7 +15,7 @@ class RecorderConsentDialog(
             setTitle(R.string.support_debuglog_label)
             setMessage(R.string.settings_debuglog_explanation)
             setPositiveButton(R.string.debug_debuglog_record_action) { _, _ -> onStartRecord() }
-            setNegativeButton(R.string.general_cancel_action) { _, _ -> }
+            setNegativeButton(R.string.common_cancel_action) { _, _ -> }
             setNeutralButton(R.string.settings_privacy_policy_label) { _, _ ->
                 webpageTool.open(PrivacyPolicy.URL)
             }

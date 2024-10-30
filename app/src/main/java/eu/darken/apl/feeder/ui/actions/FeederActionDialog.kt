@@ -55,8 +55,8 @@ class FeederActionDialog : BottomSheetDialogFragment2() {
                 is FeederActionEvents.RemovalConfirmation -> MaterialAlertDialogBuilder(requireContext()).apply {
                     setTitle(R.string.feeder_remove_confirmation_title)
                     setMessage(R.string.feeder_remove_confirmation_message)
-                    setPositiveButton(R.string.general_remove_action) { _, _ -> vm.removeFeeder(confirmed = true) }
-                    setNegativeButton(R.string.general_cancel_action) { _, _ -> }
+                    setPositiveButton(R.string.common_remove_action) { _, _ -> vm.removeFeeder(confirmed = true) }
+                    setNegativeButton(R.string.common_cancel_action) { _, _ -> }
                 }.show()
             }
         }

@@ -7,7 +7,7 @@
     android:background="@drawable/bg_listitem_selectable">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/alert_ribbon"
+        android:id="@+id/watch_ribbon"
         style="@style/Widget.Material3.Button.IconButton.Filled"
         android:layout_width="96dp"
         android:layout_height="32dp"
@@ -15,7 +15,7 @@
         android:layout_marginEnd="-36dp"
         android:layout_marginBottom="-2dp"
         android:rotation="-45"
-        app:icon="@drawable/ic_alerts_24"
+        app:icon="@drawable/ic_watchlist_24"
         app:iconGravity="textStart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

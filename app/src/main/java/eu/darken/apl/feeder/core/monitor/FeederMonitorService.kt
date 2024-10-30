@@ -6,14 +6,11 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.await
 import eu.darken.apl.common.coroutine.AppScope
-import eu.darken.apl.common.debug.logging.Logging.Priority.ERROR
 import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
-import eu.darken.apl.common.debug.logging.asLog
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.feeder.core.FeederRepo
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.time.Duration
 import javax.inject.Inject
@@ -24,7 +21,7 @@ import javax.inject.Singleton
 class FeederMonitorService @Inject constructor(
     @AppScope private val appScope: CoroutineScope,
     private val workManager: WorkManager,
-    private val networkStatsRepo: FeederRepo,
+    private val feederRepo: FeederRepo,
 ) {
 
     private var isInit = false
@@ -35,13 +32,13 @@ class FeederMonitorService @Inject constructor(
 
         runBlocking { setupPeriodicWorker() }
 
-        appScope.launch {
-            try {
-                networkStatsRepo.refresh()
-            } catch (e: Exception) {
-                log(TAG, ERROR) { "Failed to refresh: ${e.asLog()}" }
-            }
-        }
+//        appScope.launch {
+//            try {
+//                networkStatsRepo.refresh()
+//            } catch (e: Exception) {
+//                log(TAG, ERROR) { "Failed to refresh: ${e.asLog()}" }
+//            }
+//        }
     }
 
     private suspend fun setupPeriodicWorker() {

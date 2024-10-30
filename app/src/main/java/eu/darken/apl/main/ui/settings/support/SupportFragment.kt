@@ -35,7 +35,7 @@ class SupportFragment : PreferenceFragment2() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         vm.clipboardEvent.observe2(this) { installId ->
             Snackbar.make(requireView(), installId, Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.general_copy_action) {
+                .setAction(R.string.common_copy_action) {
                     clipboardHelper.copyToClipboard(installId)
                 }
                 .show()

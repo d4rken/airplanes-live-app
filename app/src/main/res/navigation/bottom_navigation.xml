@@ -22,42 +22,42 @@
             app:argType="string" />
     </dialog>
     <fragment
-        android:id="@+id/alerts"
-        android:name="eu.darken.apl.alerts.ui.AlertsListFragment"
-        tools:layout="@layout/alerts_list_fragment">
+        android:id="@+id/watchlist"
+        android:name="eu.darken.apl.watchlist.ui.WatchlistFragment"
+        tools:layout="@layout/watchlist_fragment">
         <argument
             android:name="targetAircraft"
             android:defaultValue="@null"
             app:argType="string[]"
             app:nullable="true" />
         <action
-            android:id="@+id/action_alerts_to_alertActionDialog"
-            app:destination="@id/alertActionDialog" />
+            android:id="@+id/action_watchlist_to_watchlistDetailsFragment"
+            app:destination="@id/watchlistDetailsFragment" />
         <action
-            android:id="@+id/action_alerts_to_createHexAlertFragment"
-            app:destination="@id/createHexAlertFragment" />
+            android:id="@+id/action_watchlist_to_createAircraftWatchFragment"
+            app:destination="@id/createAircraftWatchFragment" />
         <action
-            android:id="@+id/action_alerts_to_createSquawkAlertFragment"
-            app:destination="@id/createSquawkAlertFragment" />
+            android:id="@+id/action_watchlist_to_createSquawkWatchFragment"
+            app:destination="@id/createSquawkWatchFragment" />
         <action
-            android:id="@+id/action_alerts_to_createCallsignAlertFragment"
-            app:destination="@id/createCallsignAlertFragment" />
+            android:id="@+id/action_watchlist_to_createFlightWatchFragment"
+            app:destination="@id/createFlightWatchFragment" />
         <action
-            android:id="@+id/action_alerts_to_map"
+            android:id="@+id/action_watchlist_to_map"
             app:destination="@id/map" />
     </fragment>
     <dialog
-        android:id="@+id/alertActionDialog"
-        android:name="eu.darken.apl.alerts.ui.actions.AlertActionDialog"
-        tools:layout="@layout/alerts_action_dialog">
+        android:id="@+id/watchlistDetailsFragment"
+        android:name="eu.darken.apl.watchlist.ui.details.WatchlistDetailsFragment"
+        tools:layout="@layout/watchlist_details_fragment">
         <argument
-            android:name="alertId"
+            android:name="watchId"
             app:argType="string" />
         <action
-            android:id="@+id/action_alertActionDialog_to_map"
+            android:id="@+id/action_watchlistDetailsFragment_to_map"
             app:destination="@id/map" />
         <action
-            android:id="@+id/action_alertActionDialog_to_search"
+            android:id="@+id/action_watchlistDetailsFragment_to_search"
             app:destination="@id/search" />
     </dialog>
     <fragment
@@ -86,8 +86,14 @@
             android:id="@+id/action_search_to_searchAction"
             app:destination="@id/searchAction" />
         <action
-            android:id="@+id/action_search_to_alertActionDialog"
-            app:destination="@id/alertActionDialog" />
+            android:id="@+id/action_search_to_watchlistDetailsFragment"
+            app:destination="@id/watchlistDetailsFragment" />
+        <action
+            android:id="@+id/action_search_to_watchlistDetailsFragment2"
+            app:destination="@id/watchlistDetailsFragment" />
+        <action
+            android:id="@+id/action_search_to_createAircraftWatchFragment"
+            app:destination="@id/createAircraftWatchFragment" />
     </fragment>
     <fragment
         android:id="@+id/map"
@@ -102,11 +108,11 @@
             android:id="@+id/action_map_to_search"
             app:destination="@id/search" />
         <action
-            android:id="@+id/action_map_to_alerts"
-            app:destination="@id/alerts" />
+            android:id="@+id/action_map_to_watchlist"
+            app:destination="@id/watchlist" />
         <action
-            android:id="@+id/action_map_to_createHexAlertFragment"
-            app:destination="@id/createHexAlertFragment" />
+            android:id="@+id/action_map_to_createAircraftWatchFragment"
+            app:destination="@id/createAircraftWatchFragment" />
     </fragment>
     <dialog
         android:id="@+id/searchAction"
@@ -119,16 +125,16 @@
             android:id="@+id/action_searchAction_to_map"
             app:destination="@id/map" />
         <action
-            android:id="@+id/action_searchAction_to_createHexAlertFragment"
-            app:destination="@id/createHexAlertFragment" />
+            android:id="@+id/action_searchAction_to_watchlistDetailsFragment"
+            app:destination="@id/watchlistDetailsFragment" />
         <action
-            android:id="@+id/action_searchAction_to_alertActionDialog"
-            app:destination="@id/alertActionDialog" />
+            android:id="@+id/action_searchAction_to_createAircraftWatchFragment"
+            app:destination="@id/createAircraftWatchFragment" />
     </dialog>
     <dialog
-        android:id="@+id/createHexAlertFragment"
-        android:name="eu.darken.apl.alerts.ui.create.CreateHexAlertFragment"
-        tools:layout="@layout/alerts_create_hex">
+        android:id="@+id/createAircraftWatchFragment"
+        android:name="eu.darken.apl.watchlist.ui.create.CreateAircraftWatchFragment"
+        tools:layout="@layout/watchlist_create_aircraft">
         <argument
             android:name="hex"
             android:defaultValue="@null"
@@ -141,9 +147,9 @@
             app:nullable="true" />
     </dialog>
     <dialog
-        android:id="@+id/createSquawkAlertFragment"
-        android:name="eu.darken.apl.alerts.ui.create.CreateSquawkAlertFragment"
-        tools:layout="@layout/alerts_create_squawk">
+        android:id="@+id/createSquawkWatchFragment"
+        android:name="eu.darken.apl.watchlist.ui.create.CreateSquawkWatchFragment"
+        tools:layout="@layout/watchlist_create_squawk">
         <argument
             android:name="squawk"
             android:defaultValue="@null"
@@ -156,9 +162,9 @@
             app:nullable="true" />
     </dialog>
     <dialog
-        android:id="@+id/createCallsignAlertFragment"
-        android:name="eu.darken.apl.alerts.ui.create.CreateCallsignAlertFragment"
-        tools:layout="@layout/alerts_create_callsign">
+        android:id="@+id/createFlightWatchFragment"
+        android:name="eu.darken.apl.watchlist.ui.create.CreateFlightWatchFragment"
+        tools:layout="@layout/watchlist_create_flight">
         <argument
             android:name="callsign"
             android:defaultValue="@null"

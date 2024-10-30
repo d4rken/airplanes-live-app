@@ -3,7 +3,6 @@ package eu.darken.apl.search.ui.items
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import eu.darken.apl.R
-import eu.darken.apl.alerts.core.types.AircraftAlert
 import eu.darken.apl.common.lists.BindableVH
 import eu.darken.apl.common.lists.selection.SelectableVH
 import eu.darken.apl.common.planespotters.PlanespottersMeta
@@ -12,6 +11,7 @@ import eu.darken.apl.databinding.SearchListAircraftItemBinding
 import eu.darken.apl.main.core.aircraft.Aircraft
 import eu.darken.apl.main.core.aircraft.messageTypeLabel
 import eu.darken.apl.search.ui.SearchAdapter
+import eu.darken.apl.watchlist.core.types.Watch
 
 
 class AircraftResultVH(parent: ViewGroup) :
@@ -70,19 +70,19 @@ class AircraftResultVH(parent: ViewGroup) :
 
         root.setOnClickListener { item.onTap() }
 
-        alertRibbon.apply {
-            isGone = item.alert == null
-            setOnClickListener { item.onAlert(item.alert!!) }
+        watchRibbon.apply {
+            isGone = item.watch == null
+            setOnClickListener { item.onWatch(item.watch!!) }
         }
     }
 
     data class Item(
         val aircraft: Aircraft,
-        val alert: AircraftAlert?,
+        val watch: Watch?,
         val distanceInMeter: Float?,
         val onTap: () -> Unit,
         val onThumbnail: (PlanespottersMeta) -> Unit,
-        val onAlert: (AircraftAlert) -> Unit,
+        val onWatch: (Watch) -> Unit,
     ) : SearchAdapter.Item {
         override val stableId: Long
             get() = aircraft.hex.hashCode().toLong()

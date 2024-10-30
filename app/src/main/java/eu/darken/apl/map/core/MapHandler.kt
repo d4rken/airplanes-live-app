@@ -11,14 +11,14 @@ import android.webkit.WebViewClient
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import eu.darken.apl.alerts.core.types.AircraftAlert
-import eu.darken.apl.alerts.core.types.HexAlert
 import eu.darken.apl.common.debug.logging.Logging.Priority.INFO
 import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
 import eu.darken.apl.common.debug.logging.Logging.Priority.WARN
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.main.core.aircraft.AircraftHex
+import eu.darken.apl.watchlist.core.types.AircraftWatch
+import eu.darken.apl.watchlist.core.types.Watch
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 
@@ -54,14 +54,14 @@ class MapHandler @AssistedInject constructor(
             sendEvent(Event.ShowInSearch(hex))
         }
 
-        override fun onAddAlert(hex: AircraftHex) {
-            sendEvent(Event.AddAlert(hex))
+        override fun onAddWatch(hex: AircraftHex) {
+            sendEvent(Event.AddWatch(hex))
         }
 
-        override fun getAlertCount(hex: AircraftHex): Int = currentAlerts
-            .filterIsInstance<HexAlert>()
+        override fun getWatchCount(hex: AircraftHex): Int = currentWatches
+            .filterIsInstance<AircraftWatch>()
             .count { it.hex.uppercase() == hex.uppercase() }
-            .also { log(TAG) { "getAlertCount($hex) -> $it" } }
+            .also { log(TAG) { "getWatchCount($hex) -> $it" } }
     }
 
     init {
@@ -108,7 +108,7 @@ class MapHandler @AssistedInject constructor(
         data class OpenUrl(val url: String) : Event
         data class OptionsChanged(val options: MapOptions) : Event
         data class ShowInSearch(val hex: AircraftHex) : Event
-        data class AddAlert(val hex: AircraftHex) : Event
+        data class AddWatch(val hex: AircraftHex) : Event
     }
 
     override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
@@ -123,7 +123,7 @@ class MapHandler @AssistedInject constructor(
         if (url.contains("globe.airplanes.live")) {
             view.setupUrlChangeHook()
             view.setupButtonHook("H", "onHomePressed")
-            view.setupAddAlert()
+            view.setupAddWatch()
             view.setupShowInSearch()
         } else {
             log(TAG, WARN) { "Skipping inject, not globe.airplanes.live" }
@@ -165,11 +165,11 @@ class MapHandler @AssistedInject constructor(
         webView.evaluateJavascript(jsCode, null)
     }
 
-    private val currentAlerts = mutableSetOf<AircraftAlert>()
-    fun updateAlerts(alerts: Collection<AircraftAlert>) {
-        log(TAG) { "updateAlerts(size=${alerts.size})" }
-        currentAlerts.clear()
-        currentAlerts.addAll(alerts)
+    private val currentWatches = mutableSetOf<Watch>()
+    fun updateWatches(watches: Collection<Watch>) {
+        log(TAG) { "updateWatches(size=${watches.size})" }
+        currentWatches.clear()
+        currentWatches.addAll(watches)
     }
 
 

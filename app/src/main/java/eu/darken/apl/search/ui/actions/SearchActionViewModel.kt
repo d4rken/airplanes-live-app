@@ -5,8 +5,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import eu.darken.apl.alerts.core.AlertsRepo
-import eu.darken.apl.alerts.core.types.AircraftAlert
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.flow.combine
@@ -21,6 +19,8 @@ import eu.darken.apl.main.core.aircraft.Aircraft
 import eu.darken.apl.main.core.aircraft.AircraftHex
 import eu.darken.apl.main.core.getByHex
 import eu.darken.apl.map.core.MapOptions
+import eu.darken.apl.watchlist.core.WatchlistRepo
+import eu.darken.apl.watchlist.core.types.Watch
 import kotlinx.coroutines.flow.filterNotNull
 import javax.inject.Inject
 
@@ -31,7 +31,7 @@ class SearchActionViewModel @Inject constructor(
     dispatcherProvider: DispatcherProvider,
     @ApplicationContext private val context: Context,
     private val aircraftRepo: AircraftRepo,
-    private val alertRepo: AlertsRepo,
+    private val watchlistRepo: WatchlistRepo,
     private val locationManager2: LocationManager2,
 ) : ViewModel3(dispatcherProvider) {
 
@@ -50,10 +50,10 @@ class SearchActionViewModel @Inject constructor(
     }
 
     val state = combine(
-        alertRepo.hexAlerts,
+        watchlistRepo.aircraftWatches,
         aircraft,
         locationManager2.state,
-    ) { hexAlerts, ac, locationState ->
+    ) { aircraftWatches, ac, locationState ->
         State(
             aircraft = ac,
             distanceInMeter = run {
@@ -61,7 +61,7 @@ class SearchActionViewModel @Inject constructor(
                 val location = ac.location ?: return@run null
                 locationState.location.distanceTo(location)
             },
-            alert = hexAlerts.firstOrNull { it.matches(ac) }
+            watch = aircraftWatches.firstOrNull { it.matches(ac) }
         )
     }
         .asLiveData2()
@@ -75,19 +75,19 @@ class SearchActionViewModel @Inject constructor(
         ).navigate()
     }
 
-    fun showAlert() = launch {
-        log(TAG) { "showAlert()" }
-        val alert = state.value?.alert
-        if (alert != null) {
-            SearchActionDialogDirections.actionSearchActionToAlertActionDialog(alert.id)
+    fun showWatch() = launch {
+        log(TAG) { "showWatch()" }
+        val watch = state.value?.watch
+        if (watch != null) {
+            SearchActionDialogDirections.actionSearchActionToWatchlistDetailsFragment(watch.id)
         } else {
-            SearchActionDialogDirections.actionSearchActionToCreateHexAlertFragment(aircraftHex)
+            SearchActionDialogDirections.actionSearchActionToCreateAircraftWatchFragment(aircraftHex)
         }.navigate()
     }
 
     data class State(
         val aircraft: Aircraft,
         val distanceInMeter: Float?,
-        val alert: AircraftAlert?,
+        val watch: Watch?,
     )
 }

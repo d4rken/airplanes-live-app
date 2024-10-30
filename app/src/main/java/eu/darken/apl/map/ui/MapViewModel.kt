@@ -4,8 +4,6 @@ import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import eu.darken.apl.alerts.core.AlertsRepo
-import eu.darken.apl.alerts.core.types.AircraftAlert
 import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.Logging.Priority.INFO
@@ -20,6 +18,8 @@ import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.map.core.MapSettings
 import eu.darken.apl.search.core.SearchQuery
 import eu.darken.apl.search.core.SearchRepo
+import eu.darken.apl.watchlist.core.WatchlistRepo
+import eu.darken.apl.watchlist.core.types.Watch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
@@ -34,7 +34,7 @@ class MapViewModel @Inject constructor(
     private val mapSettings: MapSettings,
     private val webpageTool: WebpageTool,
     private val searchRepo: SearchRepo,
-    private val alertsRepo: AlertsRepo,
+    private val watchlistRepo: WatchlistRepo,
     private val aircraftRepo: AircraftRepo,
 ) : ViewModel3(dispatcherProvider = dispatcherProvider) {
 
@@ -46,7 +46,7 @@ class MapViewModel @Inject constructor(
 
     val state = combine(
         refreshTrigger,
-        alertsRepo.alerts,
+        watchlistRepo.watches,
         currentOptions.onEach { log(TAG, INFO) { "New MapOptions: $it" } },
     ) { _, alerts, options ->
 
@@ -87,16 +87,16 @@ class MapViewModel @Inject constructor(
         ).navigate()
     }
 
-    fun addAlert(hex: AircraftHex) = launch {
-        log(TAG) { "addAlert($hex)" }
+    fun addWatch(hex: AircraftHex) = launch {
+        log(TAG) { "addWatch($hex)" }
         aircraftRepo.findByHex(hex) ?: searchRepo.search(SearchQuery.Hex(hex)).aircraft.single()
-        MapFragmentDirections.actionMapToCreateHexAlertFragment(
+        MapFragmentDirections.actionMapToCreateAircraftWatchFragment(
             hex = hex,
         ).navigate()
     }
 
     data class State(
         val options: MapOptions,
-        val alerts: Collection<AircraftAlert>,
+        val alerts: Collection<Watch>,
     )
 }

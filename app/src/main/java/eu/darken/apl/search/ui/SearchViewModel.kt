@@ -4,8 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import eu.darken.apl.alerts.core.AlertsRepo
-import eu.darken.apl.alerts.core.types.HexAlert
 import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.datastore.valueBlocking
@@ -30,6 +28,8 @@ import eu.darken.apl.search.ui.items.LocationPromptVH
 import eu.darken.apl.search.ui.items.NoAircraftVH
 import eu.darken.apl.search.ui.items.SearchingAircraftVH
 import eu.darken.apl.search.ui.items.SummaryVH
+import eu.darken.apl.watchlist.core.WatchlistRepo
+import eu.darken.apl.watchlist.core.types.AircraftWatch
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
@@ -46,7 +46,7 @@ class SearchViewModel @Inject constructor(
     private val webpageTool: WebpageTool,
     private val locationManager2: LocationManager2,
     private val generalSettings: GeneralSettings,
-    private val alertRepo: AlertsRepo,
+    private val watchlistRepo: WatchlistRepo,
 ) : ViewModel3(dispatcherProvider) {
 
     private val args by handle.navArgs<SearchFragmentArgs>()
@@ -122,7 +122,7 @@ class SearchViewModel @Inject constructor(
     val state: LiveData<State> = combine(
         currentInput,
         currentSearch.throttleLatest(500),
-        alertRepo.alerts,
+        watchlistRepo.watches,
         generalSettings.searchLocationDismissed.flow,
         locationManager2.state,
     ) { input, result, alerts, locationDismissed, locationState ->
@@ -159,7 +159,7 @@ class SearchViewModel @Inject constructor(
             ?.map { ac ->
                 AircraftResultVH.Item(
                     aircraft = ac,
-                    alert = alerts.filterIsInstance<HexAlert>().firstOrNull { it.matches(ac) },
+                    watch = alerts.filterIsInstance<AircraftWatch>().firstOrNull { it.matches(ac) },
                     distanceInMeter = if (locationState is LocationManager2.State.Available && ac.location != null) {
                         locationState.location.distanceTo(ac.location!!)
                     } else {
@@ -171,8 +171,8 @@ class SearchViewModel @Inject constructor(
                         ).navigate()
                     },
                     onThumbnail = { launch { webpageTool.open(it.link) } },
-                    onAlert = {
-                        SearchFragmentDirections.actionSearchToAlertActionDialog(it.id).navigate()
+                    onWatch = {
+                        SearchFragmentDirections.actionSearchToWatchlistDetailsFragment(it.id).navigate()
                     },
                 )
             }

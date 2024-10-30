@@ -68,7 +68,7 @@ class MapFragment : Fragment3(R.layout.map_fragment) {
                         is MapHandler.Event.OpenUrl -> vm.onOpenUrl(event.url)
                         is MapHandler.Event.OptionsChanged -> vm.onOptionsUpdated(event.options)
                         is MapHandler.Event.ShowInSearch -> vm.showInSearch(event.hex)
-                        is MapHandler.Event.AddAlert -> vm.addAlert(event.hex)
+                        is MapHandler.Event.AddWatch -> vm.addWatch(event.hex)
                     }
                 }
                 .launchIn(viewLifecycleOwner.lifecycleScope)
@@ -76,7 +76,7 @@ class MapFragment : Fragment3(R.layout.map_fragment) {
 
         vm.state.observe2(ui) { state ->
             mapHandler.loadMap(state.options)
-            mapHandler.updateAlerts(state.alerts)
+            mapHandler.updateWatches(state.alerts)
         }
 
         vm.events.observe2 { event ->

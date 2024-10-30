@@ -103,7 +103,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="32dp"
-        android:contentDescription="@string/general_refresh_action"
+        android:contentDescription="@string/common_refresh_action"
         android:src="@drawable/ic_refresh_24"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
 

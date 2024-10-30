@@ -34,15 +34,15 @@ class SearchActionDialog : BottomSheetDialogFragment2() {
                 onThumbnailClicked = { webpageTool.open(it.link) }
             }
 
-            addAlertAction.text = if (state.alert != null) {
-                getString(R.string.alerts_alert_edit_label)
+            addWatchAction.text = if (state.watch != null) {
+                getString(R.string.watchlist_watch_edit_label)
             } else {
-                getString(R.string.alerts_alert_add_label)
+                getString(R.string.watchlist_watch_add_label)
             }
         }
 
         ui.showMapAction.setOnClickListener { vm.showMap() }
-        ui.addAlertAction.setOnClickListener { vm.showAlert() }
+        ui.addWatchAction.setOnClickListener { vm.showWatch() }
 
         vm.events.observe2(ui) { event ->
 

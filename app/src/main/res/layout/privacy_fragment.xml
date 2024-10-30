@@ -150,7 +150,7 @@
             android:layout_marginHorizontal="32dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/general_accept_action">
+            android:text="@string/common_accept_action">
 
             <requestFocus />
         </com.google.android.material.button.MaterialButton>

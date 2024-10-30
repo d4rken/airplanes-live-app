@@ -2,25 +2,21 @@
     <string name="app_name">airplanes.live</string>
     <string name="label_settings">Settings</string>
     <string name="label_help">Help</string>
-    <string name="action_show_another_fragment">Show another fragment</string>
-    <string name="msg_what_up_this_is_another_fragment">What up! This is another fragment!</string>
-    <string name="general_error_label">Error</string>
 
-    <string name="general_success_msg">Success</string>
-
-    <string name="general_accept_action">Accept</string>
-    <string name="general_share_action">Share</string>
-    <string name="general_done_action">Done</string>
-    <string name="general_copy_action">Copy</string>
-    <string name="general_continue_action">Continue</string>
-    <string name="general_cancel_action">Cancel</string>
-    <string name="general_refresh_action">Refresh</string>
-    <string name="general_add_action">Add</string>
-    <string name="general_remove_action">Remove</string>
-    <string name="general_photo_author_label">by %s</string>
-    <string name="general_grant_permission_action">Grant permission</string>
-    <string name="general_dismiss_action">Dismiss</string>
-    <string name="general_internet_unavailable_message">Internet is not available.</string>
+    <string name="common_error_label">Error</string>
+    <string name="common_accept_action">Accept</string>
+    <string name="common_share_action">Share</string>
+    <string name="common_done_action">Done</string>
+    <string name="common_copy_action">Copy</string>
+    <string name="common_continue_action">Continue</string>
+    <string name="common_cancel_action">Cancel</string>
+    <string name="common_refresh_action">Refresh</string>
+    <string name="common_add_action">Add</string>
+    <string name="common_remove_action">Remove</string>
+    <string name="common_photo_author_label">by %s</string>
+    <string name="common_grant_permission_action">Grant permission</string>
+    <string name="common_dismiss_action">Dismiss</string>
+    <string name="common_internet_unavailable_message">Internet is not available.</string>
     <string name="common_list_select_all_action">Select all</string>
     <string name="common_show_on_map_action">Show on map</string>
 
@@ -128,35 +124,32 @@
 
     <string name="map_page_label">Map</string>
 
-    <string name="alerts_page_label">Alerts</string>
-    <string name="alerts_list_add_title">Add new alert</string>
-    <plurals name="alerts_yours_x_active_msg">
-        <item quantity="one">You have %d alerts</item>
-        <item quantity="other">You have %d alerts</item>
+    <string name="watchlist_page_label">Watchlist</string>
+    <string name="watchlist_add_title">Add new watch</string>
+    <plurals name="watchlist_yours_x_active_msg">
+        <item quantity="one">You have %d watch</item>
+        <item quantity="other">You have %d watches</item>
     </plurals>
-    <plurals name="alerts_yours_x_triggered_msg">
-        <item quantity="one">You have %d triggered alerts</item>
-        <item quantity="other">You have %d triggered alerts</item>
-    </plurals>
-    <string name="alerts_list_addnew_msg">Create your first aircraft alert now!</string>
-    <string name="alerts_add_alert_type_label_hexcode">Aircraft (hex code) </string>
-    <string name="alerts_add_alert_type_label_squawk">Transponder code (SQUAWK)</string>
-    <string name="alerts_add_alert_type_label_callsign">Flight (callsign)</string>
-    <string name="alerts_add_hexcode_title">New hexcode alert</string>
-    <string name="alerts_add_hexcode_msg">Enter the hexcode of the aircraft you want alerts for.</string>
-    <string name="alerts_add_squawk_title">New squawk alert</string>
-    <string name="alerts_add_squawk_msg">Enter the transpoder code you want to be alerted of.</string>
-    <string name="alerts_add_callsign_title">Create callsign alert</string>
-    <string name="alerts_add_callsign_msg">Enter the callsign (flight number) you want alerts for.</string>
-    <string name="alerts_item_squawk_subtitle">Transponder code (squawk) alert</string>
-    <string name="alerts_item_hexcode_subtitle">Aircraft alert</string>
-    <string name="alerts_item_callsign_subtitle">Flight alert</string>
-    <string name="alerts_spotted_never_label">Never</string>
-    <string name="alerts_remove_action">Delete alert</string>
-    <string name="alerts_remove_confirmation_title">Confirmation</string>
-    <string name="alerts_remove_confirmation_message">Delete this alert?</string>
-    <string name="alerts_alert_add_label">Add alert</string>
-    <string name="alerts_alert_edit_label">Edit alert</string>
+
+    <string name="watchlist_list_addnew_msg">Create your first aircraft alert now!</string>
+    <string name="watchlist_add_watch_type_label_aircraft">Aircraft (hex code) </string>
+    <string name="watchlist_add_watch_type_label_squawk">Transponder code (SQUAWK)</string>
+    <string name="watchlist_add_watch_type_label_flight">Flight (callsign)</string>
+    <string name="watchlist_add_aircraft_title">New aircraft alert</string>
+    <string name="watchlist_add_aircraft_msg">Enter the hexcode of the aircraft you want alerts for.</string>
+    <string name="watchlist_add_squawk_title">New squawk alert</string>
+    <string name="watchlist_add_squawk_msg">Enter the transpoder code you want to be alerted of.</string>
+    <string name="watchlist_add_flight_title">Create callsign alert</string>
+    <string name="watchlist_add_flight_msg">Enter the callsign (flight number) you want alerts for.</string>
+    <string name="watchlist_item_squawk_subtitle">Transponder code (squawk) alert</string>
+    <string name="watchlist_item_aircraft_subtitle">Aircraft alert</string>
+    <string name="watchlist_item_flight_subtitle">Flight alert</string>
+    <string name="watchlist_spotted_never_label">Never</string>
+    <string name="watchlist_remove_action">Delete alert</string>
+    <string name="watchlist_remove_confirmation_title">Confirmation</string>
+    <string name="watchlist_remove_confirmation_message">Delete this alert?</string>
+    <string name="watchlist_watch_add_label">Add to watchlist</string>
+    <string name="watchlist_watch_edit_label">Edit watchlist</string>
 
     <string name="search_page_label">Search</string>
     <string name="search_search_by_aircraft">Search by aircraft</string>
@@ -185,7 +178,7 @@
     </plurals>
     <string name="common_show_on_map">Show on map</string>
     <string name="common_show_in_search">Show in search</string>
-    <string name="alerts_note_label">Note</string>
+    <string name="watchlist_note_label">Note</string>
     <string name="common_altitude_label">Altitude</string>
     <string name="common_speed_label">Speed</string>
     <string name="aircraft_details_datasource_x">Source: %s</string>
