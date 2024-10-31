@@ -32,7 +32,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/title"
-        style="@style/TextAppearance.Material3.TitleMedium"
+        style="@style/TextAppearance.Material3.TitleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -60,11 +60,12 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/subtitle"
-        style="@style/TextAppearance.Material3.TitleSmall"
+        style="@style/TextAppearance.Material3.BodyMedium"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:ellipsize="end"
+        android:ellipsize="middle"
+        android:textStyle="bold"
         android:singleLine="true"
         android:translationY="-3dp"
         app:layout_constraintBottom_toTopOf="@id/info_box"

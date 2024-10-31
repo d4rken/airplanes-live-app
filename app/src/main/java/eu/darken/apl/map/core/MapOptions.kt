@@ -12,7 +12,8 @@ data class MapOptions(
 ) : Parcelable {
     @Parcelize
     data class Filter(
-        val icaos: Set<AircraftHex> = emptySet(),
+        val selected: Set<AircraftHex> = emptySet(),
+        val filtered: Set<AircraftHex> = emptySet(),
         val noIsolation: Boolean? = null,
     ) : Parcelable
 
@@ -33,13 +34,17 @@ data class MapOptions(
         val urlExtra = StringBuilder()
 
         filter.apply {
-            icaos
+            selected
                 .takeIf { it.isNotEmpty() }
                 ?.joinToString(",")
                 ?.let {
-                    urlExtra.append("&icaoFilter=$it")
+                    urlExtra.append("&icao=$it")
                     if (noIsolation == true) urlExtra.append("&noIsolation")
                 }
+            filtered
+                .takeIf { it.isNotEmpty() }
+                ?.joinToString(",")
+                ?.let { urlExtra.append("&icaoFilter=$it") }
         }
 
         rendering.apply {

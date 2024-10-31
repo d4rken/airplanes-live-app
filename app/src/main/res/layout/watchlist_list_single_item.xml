@@ -114,13 +114,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
+                android:ellipsize="middle"
+                android:singleLine="true"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/info_box"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/thumbnail"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed"
-                tools:text="Lockheed C-5M Super Galaxy" />
+                tools:text="Lockheed C-5M Super Galaxy Galaxy Lorem Ipsum" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/info_box"
