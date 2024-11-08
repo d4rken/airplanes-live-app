@@ -82,4 +82,10 @@
 
         <item name="dynamicColorThemeOverlay">@style/Theme.Material3.DynamicColors.Light.Floating</item>
     </style>
+
+    <style name="AppThemeSplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/ic_launcher_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
+    </style>
 </resources>

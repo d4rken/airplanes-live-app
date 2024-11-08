@@ -22,16 +22,6 @@
             android:data="https://www.planespotters.net/" />
     </eu.darken.apl.common.preferences.IntentPreference>
 
-    <eu.darken.apl.common.preferences.IntentPreference
-        android:icon="@mipmap/ic_launcher_round"
-        android:key="thanks.icon"
-        android:summary="It\'s a work of art."
-        android:title="Thanks to ADSBThis for the lovely icon.">
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:data="https://discord.com/channels/546776636352364576/676004018463571989/1146152901077647502" />
-    </eu.darken.apl.common.preferences.IntentPreference>
-
     <PreferenceCategory
         android:title="@string/settings_licenses_label"
         app:iconSpaceReserved="false">
