@@ -226,11 +226,7 @@ class SearchViewModel @Inject constructor(
         val acs = items.filterIsInstance<AircraftResultVH.Item>().map { it.aircraft }
         if (acs.isEmpty()) return
         SearchFragmentDirections.actionSearchToMap(
-            mapOptions = MapOptions(
-                filter = MapOptions.Filter(
-                    icaos = acs.map { it.hex }.toSet(),
-                )
-            )
+            mapOptions = MapOptions.focusAircraft(acs.toSet())
         ).navigate()
     }
 

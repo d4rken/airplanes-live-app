@@ -106,23 +106,21 @@ class WatchlistDetailsViewModel @Inject constructor(
     fun showOnMap() = launch {
         log(TAG) { "showOnMap()" }
         WatchlistDetailsFragmentDirections.actionWatchlistDetailsFragmentToMap(
-            mapOptions = MapOptions(
-                filter = when (val watchStatus = status.first()) {
-                    is AircraftWatch.Status -> {
-                        MapOptions.Filter(icaos = setOf(watchStatus.hex))
-                    }
-
-                    is SquawkWatch.Status -> {
-                        val hexes = searchRepo.search(SearchQuery.Squawk(watchStatus.squawk))
-                        MapOptions.Filter(icaos = hexes.aircraft.map { it.hex }.toSet())
-                    }
-
-                    is FlightWatch.Status -> {
-                        val hexes = searchRepo.search(SearchQuery.Callsign(watchStatus.callsign))
-                        MapOptions.Filter(icaos = hexes.aircraft.map { it.hex }.toSet())
-                    }
+            mapOptions = when (val watchStatus = status.first()) {
+                is AircraftWatch.Status -> {
+                    MapOptions.focus(watchStatus.hex)
                 }
-            )
+
+                is SquawkWatch.Status -> {
+                    val hexes = searchRepo.search(SearchQuery.Squawk(watchStatus.squawk))
+                    MapOptions.focusAircraft(hexes.aircraft)
+                }
+
+                is FlightWatch.Status -> {
+                    val hexes = searchRepo.search(SearchQuery.Callsign(watchStatus.callsign))
+                    MapOptions.focusAircraft(hexes.aircraft)
+                }
+            }
         ).navigate()
     }
 

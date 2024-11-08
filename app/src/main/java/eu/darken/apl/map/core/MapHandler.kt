@@ -37,14 +37,22 @@ class MapHandler @AssistedInject constructor(
             val old = currentOptions
             currentOptions = old.copy(
                 filter = old.filter.copy(
-                    icaos = newUrl
+                    selected = newUrl
                         .takeIf { it.contains("icao=") }
                         ?.substringAfter("icao=")
                         ?.substringBefore("&")
                         ?.split(",")
                         ?.filter { it.isNotEmpty() }
                         ?.toSet()
-                        ?: emptySet()
+                        ?: emptySet(),
+                    filtered = newUrl
+                        .takeIf { it.contains("icaoFilter=") }
+                        ?.substringAfter("icaoFilter=")
+                        ?.substringBefore("&")
+                        ?.split(",")
+                        ?.filter { it.isNotEmpty() }
+                        ?.toSet()
+                        ?: emptySet(),
                 )
             )
             sendEvent(Event.OptionsChanged(currentOptions))

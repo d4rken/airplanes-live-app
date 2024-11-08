@@ -22,6 +22,7 @@ import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.watchlist.core.WatchlistRepo
 import eu.darken.apl.watchlist.core.types.Watch
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 
@@ -66,12 +67,12 @@ class SearchActionViewModel @Inject constructor(
     }
         .asLiveData2()
 
-    fun showMap() {
+    fun showMap() = launch {
         log(TAG) { "showMap()" }
         SearchActionDialogDirections.actionSearchActionToMap(
-            mapOptions = MapOptions(
-                filter = MapOptions.Filter(icaos = setOf(aircraftHex))
-            )
+            mapOptions = aircraft.firstOrNull()
+                ?.let { MapOptions.focus(it) }
+                ?: MapOptions.focus(aircraftHex)
         ).navigate()
     }
 

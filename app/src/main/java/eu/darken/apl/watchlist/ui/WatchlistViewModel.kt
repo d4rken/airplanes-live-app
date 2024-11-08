@@ -100,9 +100,7 @@ class WatchlistViewModel @Inject constructor(
                         },
                         onAircraftTap = {
                             WatchlistFragmentDirections.actionWatchlistToMap(
-                                mapOptions = MapOptions(
-                                    filter = MapOptions.Filter(icaos = setOf(it.hex))
-                                )
+                                mapOptions = MapOptions.focus(it)
                             ).navigate()
                         },
                         onThumbnail = { launch { webpageTool.open(it.link) } },

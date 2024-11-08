@@ -95,6 +95,11 @@ class MapViewModel @Inject constructor(
         ).navigate()
     }
 
+    fun reset() = launch {
+        log(TAG) { "reset()" }
+        currentOptions.value = MapOptions()
+    }
+
     data class State(
         val options: MapOptions,
         val alerts: Collection<Watch>,

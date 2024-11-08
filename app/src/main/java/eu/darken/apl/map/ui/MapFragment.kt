@@ -55,6 +55,11 @@ class MapFragment : Fragment3(R.layout.map_fragment) {
                         true
                     }
 
+                    R.id.action_reset_map -> {
+                        vm.reset()
+                        true
+                    }
+
                     else -> false
                 }
             }

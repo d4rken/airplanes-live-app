@@ -11,6 +11,7 @@
     <string name="common_continue_action">Continue</string>
     <string name="common_cancel_action">Cancel</string>
     <string name="common_refresh_action">Refresh</string>
+    <string name="common_reset_action">Reset</string>
     <string name="common_add_action">Add</string>
     <string name="common_remove_action">Remove</string>
     <string name="common_photo_author_label">by %s</string>

@@ -1,6 +1,7 @@
 package eu.darken.apl.map.core
 
 import android.os.Parcelable
+import eu.darken.apl.main.core.aircraft.Aircraft
 import eu.darken.apl.main.core.aircraft.AircraftHex
 import kotlinx.parcelize.Parcelize
 
@@ -61,5 +62,25 @@ data class MapOptions(
         if (urlExtra.isNotEmpty()) urlExtra.replace(0, 1, "?")
 
         return if (urlExtra.isEmpty()) baseUrl else "$baseUrl$urlExtra"
+    }
+
+    companion object {
+        fun focus(aircraft: Aircraft): MapOptions = focus(listOf(aircraft.hex))
+
+        fun focusAircraft(aircraft: Collection<Aircraft>): MapOptions = focus(aircraft.map { it.hex })
+
+        fun focus(hex: AircraftHex): MapOptions = focus(listOf(hex))
+
+        fun focus(hexes: Collection<AircraftHex>): MapOptions = MapOptions(
+            filter = when {
+                hexes.size == 1 -> Filter(
+                    selected = setOf(hexes.first())
+                )
+
+                else -> Filter(
+                    filtered = hexes.toSet()
+                )
+            }
+        )
     }
 }
