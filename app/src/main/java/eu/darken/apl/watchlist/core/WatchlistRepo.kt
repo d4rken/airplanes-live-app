@@ -44,30 +44,16 @@ class WatchlistRepo @Inject constructor(
     val isRefreshing = MutableStateFlow(false)
     private val lock = Mutex()
 
-    val aircraftWatches: Flow<List<AircraftWatch>> = watchlistDatabase.aircraftWatch.current()
+    val watches: Flow<List<Watch>> = watchlistDatabase.watches.current()
         .map { ws -> ws.map { AircraftWatch(it) } }
         .replayingShare(appScope)
-    val flightWatches: Flow<List<FlightWatch>> = watchlistDatabase.flightWatch.current()
-        .map { ws -> ws.map { FlightWatch(it) } }
-        .replayingShare(appScope)
-    val squawkWatches: Flow<List<SquawkWatch>> = watchlistDatabase.squawkWatch.current()
-        .map { ws -> ws.map { SquawkWatch(it) } }
-        .replayingShare(appScope)
-
-    val watches: Flow<List<Watch>> = combine(
-        aircraftWatches,
-        flightWatches,
-        squawkWatches
-    ) { hex, callsign, squawk -> (hex + callsign + squawk) }
 
     val status: Flow<Collection<Watch.Status>> = combine(
         refreshTrigger,
         watchHistory.firehose,
         aircraftRepo.aircraft,
-        aircraftWatches,
-        flightWatches,
-        squawkWatches,
-    ) { _, _, aircraft, acWatches, flightWatches, squawkWatches ->
+        watches
+    ) { _, _, aircraft, watches ->
         log(TAG) { "Search cache size ${aircraft.size}" }
 
         val status = mutableSetOf<Watch.Status>()
@@ -136,7 +122,7 @@ class WatchlistRepo @Inject constructor(
         )
         watchlistDatabase.flightWatch.insert(entity)
         return FlightWatch(
-            entity = entity,
+            specific = entity,
         ).also {
             log(TAG, INFO) { "createFlight(...): Created $it" }
         }
@@ -150,7 +136,7 @@ class WatchlistRepo @Inject constructor(
         )
         watchlistDatabase.aircraftWatch.insert(entity)
         return AircraftWatch(
-            entity = entity,
+            specific = entity,
         ).also {
             log(TAG, INFO) { "createAircraft(...): Created $it" }
         }

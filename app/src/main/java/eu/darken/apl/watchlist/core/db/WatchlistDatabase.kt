@@ -5,9 +5,7 @@ import androidx.room.Room
 import dagger.hilt.android.qualifiers.ApplicationContext
 import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.watchlist.core.db.history.WatchCheckDao
-import eu.darken.apl.watchlist.core.db.types.AircraftWatchDao
-import eu.darken.apl.watchlist.core.db.types.FlightWatchDao
-import eu.darken.apl.watchlist.core.db.types.SquawkWatchDao
+import eu.darken.apl.watchlist.core.db.types.WatchDao
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,14 +21,8 @@ class WatchlistDatabase @Inject constructor(
         ).build()
     }
 
-    val aircraftWatch: AircraftWatchDao
-        get() = database.aircraftWatch()
-
-    val flightWatch: FlightWatchDao
-        get() = database.flightWatch()
-
-    val squawkWatch: SquawkWatchDao
-        get() = database.squawkWatch()
+    val watches: WatchDao
+        get() = database.watches()
 
     val checks: WatchCheckDao
         get() = database.checks()

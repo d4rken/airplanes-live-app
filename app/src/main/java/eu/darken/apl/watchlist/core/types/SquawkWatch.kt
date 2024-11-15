@@ -3,19 +3,21 @@ package eu.darken.apl.watchlist.core.types
 import eu.darken.apl.main.core.aircraft.Aircraft
 import eu.darken.apl.main.core.aircraft.SquawkCode
 import eu.darken.apl.watchlist.core.WatchId
+import eu.darken.apl.watchlist.core.db.types.BaseWatchEntity
 import eu.darken.apl.watchlist.core.db.types.SquawkWatchEntity
 import eu.darken.apl.watchlist.core.history.WatchCheck
 
 data class SquawkWatch(
-    private val entity: SquawkWatchEntity,
+    private val base: BaseWatchEntity,
+    private val specific: SquawkWatchEntity,
 ) : Watch {
     override val id: WatchId
-        get() = entity.id
+        get() = specific.id
     override val note: String
-        get() = entity.userNote
+        get() = base.userNote
 
     val code: SquawkCode
-        get() = entity.code
+        get() = specific.code
 
     override fun matches(ac: Aircraft): Boolean {
         return ac.squawk?.uppercase() == code.uppercase()

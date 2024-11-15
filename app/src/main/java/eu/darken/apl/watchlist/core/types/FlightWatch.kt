@@ -3,21 +3,23 @@ package eu.darken.apl.watchlist.core.types
 import eu.darken.apl.main.core.aircraft.Aircraft
 import eu.darken.apl.main.core.aircraft.Callsign
 import eu.darken.apl.watchlist.core.WatchId
+import eu.darken.apl.watchlist.core.db.types.BaseWatchEntity
 import eu.darken.apl.watchlist.core.db.types.FlightWatchEntity
 import eu.darken.apl.watchlist.core.history.WatchCheck
 
 
 data class FlightWatch(
-    private val entity: FlightWatchEntity,
+    private val base: BaseWatchEntity,
+    private val specific: FlightWatchEntity,
 ) : Watch {
     override val id: WatchId
-        get() = entity.id
+        get() = specific.id
 
     override val note: String
-        get() = entity.userNote
+        get() = base.userNote
 
     val callsign: Callsign
-        get() = entity.callsign
+        get() = specific.callsign
 
     override fun matches(ac: Aircraft): Boolean {
         return ac.callsign?.uppercase() == callsign.uppercase()
