@@ -68,11 +68,7 @@ class WatchlistViewModel @Inject constructor(
                     is AircraftWatch.Status -> SingleAircraftWatchVH.Item(
                         status = alert,
                         aircraft = aircraftRepo.findByHex(alert.hex),
-                        distanceInMeter = run {
-                            if (locationState !is LocationManager2.State.Available) return@run null
-                            val location = alert.tracked.firstOrNull()?.location ?: return@run null
-                            locationState.location.distanceTo(location)
-                        },
+                        ourLocation = (locationState as? LocationManager2.State.Available)?.location,
                         onTap = {
                             WatchlistFragmentDirections.actionWatchlistToWatchlistDetailsFragment(alert.id).navigate()
                         },
@@ -82,11 +78,7 @@ class WatchlistViewModel @Inject constructor(
                     is FlightWatch.Status -> SingleAircraftWatchVH.Item(
                         status = alert,
                         aircraft = aircraftRepo.findByHex(alert.callsign),
-                        distanceInMeter = run {
-                            if (locationState !is LocationManager2.State.Available) return@run null
-                            val location = alert.tracked.firstOrNull()?.location ?: return@run null
-                            locationState.location.distanceTo(location)
-                        },
+                        ourLocation = (locationState as? LocationManager2.State.Available)?.location,
                         onTap = {
                             WatchlistFragmentDirections.actionWatchlistToWatchlistDetailsFragment(alert.id).navigate()
                         },
@@ -95,6 +87,12 @@ class WatchlistViewModel @Inject constructor(
 
                     is SquawkWatch.Status -> MultiAircraftWatchVH.Item(
                         status = alert,
+                        ourLocation = (locationState as? LocationManager2.State.Available)?.location,
+                        onShowMore = {
+                            WatchlistFragmentDirections.actionWatchlistToSearch(
+                                targetSquawks = arrayOf(alert.squawk)
+                            ).navigate()
+                        },
                         onTap = {
                             WatchlistFragmentDirections.actionWatchlistToWatchlistDetailsFragment(alert.id).navigate()
                         },

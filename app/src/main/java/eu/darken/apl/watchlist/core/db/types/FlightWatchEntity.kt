@@ -21,4 +21,8 @@ import eu.darken.apl.watchlist.core.WatchId
 data class FlightWatchEntity(
     @PrimaryKey @ColumnInfo(name = "id") val id: WatchId,
     @ColumnInfo(name = "callsign") val callsign: Callsign,
-) : WatchType
+) : WatchType {
+    companion object {
+        const val TYPE_KEY = "flight"
+    }
+}

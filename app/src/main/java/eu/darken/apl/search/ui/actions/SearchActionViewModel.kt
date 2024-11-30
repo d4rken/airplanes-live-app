@@ -51,10 +51,10 @@ class SearchActionViewModel @Inject constructor(
     }
 
     val state = combine(
-        watchlistRepo.aircraftWatches,
+        watchlistRepo.watches,
         aircraft,
         locationManager2.state,
-    ) { aircraftWatches, ac, locationState ->
+    ) { watches, ac, locationState ->
         State(
             aircraft = ac,
             distanceInMeter = run {
@@ -62,10 +62,9 @@ class SearchActionViewModel @Inject constructor(
                 val location = ac.location ?: return@run null
                 locationState.location.distanceTo(location)
             },
-            watch = aircraftWatches.firstOrNull { it.matches(ac) }
+            watch = watches.firstOrNull { it.matches(ac) }
         )
-    }
-        .asLiveData2()
+    }.asLiveData2()
 
     fun showMap() = launch {
         log(TAG) { "showMap()" }

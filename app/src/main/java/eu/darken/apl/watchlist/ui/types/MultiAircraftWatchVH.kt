@@ -1,8 +1,10 @@
 package eu.darken.apl.watchlist.ui.types
 
+import android.location.Location
 import android.text.format.DateUtils
 import android.view.ViewGroup
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import eu.darken.apl.R
 import eu.darken.apl.common.lists.BindableVH
 import eu.darken.apl.common.lists.differ.update
@@ -63,15 +65,33 @@ class MultiAircraftWatchVH(parent: ViewGroup) :
         }
 
         run {
-            val acItems = status.tracked.map { ac ->
-                AircraftVH.Item(
-                    ac = ac,
-                    onTap = { item.onAircraftTap(it) },
-                    onThumbnail = { item.onThumbnail(it) }
-                )
-            }
+            val acItems = status.tracked
+                .map { ac ->
+                    val distance = if (item.ourLocation != null && ac.location != null) {
+                        item.ourLocation.distanceTo(ac.location!!)
+                    } else {
+                        null
+                    }
+                    AircraftVH.Item(
+                        ac = ac,
+                        distanceInMeters = distance,
+                        onTap = { item.onAircraftTap(it) },
+                        onThumbnail = { item.onThumbnail(it) }
+                    )
+                }
+                .sortedBy { it.distanceInMeters }
+                .take(5)
+
             subAdapter.update(acItems)
             list.isGone = acItems.isEmpty()
+
+            viewMoreAction.apply {
+                isVisible = status.tracked.size > acItems.size
+                val countText = getQuantityString(R.plurals.result_x_items, status.tracked.size)
+                val actionText = getString(R.string.watchlist_show_all_action)
+                text = "$countText ($actionText)"
+                setOnClickListener { item.onShowMore() }
+            }
         }
 
         noteBox.isGone = status.note.isBlank()
@@ -84,6 +104,8 @@ class MultiAircraftWatchVH(parent: ViewGroup) :
 
     data class Item(
         val status: Watch.Status,
+        val ourLocation: Location?,
+        val onShowMore: () -> Unit,
         val onTap: (Item) -> Unit,
         val onAircraftTap: (Aircraft) -> Unit,
         val onThumbnail: (PlanespottersMeta) -> Unit,

@@ -47,9 +47,11 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:text="@string/watchlist_item_squawk_subtitle"
+            app:layout_constraintBottom_toTopOf="@id/list"
             app:layout_constraintEnd_toStartOf="@id/last_triggered"
             app:layout_constraintStart_toEndOf="@id/alert_icon"
-            app:layout_constraintTop_toBottomOf="@id/title" />
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_goneMarginBottom="16dp" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/last_triggered"
@@ -67,13 +69,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            app:layout_goneMarginBottom="16dp"
             android:layout_marginTop="16dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/note_box"
+            app:layout_constraintBottom_toTopOf="@id/view_more_action"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subtitle" />
+            app:layout_constraintTop_toBottomOf="@id/subtitle"
+            app:layout_goneMarginBottom="16dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/view_more_action"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/watchlist_show_all_action"
+            app:layout_constraintBottom_toTopOf="@id/note_box"
+            app:layout_constraintTop_toBottomOf="@id/list"
+            app:layout_goneMarginBottom="16dp" />
 
         <LinearLayout
             android:id="@+id/note_box"
@@ -84,12 +97,12 @@
             android:orientation="vertical"
             android:paddingHorizontal="16dp"
             android:paddingVertical="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:visibility="gone"
-            tools:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/list">
+            app:layout_constraintTop_toBottomOf="@id/view_more_action"
+            tools:visibility="visible">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/note_value"

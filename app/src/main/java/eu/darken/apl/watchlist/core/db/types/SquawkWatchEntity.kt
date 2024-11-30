@@ -21,4 +21,8 @@ import eu.darken.apl.watchlist.core.WatchId
 data class SquawkWatchEntity(
     @PrimaryKey @ColumnInfo(name = "id") val id: WatchId,
     @ColumnInfo(name = "code") val code: SquawkCode,
-) : WatchType
+) : WatchType {
+    companion object {
+        const val TYPE_KEY = "squawk"
+    }
+}

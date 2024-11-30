@@ -14,7 +14,16 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WatchDao {
     @Query("SELECT * FROM watch_base WHERE id = :watchId")
-    suspend fun get(watchId: WatchId): BaseWatchEntity?
+    suspend fun getBase(watchId: WatchId): BaseWatchEntity?
+
+    @Query("SELECT * FROM watch_aircraft WHERE id = :watchId")
+    suspend fun getAircraft(watchId: WatchId): AircraftWatchEntity?
+
+    @Query("SELECT * FROM watch_flight WHERE id = :watchId")
+    suspend fun getFlight(watchId: WatchId): FlightWatchEntity?
+
+    @Query("SELECT * FROM watch_squawk WHERE id = :watchId")
+    suspend fun getSquawk(watchId: WatchId): SquawkWatchEntity?
 
     @Query("SELECT * FROM watch_base ORDER BY id DESC LIMIT 1")
     fun latest(): Flow<BaseWatchEntity?>
@@ -33,7 +42,7 @@ interface WatchDao {
 
     @Transaction
     suspend fun updateNoteIfDifferent(watchId: WatchId, newNote: String) {
-        val entity = get(watchId) ?: throw IllegalArgumentException("No watch found for $watchId")
+        val entity = getBase(watchId) ?: throw IllegalArgumentException("No watch found for $watchId")
 
         if (entity.userNote == newNote) {
             log(WatchlistDatabase.TAG) { "AircraftWatchEntity note is the same, not updating." }
@@ -43,41 +52,25 @@ interface WatchDao {
         update(entity.copy(userNote = newNote))
     }
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insert(aircraft: AircraftWatchEntity): Long
-
-    @Transaction
-    suspend fun insert(base: BaseWatchEntity, aircraft: AircraftWatchEntity) {
-        insert(base)
-        insert(aircraft)
-    }
-
-    @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insert(flight: FlightWatchEntity): Long
-
-    @Transaction
-    suspend fun insert(base: BaseWatchEntity, flight: FlightWatchEntity) {
-        insert(base)
-        insert(flight)
-    }
-
-    @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insert(squawk: SquawkWatchEntity): Long
-
-    @Transaction
-    suspend fun insert(base: BaseWatchEntity, squawk: SquawkWatchEntity) {
-        insert(base)
-        insert(squawk)
-    }
-
     @Transaction
     suspend fun <T : WatchType> insert(base: BaseWatchEntity, related: T) {
         insert(base)
         when (related) {
             is AircraftWatchEntity -> insert(related)
             is FlightWatchEntity -> insert(related)
-//            is SquawkWatchEntity -> insert(related)
-//            else -> throw IllegalArgumentException("Unknown related entity type.")
+            is SquawkWatchEntity -> insert(related)
+            else -> throw IllegalArgumentException("Unknown related entity type.")
         }
     }
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insert(aircraft: AircraftWatchEntity): Long
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insert(flight: FlightWatchEntity): Long
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insert(squawk: SquawkWatchEntity): Long
+
+
 }

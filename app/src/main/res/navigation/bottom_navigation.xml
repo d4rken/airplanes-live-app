@@ -45,6 +45,9 @@
         <action
             android:id="@+id/action_watchlist_to_map"
             app:destination="@id/map" />
+        <action
+            android:id="@+id/action_watchlist_to_search"
+            app:destination="@id/search" />
     </fragment>
     <dialog
         android:id="@+id/watchlistDetailsFragment"

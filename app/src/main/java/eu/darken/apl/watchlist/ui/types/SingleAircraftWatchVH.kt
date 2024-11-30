@@ -1,5 +1,6 @@
 package eu.darken.apl.watchlist.ui.types
 
+import android.location.Location
 import android.text.format.DateUtils
 import android.view.ViewGroup
 import androidx.core.view.isGone
@@ -97,7 +98,10 @@ class SingleAircraftWatchVH(parent: ViewGroup) :
                 )
             }
             thirdValue.text = when {
-                item.distanceInMeter != null -> "${(item.distanceInMeter / 1000).toInt()} km"
+                item.ourLocation != null && aircraft?.location != null -> {
+                    val distanceInMeter = item.ourLocation.distanceTo(aircraft.location!!)
+                    "${(distanceInMeter / 1000).toInt()} km"
+                }
 
                 else -> "?"
             }
@@ -116,7 +120,7 @@ class SingleAircraftWatchVH(parent: ViewGroup) :
     data class Item(
         val status: Watch.Status,
         val aircraft: Aircraft?,
-        val distanceInMeter: Float?,
+        val ourLocation: Location?,
         val onTap: (Item) -> Unit,
         val onThumbnail: (PlanespottersMeta) -> Unit,
     ) : WatchlistAdapter.Item {

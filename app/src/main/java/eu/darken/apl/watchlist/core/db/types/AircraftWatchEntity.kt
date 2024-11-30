@@ -21,4 +21,9 @@ import eu.darken.apl.watchlist.core.WatchId
 data class AircraftWatchEntity(
     @PrimaryKey @ColumnInfo(name = "id") val id: WatchId,
     @ColumnInfo(name = "hex_code") val hexCode: AircraftHex,
-) : WatchType
+) : WatchType {
+
+    companion object {
+        const val TYPE_KEY = "aircraft"
+    }
+}

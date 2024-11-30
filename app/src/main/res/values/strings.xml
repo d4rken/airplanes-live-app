@@ -151,6 +151,7 @@
     <string name="watchlist_remove_confirmation_message">Delete this watch?</string>
     <string name="watchlist_watch_add_label">Add to watchlist</string>
     <string name="watchlist_watch_edit_label">Edit watchlist</string>
+    <string name="watchlist_show_all_action">Show all</string>
 
     <string name="search_page_label">Search</string>
     <string name="search_search_by_aircraft">Search by aircraft</string>

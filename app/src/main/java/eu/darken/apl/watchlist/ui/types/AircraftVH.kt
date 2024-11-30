@@ -41,6 +41,7 @@ class AircraftVH(parent: ViewGroup) :
 
     data class Item(
         val ac: Aircraft,
+        val distanceInMeters: Float?,
         val onTap: (Aircraft) -> Unit,
         val onThumbnail: (PlanespottersMeta) -> Unit,
     ) : MultiAircraftAdapter.Item {
