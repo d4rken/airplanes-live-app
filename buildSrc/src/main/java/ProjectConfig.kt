@@ -27,17 +27,6 @@ object ProjectConfig {
     }
 }
 
-fun lastCommitHash(): String = Runtime.getRuntime().exec("git rev-parse --short HEAD").let { process ->
-    process.waitFor()
-    val output = process.inputStream.use { input ->
-        input.bufferedReader().use {
-            it.readText()
-        }
-    }
-    process.destroy()
-    output.trim()
-}
-
 /**
  * Configures the [kotlinOptions][org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions] extension.
  */

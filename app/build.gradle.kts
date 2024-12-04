@@ -22,7 +22,6 @@ android {
         testInstrumentationRunner = "eu.darken.apl.HiltTestRunner"
 
         buildConfigField("String", "PACKAGENAME", "\"${ProjectConfig.packageName}\"")
-        buildConfigField("String", "GITSHA", "\"${lastCommitHash()}\"")
         buildConfigField("String", "VERSION_CODE", "\"${ProjectConfig.Version.code}\"")
         buildConfigField("String", "VERSION_NAME", "\"${ProjectConfig.Version.name}\"")
     }
@@ -89,7 +88,7 @@ android {
         if (listOf("release", "beta").any { variantName.toLowerCase().contains(it) }) {
             val outputFileName = ProjectConfig.packageName +
                     "-v${defaultConfig.versionName}-${defaultConfig.versionCode}" +
-                    "-${variantName.toUpperCase()}-${lastCommitHash()}.apk"
+                    "-${variantName.uppercase()}.apk"
 
             variantOutputImpl.outputFileName = outputFileName
         }
