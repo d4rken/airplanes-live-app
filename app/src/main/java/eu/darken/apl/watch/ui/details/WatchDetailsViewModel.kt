@@ -19,7 +19,7 @@ import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.search.core.SearchQuery
 import eu.darken.apl.search.core.SearchRepo
 import eu.darken.apl.watch.core.WatchId
-import eu.darken.apl.watch.core.WatchlistRepo
+import eu.darken.apl.watch.core.WatchRepo
 import eu.darken.apl.watch.core.types.AircraftWatch
 import eu.darken.apl.watch.core.types.FlightWatch
 import eu.darken.apl.watch.core.types.SquawkWatch
@@ -37,28 +37,28 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class WatchlistDetailsViewModel @Inject constructor(
+class WatchDetailsViewModel @Inject constructor(
     handle: SavedStateHandle,
     dispatcherProvider: DispatcherProvider,
-    private val watchlistRepo: WatchlistRepo,
+    private val watchRepo: WatchRepo,
     private val searchRepo: SearchRepo,
     private val aircraftRepo: AircraftRepo,
     private val locationManager2: LocationManager2,
 ) : ViewModel3(dispatcherProvider) {
 
-    private val navArgs by handle.navArgs<WatchlistDetailsFragmentArgs>()
+    private val navArgs by handle.navArgs<WatchDetailsFragmentArgs>()
     private val watchId: WatchId = navArgs.watchId
 
-    val events = SingleLiveEvent<WatchlistDetailsEvents>()
+    val events = SingleLiveEvent<WatchDetailsEvents>()
 
     private val trigger = MutableStateFlow(UUID.randomUUID())
 
-    private val status = watchlistRepo.status
+    private val status = watchRepo.status
         .mapNotNull { data -> data.singleOrNull { it.id == watchId } }
         .replayingShare(viewModelScope)
 
     init {
-        watchlistRepo.status
+        watchRepo.status
             .map { alerts -> alerts.singleOrNull { it.id == watchId } }
             .filter { it == null }
             .take(1)
@@ -96,16 +96,16 @@ class WatchlistDetailsViewModel @Inject constructor(
     fun removeAlert(confirmed: Boolean = false) = launch {
         log(TAG) { "removeAlert()" }
         if (!confirmed) {
-            events.postValue(WatchlistDetailsEvents.RemovalConfirmation(watchId))
+            events.postValue(WatchDetailsEvents.RemovalConfirmation(watchId))
             return@launch
         }
 
-        watchlistRepo.delete(state.value!!.status.id)
+        watchRepo.delete(state.value!!.status.id)
     }
 
     fun showOnMap() = launch {
         log(TAG) { "showOnMap()" }
-        WatchlistDetailsFragmentDirections.actionWatchlistDetailsFragmentToMap(
+        WatchDetailsFragmentDirections.actionWatchlistDetailsFragmentToMap(
             mapOptions = when (val watchStatus = status.first()) {
                 is AircraftWatch.Status -> {
                     MapOptions.focus(watchStatus.hex)
@@ -126,12 +126,12 @@ class WatchlistDetailsViewModel @Inject constructor(
 
     fun updateNote(note: String) = launch {
         log(TAG) { "updateNote($note)" }
-        watchlistRepo.updateNote(watchId, note.trim())
+        watchRepo.updateNote(watchId, note.trim())
     }
 
     fun enableNotifications(enabled: Boolean) = launch {
         log(TAG) { "enableNotification($enabled)" }
-        watchlistRepo.setNotification(watchId, enabled)
+        watchRepo.setNotification(watchId, enabled)
     }
 
     data class State(
@@ -141,7 +141,7 @@ class WatchlistDetailsViewModel @Inject constructor(
     )
 
     companion object {
-        private val TAG = logTag("Watchlist", "Action", "Dialog", "ViewModel")
+        private val TAG = logTag("Watch", "Action", "Dialog", "ViewModel")
     }
 
 }

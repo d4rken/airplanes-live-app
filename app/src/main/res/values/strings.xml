@@ -162,6 +162,9 @@
     <string name="watch_notification_alert_squawk_title">Transponder alert</string>
     <string name="watch_notification_alert_squawk_msg">Code %s is being transmitted by %d aircraft.</string>
 
+    <string name="watch_settings_title">Watchlist</string>
+    <string name="watch_settings_summary">Watchlist related settings, e.g. check interval.</string>
+
     <string name="search_page_label">Search</string>
     <string name="search_search_by_aircraft">Search by aircraft</string>
     <string name="search_aircraft_search_label">Aircraft search</string>
@@ -193,6 +196,8 @@
     <string name="aircraft_details_description_unknown">Unknown aircraft</string>
     <string name="thumbnail_caption_by_x">by %s</string>
     <string name="thumbnail_caption_prompt">Submit photo</string>
+    <string name="watch_settings_monitor_interval_title">Check interval</string>
+    <string name="watch_settings_monitor_interval_summary">How often should we check?</string>
 
     <plurals name="result_x_items">
         <item quantity="one">%s item</item>

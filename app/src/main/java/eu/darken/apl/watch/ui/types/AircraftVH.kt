@@ -5,19 +5,19 @@ import eu.darken.apl.R
 import eu.darken.apl.common.lists.BindableVH
 import eu.darken.apl.common.planespotters.PlanespottersMeta
 import eu.darken.apl.common.planespotters.load
-import eu.darken.apl.databinding.WatchlistListMultiItemItemBinding
+import eu.darken.apl.databinding.WatchListMultiItemItemBinding
 import eu.darken.apl.main.core.aircraft.Aircraft
 
 
 class AircraftVH(parent: ViewGroup) :
-    MultiAircraftAdapter.BaseVH<AircraftVH.Item, WatchlistListMultiItemItemBinding>(
-        R.layout.watchlist_list_multi_item_item,
+    MultiAircraftAdapter.BaseVH<AircraftVH.Item, WatchListMultiItemItemBinding>(
+        R.layout.watch_list_multi_item_item,
         parent
-    ), BindableVH<AircraftVH.Item, WatchlistListMultiItemItemBinding> {
+    ), BindableVH<AircraftVH.Item, WatchListMultiItemItemBinding> {
 
-    override val viewBinding = lazy { WatchlistListMultiItemItemBinding.bind(itemView) }
+    override val viewBinding = lazy { WatchListMultiItemItemBinding.bind(itemView) }
 
-    override val onBindData: WatchlistListMultiItemItemBinding.(
+    override val onBindData: WatchListMultiItemItemBinding.(
         item: Item,
         payloads: List<Any>
     ) -> Unit = { item, _ ->

@@ -10,7 +10,7 @@ import eu.darken.apl.main.core.AircraftRepo
 import eu.darken.apl.main.core.aircraft.AircraftHex
 import eu.darken.apl.main.core.aircraft.Callsign
 import eu.darken.apl.main.core.aircraft.SquawkCode
-import eu.darken.apl.watch.core.db.WatchlistDatabase
+import eu.darken.apl.watch.core.db.WatchDatabase
 import eu.darken.apl.watch.core.history.WatchHistoryRepo
 import eu.darken.apl.watch.core.types.AircraftWatch
 import eu.darken.apl.watch.core.types.FlightWatch
@@ -24,10 +24,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class WatchlistRepo @Inject constructor(
+class WatchRepo @Inject constructor(
     @AppScope private val appScope: CoroutineScope,
-    private val settings: WatchlistSettings,
-    private val db: WatchlistDatabase,
+    private val settings: WatchSettings,
+    private val db: WatchDatabase,
     private val watchHistory: WatchHistoryRepo,
     private val aircraftRepo: AircraftRepo,
 ) {
@@ -134,6 +134,6 @@ class WatchlistRepo @Inject constructor(
     }
 
     companion object {
-        private val TAG = logTag("Watchlist", "Repo")
+        private val TAG = logTag("Watch", "Repo")
     }
 }

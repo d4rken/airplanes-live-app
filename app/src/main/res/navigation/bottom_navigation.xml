@@ -23,8 +23,8 @@
     </dialog>
     <fragment
         android:id="@+id/watchlist"
-        android:name="eu.darken.apl.watch.ui.WatchlistFragment"
-        tools:layout="@layout/watchlist_fragment">
+        android:name="eu.darken.apl.watch.ui.WatchListFragment"
+        tools:layout="@layout/watch_list_fragment">
         <argument
             android:name="targetAircraft"
             android:defaultValue="@null"
@@ -51,8 +51,8 @@
     </fragment>
     <dialog
         android:id="@+id/watchlistDetailsFragment"
-        android:name="eu.darken.apl.watch.ui.details.WatchlistDetailsFragment"
-        tools:layout="@layout/watchlist_details_fragment">
+        android:name="eu.darken.apl.watch.ui.details.WatchDetailsFragment"
+        tools:layout="@layout/watch_details_fragment">
         <argument
             android:name="watchId"
             app:argType="string" />
@@ -142,7 +142,7 @@
     <dialog
         android:id="@+id/createAircraftWatchFragment"
         android:name="eu.darken.apl.watch.ui.create.CreateAircraftWatchFragment"
-        tools:layout="@layout/watchlist_create_aircraft">
+        tools:layout="@layout/watch_create_aircraft">
         <argument
             android:name="hex"
             android:defaultValue="@null"
@@ -157,7 +157,7 @@
     <dialog
         android:id="@+id/createSquawkWatchFragment"
         android:name="eu.darken.apl.watch.ui.create.CreateSquawkWatchFragment"
-        tools:layout="@layout/watchlist_create_squawk">
+        tools:layout="@layout/watch_create_squawk">
         <argument
             android:name="squawk"
             android:defaultValue="@null"
@@ -172,7 +172,7 @@
     <dialog
         android:id="@+id/createFlightWatchFragment"
         android:name="eu.darken.apl.watch.ui.create.CreateFlightWatchFragment"
-        tools:layout="@layout/watchlist_create_flight">
+        tools:layout="@layout/watch_create_flight">
         <argument
             android:name="callsign"
             android:defaultValue="@null"

@@ -4,8 +4,8 @@ import eu.darken.apl.common.coroutine.AppScope
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.watch.core.WatchId
-import eu.darken.apl.watch.core.WatchlistSettings
-import eu.darken.apl.watch.core.db.WatchlistDatabase
+import eu.darken.apl.watch.core.WatchSettings
+import eu.darken.apl.watch.core.db.WatchDatabase
 import eu.darken.apl.watch.core.db.history.WatchCheckDao
 import eu.darken.apl.watch.core.db.history.WatchCheckEntity
 import kotlinx.coroutines.CoroutineScope
@@ -17,8 +17,8 @@ import javax.inject.Singleton
 @Singleton
 class WatchHistoryRepo @Inject constructor(
     @AppScope private val appScope: CoroutineScope,
-    private val settings: WatchlistSettings,
-    private val database: WatchlistDatabase,
+    private val settings: WatchSettings,
+    private val database: WatchDatabase,
 ) {
 
     private val watchCheckDao: WatchCheckDao
@@ -53,6 +53,6 @@ class WatchHistoryRepo @Inject constructor(
     )
 
     companion object {
-        internal val TAG = logTag("Watchlist", "History", "Repo")
+        internal val TAG = logTag("Watch", "History", "Repo")
     }
 }

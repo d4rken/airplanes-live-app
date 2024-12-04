@@ -13,21 +13,21 @@ import eu.darken.apl.R
 import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.setChecked2
 import eu.darken.apl.common.uix.BottomSheetDialogFragment2
-import eu.darken.apl.databinding.WatchlistDetailsFragmentBinding
+import eu.darken.apl.databinding.WatchDetailsFragmentBinding
 import eu.darken.apl.watch.core.types.AircraftWatch
 import eu.darken.apl.watch.core.types.FlightWatch
 import eu.darken.apl.watch.core.types.SquawkWatch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class WatchlistDetailsFragment : BottomSheetDialogFragment2() {
+class WatchDetailsFragment : BottomSheetDialogFragment2() {
     @Inject lateinit var webpageTool: WebpageTool
 
-    override val vm: WatchlistDetailsViewModel by viewModels()
-    override lateinit var ui: WatchlistDetailsFragmentBinding
+    override val vm: WatchDetailsViewModel by viewModels()
+    override lateinit var ui: WatchDetailsFragmentBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        ui = WatchlistDetailsFragmentBinding.inflate(inflater, container, false)
+        ui = WatchDetailsFragmentBinding.inflate(inflater, container, false)
         return ui.root
     }
 
@@ -79,7 +79,7 @@ class WatchlistDetailsFragment : BottomSheetDialogFragment2() {
 
         vm.events.observe2(ui) { event ->
             when (event) {
-                is WatchlistDetailsEvents.RemovalConfirmation -> MaterialAlertDialogBuilder(requireContext()).apply {
+                is WatchDetailsEvents.RemovalConfirmation -> MaterialAlertDialogBuilder(requireContext()).apply {
                     setTitle(R.string.watch_list_remove_confirmation_title)
                     setMessage(R.string.watch_list_remove_confirmation_message)
                     setPositiveButton(R.string.common_remove_action) { _, _ -> vm.removeAlert(confirmed = true) }

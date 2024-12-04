@@ -6,8 +6,8 @@ import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.main.core.aircraft.Aircraft
 import eu.darken.apl.search.core.SearchQuery
 import eu.darken.apl.search.core.SearchRepo
-import eu.darken.apl.watch.core.WatchlistRepo
-import eu.darken.apl.watch.core.WatchlistSettings
+import eu.darken.apl.watch.core.WatchRepo
+import eu.darken.apl.watch.core.WatchSettings
 import eu.darken.apl.watch.core.history.WatchHistoryRepo
 import eu.darken.apl.watch.core.types.AircraftWatch
 import eu.darken.apl.watch.core.types.FlightWatch
@@ -18,16 +18,16 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class WatchlistMonitor @Inject constructor(
-    private val settings: WatchlistSettings,
-    private val watchlistRepo: WatchlistRepo,
+class WatchMonitor @Inject constructor(
+    private val settings: WatchSettings,
+    private val watchRepo: WatchRepo,
     private val historyRepo: WatchHistoryRepo,
     private val searchRepo: SearchRepo,
     private val notifications: WatchAlertNotifications,
 ) {
     suspend fun check() {
         log(TAG) { "check()" }
-        val currentWatches = watchlistRepo.watches.first()
+        val currentWatches = watchRepo.watches.first()
         val alerts = mutableMapOf<Watch, Collection<Aircraft>>()
 
         suspend fun Watch.process(results: Collection<Aircraft>) {
@@ -76,6 +76,6 @@ class WatchlistMonitor @Inject constructor(
     }
 
     companion object {
-        private val TAG = logTag("Watchlist", "Monitor")
+        private val TAG = logTag("Watch", "Monitor")
     }
 }

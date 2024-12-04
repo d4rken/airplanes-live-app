@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import eu.darken.apl.R
-import eu.darken.apl.databinding.WatchlistCreateFlightBinding
+import eu.darken.apl.databinding.WatchCreateFlightBinding
 
 @AndroidEntryPoint
 class CreateFlightWatchFragment : DialogFragment() {
@@ -17,7 +17,7 @@ class CreateFlightWatchFragment : DialogFragment() {
     private val vm: CreateFlightWatchViewModel by viewModels()
 
     private val binding by lazy {
-        WatchlistCreateFlightBinding.inflate(layoutInflater, null, false)
+        WatchCreateFlightBinding.inflate(layoutInflater, null, false)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =

@@ -8,14 +8,14 @@ import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.main.core.aircraft.Callsign
-import eu.darken.apl.watch.core.WatchlistRepo
+import eu.darken.apl.watch.core.WatchRepo
 import javax.inject.Inject
 
 @HiltViewModel
 class CreateFlightWatchViewModel @Inject constructor(
     handle: SavedStateHandle,
     dispatcherProvider: DispatcherProvider,
-    private val watchlistRepo: WatchlistRepo,
+    private val watchRepo: WatchRepo,
 ) : ViewModel3(dispatcherProvider = dispatcherProvider) {
 
     private val args by handle.navArgs<CreateFlightWatchFragmentArgs>()
@@ -30,7 +30,7 @@ class CreateFlightWatchViewModel @Inject constructor(
 
     fun create(callsign: Callsign, note: String) = launch {
         log(TAG) { "create($callsign, $note)" }
-        watchlistRepo.createFlight(callsign, note.trim())
+        watchRepo.createFlight(callsign, note.trim())
         popNavStack()
     }
 }

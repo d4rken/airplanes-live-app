@@ -28,7 +28,7 @@ import eu.darken.apl.search.ui.items.LocationPromptVH
 import eu.darken.apl.search.ui.items.NoAircraftVH
 import eu.darken.apl.search.ui.items.SearchingAircraftVH
 import eu.darken.apl.search.ui.items.SummaryVH
-import eu.darken.apl.watch.core.WatchlistRepo
+import eu.darken.apl.watch.core.WatchRepo
 import eu.darken.apl.watch.core.types.AircraftWatch
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,7 +46,7 @@ class SearchViewModel @Inject constructor(
     private val webpageTool: WebpageTool,
     private val locationManager2: LocationManager2,
     private val generalSettings: GeneralSettings,
-    private val watchlistRepo: WatchlistRepo,
+    private val watchRepo: WatchRepo,
 ) : ViewModel3(dispatcherProvider) {
 
     private val args by handle.navArgs<SearchFragmentArgs>()
@@ -122,7 +122,7 @@ class SearchViewModel @Inject constructor(
     val state: LiveData<State> = combine(
         currentInput,
         currentSearch.throttleLatest(500),
-        watchlistRepo.watches,
+        watchRepo.watches,
         generalSettings.searchLocationDismissed.flow,
         locationManager2.state,
     ) { input, result, alerts, locationDismissed, locationState ->

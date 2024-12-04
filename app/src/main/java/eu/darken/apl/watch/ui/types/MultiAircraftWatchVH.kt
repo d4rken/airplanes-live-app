@@ -10,31 +10,31 @@ import eu.darken.apl.common.lists.BindableVH
 import eu.darken.apl.common.lists.differ.update
 import eu.darken.apl.common.lists.setupDefaults
 import eu.darken.apl.common.planespotters.PlanespottersMeta
-import eu.darken.apl.databinding.WatchlistListMultiItemBinding
+import eu.darken.apl.databinding.WatchListMultiItemBinding
 import eu.darken.apl.main.core.aircraft.Aircraft
 import eu.darken.apl.watch.core.types.AircraftWatch
 import eu.darken.apl.watch.core.types.FlightWatch
 import eu.darken.apl.watch.core.types.SquawkWatch
 import eu.darken.apl.watch.core.types.Watch
-import eu.darken.apl.watch.ui.WatchlistAdapter
+import eu.darken.apl.watch.ui.WatchListAdapter
 import java.time.Instant
 
 
 class MultiAircraftWatchVH(parent: ViewGroup) :
-    WatchlistAdapter.BaseVH<MultiAircraftWatchVH.Item, WatchlistListMultiItemBinding>(
-        R.layout.watchlist_list_multi_item,
+    WatchListAdapter.BaseVH<MultiAircraftWatchVH.Item, WatchListMultiItemBinding>(
+        R.layout.watch_list_multi_item,
         parent
-    ), BindableVH<MultiAircraftWatchVH.Item, WatchlistListMultiItemBinding> {
+    ), BindableVH<MultiAircraftWatchVH.Item, WatchListMultiItemBinding> {
 
     private val subAdapter by lazy { MultiAircraftAdapter() }
 
     override val viewBinding = lazy {
-        WatchlistListMultiItemBinding.bind(itemView).apply {
+        WatchListMultiItemBinding.bind(itemView).apply {
             list.setupDefaults(subAdapter, verticalDividers = true)
         }
     }
 
-    override val onBindData: WatchlistListMultiItemBinding.(
+    override val onBindData: WatchListMultiItemBinding.(
         item: Item,
         payloads: List<Any>
     ) -> Unit = { item, _ ->
@@ -109,7 +109,7 @@ class MultiAircraftWatchVH(parent: ViewGroup) :
         val onTap: (Item) -> Unit,
         val onAircraftTap: (Aircraft) -> Unit,
         val onThumbnail: (PlanespottersMeta) -> Unit,
-    ) : WatchlistAdapter.Item {
+    ) : WatchListAdapter.Item {
         override val stableId: Long
             get() = status.id.hashCode().toLong()
     }

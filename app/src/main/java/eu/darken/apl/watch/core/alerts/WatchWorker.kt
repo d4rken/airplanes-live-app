@@ -24,11 +24,11 @@ import kotlinx.coroutines.withTimeout
 
 
 @HiltWorker
-class WatchlistWorker @AssistedInject constructor(
+class WatchWorker @AssistedInject constructor(
     @Assisted private val context: Context,
     @Assisted private val params: WorkerParameters,
     private val dispatcherProvider: DispatcherProvider,
-    private val watchlistMonitor: WatchlistMonitor,
+    private val watchMonitor: WatchMonitor,
     private val watchAlertNotifications: WatchAlertNotifications,
 ) : CoroutineWorker(context, params) {
 
@@ -66,7 +66,7 @@ class WatchlistWorker @AssistedInject constructor(
         try {
             withTimeout(60 * 1000) {
                 try {
-                    val newAlerts = watchlistMonitor.check()
+                    val newAlerts = watchMonitor.check()
                     // TODO for each new alert show a notification
                 } catch (e: Exception) {
                     log(TAG, ERROR) { "Failed to refresh ${e.asLog()}" }
@@ -79,6 +79,6 @@ class WatchlistWorker @AssistedInject constructor(
     }
 
     companion object {
-        val TAG = logTag("Watchlist", "Monitor", "Worker")
+        val TAG = logTag("Watch", "Monitor", "Worker")
     }
 }

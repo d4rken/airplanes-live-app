@@ -27,13 +27,13 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class WatchlistDatabase @Inject constructor(
+class WatchDatabase @Inject constructor(
     @ApplicationContext private val context: Context,
 ) {
     private val database by lazy {
         Room.databaseBuilder(
             context,
-            WatchlistRoomDb::class.java, "watchlist"
+            WatchRoomDb::class.java, "watch"
         ).build()
     }
 
@@ -106,6 +106,7 @@ class WatchlistDatabase @Inject constructor(
         log(TAG) { "updateNote($id, $note)" }
         watchDao.updateNoteIfDifferent(id, note)
     }
+
     suspend fun updateNotification(id: WatchId, enabled: Boolean) {
         log(TAG) { "updateNotification($id, $enabled)" }
         watchDao.updateNotification(id, enabled)
@@ -115,6 +116,6 @@ class WatchlistDatabase @Inject constructor(
         get() = database.checks()
 
     companion object {
-        internal val TAG = logTag("Watchlist", "Database")
+        internal val TAG = logTag("Watch", "Database")
     }
 }

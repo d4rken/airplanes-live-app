@@ -11,7 +11,7 @@ import eu.darken.apl.common.livedata.SingleLiveEvent
 import eu.darken.apl.common.uix.ViewModel2
 import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.watch.core.WatchId
-import eu.darken.apl.watch.core.WatchlistRepo
+import eu.darken.apl.watch.core.WatchRepo
 import eu.darken.apl.watch.core.getStatus
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.onEach
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class MainActivityVM @Inject constructor(
     dispatcherProvider: DispatcherProvider,
     private val sponsorHelper: SponsorHelper,
-    private val watchlistRepo: WatchlistRepo,
+    private val watchRepo: WatchRepo,
 ) : ViewModel2(dispatcherProvider = dispatcherProvider) {
 
     private val stateFlow = MutableStateFlow(State())
@@ -44,7 +44,7 @@ class MainActivityVM @Inject constructor(
     }
 
     fun showWatchAlert(watchId: WatchId) = launch {
-        val status = watchlistRepo.getStatus(watchId)
+        val status = watchRepo.getStatus(watchId)
         if (status == null) {
             log(TAG, WARN) { "Watch with id $watchId no longer exists" }
             return@launch

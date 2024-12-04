@@ -13,8 +13,8 @@ import eu.darken.apl.main.core.AircraftRepo
 import eu.darken.apl.main.core.aircraft.AircraftHex
 import eu.darken.apl.main.core.findByHex
 import eu.darken.apl.map.core.MapOptions
-import eu.darken.apl.watch.core.WatchlistRepo
-import eu.darken.apl.watch.core.alerts.WatchlistMonitor
+import eu.darken.apl.watch.core.WatchRepo
+import eu.darken.apl.watch.core.alerts.WatchMonitor
 import eu.darken.apl.watch.core.types.AircraftWatch
 import eu.darken.apl.watch.core.types.FlightWatch
 import eu.darken.apl.watch.core.types.SquawkWatch
@@ -28,17 +28,17 @@ import kotlinx.coroutines.isActive
 import javax.inject.Inject
 
 @HiltViewModel
-class WatchlistViewModel @Inject constructor(
+class WatchListViewModel @Inject constructor(
     @Suppress("UNUSED_PARAMETER") handle: SavedStateHandle,
     dispatcherProvider: DispatcherProvider,
-    private val watchlistRepo: WatchlistRepo,
-    private val watchlistMonitor: WatchlistMonitor,
+    private val watchRepo: WatchRepo,
+    private val watchMonitor: WatchMonitor,
     private val webpageTool: WebpageTool,
     private val locationManager2: LocationManager2,
     private val aircraftRepo: AircraftRepo,
 ) : ViewModel3(dispatcherProvider = dispatcherProvider) {
 
-    private val args by handle.navArgs<WatchlistFragmentArgs>()
+    private val args by handle.navArgs<WatchListFragmentArgs>()
     private val targetAircraft: Set<AircraftHex>?
         get() = args.targetAircraft?.toSet()
 
@@ -57,9 +57,9 @@ class WatchlistViewModel @Inject constructor(
 
     val state = combine(
         refreshTimer,
-        watchlistRepo.status,
+        watchRepo.status,
         locationManager2.state,
-        watchlistRepo.isRefreshing
+        watchRepo.isRefreshing
     ) { _, alerts, locationState, isRefreshing ->
         val items = alerts
             .sortedByDescending { it.watch.addedAt }
@@ -73,7 +73,7 @@ class WatchlistViewModel @Inject constructor(
                         aircraft = aircraftRepo.findByHex(alert.hex),
                         ourLocation = (locationState as? LocationManager2.State.Available)?.location,
                         onTap = {
-                            WatchlistFragmentDirections.actionWatchlistToWatchlistDetailsFragment(alert.id).navigate()
+                            WatchListFragmentDirections.actionWatchlistToWatchlistDetailsFragment(alert.id).navigate()
                         },
                         onThumbnail = { launch { webpageTool.open(it.link) } },
                     )
@@ -83,7 +83,7 @@ class WatchlistViewModel @Inject constructor(
                         aircraft = aircraftRepo.findByHex(alert.callsign),
                         ourLocation = (locationState as? LocationManager2.State.Available)?.location,
                         onTap = {
-                            WatchlistFragmentDirections.actionWatchlistToWatchlistDetailsFragment(alert.id).navigate()
+                            WatchListFragmentDirections.actionWatchlistToWatchlistDetailsFragment(alert.id).navigate()
                         },
                         onThumbnail = { launch { webpageTool.open(it.link) } },
                     )
@@ -92,15 +92,15 @@ class WatchlistViewModel @Inject constructor(
                         status = alert,
                         ourLocation = (locationState as? LocationManager2.State.Available)?.location,
                         onShowMore = {
-                            WatchlistFragmentDirections.actionWatchlistToSearch(
+                            WatchListFragmentDirections.actionWatchlistToSearch(
                                 targetSquawks = arrayOf(alert.squawk)
                             ).navigate()
                         },
                         onTap = {
-                            WatchlistFragmentDirections.actionWatchlistToWatchlistDetailsFragment(alert.id).navigate()
+                            WatchListFragmentDirections.actionWatchlistToWatchlistDetailsFragment(alert.id).navigate()
                         },
                         onAircraftTap = {
-                            WatchlistFragmentDirections.actionWatchlistToMap(
+                            WatchListFragmentDirections.actionWatchlistToMap(
                                 mapOptions = MapOptions.focus(it)
                             ).navigate()
                         },
@@ -116,11 +116,11 @@ class WatchlistViewModel @Inject constructor(
 
     fun refresh() = launch {
         log(TAG) { "refresh()" }
-        watchlistMonitor.check()
+        watchMonitor.check()
     }
 
     data class State(
-        val items: List<WatchlistAdapter.Item>,
+        val items: List<WatchListAdapter.Item>,
         val isRefreshing: Boolean = false,
     )
 }

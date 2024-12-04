@@ -127,7 +127,7 @@ class WatchAlertNotifications @Inject constructor(
     }
 
     companion object {
-        val TAG = logTag("Watchlist", "Monitor", "Notifications")
+        val TAG = logTag("Watch", "Monitor", "Notifications")
         private val CHANNEL_ID = "${BuildConfigWrap.APPLICATION_ID}.notification.channel.watch.monitor"
         internal const val NOTIFICATION_ID_RANGE = 100
         val ALERT_SHOW_ACTION = "${BuildConfigWrap.APPLICATION_ID}.watch.alert.show"

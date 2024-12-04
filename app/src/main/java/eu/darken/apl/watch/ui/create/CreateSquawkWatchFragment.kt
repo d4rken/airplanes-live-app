@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import eu.darken.apl.R
-import eu.darken.apl.databinding.WatchlistCreateSquawkBinding
+import eu.darken.apl.databinding.WatchCreateSquawkBinding
 
 @AndroidEntryPoint
 class CreateSquawkWatchFragment : DialogFragment() {
@@ -17,7 +17,7 @@ class CreateSquawkWatchFragment : DialogFragment() {
     private val vm: CreateSquawkWatchViewModel by viewModels()
 
     private val binding by lazy {
-        WatchlistCreateSquawkBinding.inflate(layoutInflater, null, false)
+        WatchCreateSquawkBinding.inflate(layoutInflater, null, false)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =

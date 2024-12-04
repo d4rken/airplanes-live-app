@@ -18,7 +18,7 @@ import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.map.core.MapSettings
 import eu.darken.apl.search.core.SearchQuery
 import eu.darken.apl.search.core.SearchRepo
-import eu.darken.apl.watch.core.WatchlistRepo
+import eu.darken.apl.watch.core.WatchRepo
 import eu.darken.apl.watch.core.types.AircraftWatch
 import eu.darken.apl.watch.core.types.Watch
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,7 +38,7 @@ class MapViewModel @Inject constructor(
     private val mapSettings: MapSettings,
     private val webpageTool: WebpageTool,
     private val searchRepo: SearchRepo,
-    private val watchlistRepo: WatchlistRepo,
+    private val watchRepo: WatchRepo,
     private val aircraftRepo: AircraftRepo,
 ) : ViewModel3(dispatcherProvider = dispatcherProvider) {
 
@@ -50,7 +50,7 @@ class MapViewModel @Inject constructor(
 
     val state = combine(
         refreshTrigger,
-        watchlistRepo.watches,
+        watchRepo.watches,
         currentOptions.onEach { log(TAG, INFO) { "New MapOptions: $it" } },
     ) { _, alerts, options ->
 
@@ -99,7 +99,7 @@ class MapViewModel @Inject constructor(
         ).navigate()
         launch {
             val added = withTimeoutOrNull(20 * 1000) {
-                watchlistRepo.status
+                watchRepo.status
                     .mapNotNull { watches ->
                         watches
                             .filterIsInstance<AircraftWatch.Status>()

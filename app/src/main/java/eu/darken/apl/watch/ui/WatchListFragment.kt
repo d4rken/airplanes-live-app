@@ -13,15 +13,15 @@ import eu.darken.apl.common.lists.differ.update
 import eu.darken.apl.common.lists.setupDefaults
 import eu.darken.apl.common.uix.Fragment3
 import eu.darken.apl.common.viewbinding.viewBinding
-import eu.darken.apl.databinding.WatchlistFragmentBinding
+import eu.darken.apl.databinding.WatchListFragmentBinding
 import eu.darken.apl.main.ui.MainActivity
 
 
 @AndroidEntryPoint
-class WatchlistFragment : Fragment3(R.layout.watchlist_fragment) {
+class WatchListFragment : Fragment3(R.layout.watch_list_fragment) {
 
-    override val vm: WatchlistViewModel by viewModels()
-    override val ui: WatchlistFragmentBinding by viewBinding()
+    override val vm: WatchListViewModel by viewModels()
+    override val ui: WatchListFragmentBinding by viewBinding()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         ui.toolbar.apply {
@@ -45,7 +45,7 @@ class WatchlistFragment : Fragment3(R.layout.watchlist_fragment) {
 
         ui.swipeRefreshContainer.setOnRefreshListener { vm.refresh() }
 
-        val adapter = WatchlistAdapter()
+        val adapter = WatchListAdapter()
         ui.list.setupDefaults(adapter, verticalDividers = false)
 
         vm.state.observe2(ui) { state ->
@@ -79,9 +79,9 @@ class WatchlistFragment : Fragment3(R.layout.watchlist_fragment) {
             )
             setItems(options) { dialog, which ->
                 when (which) {
-                    0 -> WatchlistFragmentDirections.actionWatchlistToCreateFlightWatchFragment().navigate()
-                    1 -> WatchlistFragmentDirections.actionWatchlistToCreateAircraftWatchFragment().navigate()
-                    2 -> WatchlistFragmentDirections.actionWatchlistToCreateSquawkWatchFragment().navigate()
+                    0 -> WatchListFragmentDirections.actionWatchlistToCreateFlightWatchFragment().navigate()
+                    1 -> WatchListFragmentDirections.actionWatchlistToCreateAircraftWatchFragment().navigate()
+                    2 -> WatchListFragmentDirections.actionWatchlistToCreateSquawkWatchFragment().navigate()
                 }
                 dialog.dismiss()
             }

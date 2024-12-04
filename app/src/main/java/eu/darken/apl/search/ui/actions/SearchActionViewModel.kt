@@ -19,7 +19,7 @@ import eu.darken.apl.main.core.aircraft.Aircraft
 import eu.darken.apl.main.core.aircraft.AircraftHex
 import eu.darken.apl.main.core.getByHex
 import eu.darken.apl.map.core.MapOptions
-import eu.darken.apl.watch.core.WatchlistRepo
+import eu.darken.apl.watch.core.WatchRepo
 import eu.darken.apl.watch.core.types.Watch
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.firstOrNull
@@ -32,7 +32,7 @@ class SearchActionViewModel @Inject constructor(
     dispatcherProvider: DispatcherProvider,
     @ApplicationContext private val context: Context,
     private val aircraftRepo: AircraftRepo,
-    private val watchlistRepo: WatchlistRepo,
+    private val watchRepo: WatchRepo,
     private val locationManager2: LocationManager2,
 ) : ViewModel3(dispatcherProvider) {
 
@@ -51,7 +51,7 @@ class SearchActionViewModel @Inject constructor(
     }
 
     val state = combine(
-        watchlistRepo.watches,
+        watchRepo.watches,
         aircraft,
         locationManager2.state,
     ) { watches, ac, locationState ->

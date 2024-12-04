@@ -16,9 +16,9 @@ import eu.darken.apl.watch.ui.types.SingleAircraftWatchVH
 import javax.inject.Inject
 
 
-class WatchlistAdapter @Inject constructor() :
-    ModularAdapter<WatchlistAdapter.BaseVH<WatchlistAdapter.Item, ViewBinding>>(),
-    HasAsyncDiffer<WatchlistAdapter.Item> {
+class WatchListAdapter @Inject constructor() :
+    ModularAdapter<WatchListAdapter.BaseVH<WatchListAdapter.Item, ViewBinding>>(),
+    HasAsyncDiffer<WatchListAdapter.Item> {
 
     override val asyncDiffer: AsyncDiffer<*, Item> = setupDiffer()
 
@@ -30,7 +30,7 @@ class WatchlistAdapter @Inject constructor() :
         addMod(TypedVHCreatorMod({ data[it] is SingleAircraftWatchVH.Item }) { SingleAircraftWatchVH(it) })
     }
 
-    abstract class BaseVH<Item : WatchlistAdapter.Item, VB : ViewBinding>(
+    abstract class BaseVH<Item : WatchListAdapter.Item, VB : ViewBinding>(
         @LayoutRes layoutRes: Int,
         parent: ViewGroup
     ) : VH(layoutRes, parent), BindableVH<Item, VB>

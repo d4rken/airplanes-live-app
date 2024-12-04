@@ -20,10 +20,10 @@ import javax.inject.Singleton
 
 
 @Singleton
-class WatchlistWorkerHelper @Inject constructor(
+class WatchWorkerHelper @Inject constructor(
     @AppScope private val appScope: CoroutineScope,
     private val workManager: WorkManager,
-    private val monitor: WatchlistMonitor,
+    private val monitor: WatchMonitor,
 ) {
 
     private var isInit = false
@@ -49,7 +49,7 @@ class WatchlistWorkerHelper @Inject constructor(
     }
 
     private suspend fun setupPeriodicWorker() {
-        val workRequest = PeriodicWorkRequestBuilder<WatchlistWorker>(
+        val workRequest = PeriodicWorkRequestBuilder<WatchWorker>(
             Duration.ofHours(1),
             Duration.ofMinutes(10)
         ).apply {
@@ -68,6 +68,6 @@ class WatchlistWorkerHelper @Inject constructor(
     }
 
     companion object {
-        val TAG = logTag("Watchlist", "Monitor", "Manager")
+        val TAG = logTag("Watch", "Monitor", "Manager")
     }
 }

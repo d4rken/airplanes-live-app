@@ -9,26 +9,26 @@ import eu.darken.apl.common.lists.BindableVH
 import eu.darken.apl.common.planespotters.PlanespottersMeta
 import eu.darken.apl.common.planespotters.coil.AircraftThumbnailQuery
 import eu.darken.apl.common.planespotters.load
-import eu.darken.apl.databinding.WatchlistListSingleItemBinding
+import eu.darken.apl.databinding.WatchListSingleItemBinding
 import eu.darken.apl.main.core.aircraft.Aircraft
 import eu.darken.apl.main.core.aircraft.messageTypeLabel
 import eu.darken.apl.watch.core.types.AircraftWatch
 import eu.darken.apl.watch.core.types.FlightWatch
 import eu.darken.apl.watch.core.types.SquawkWatch
 import eu.darken.apl.watch.core.types.Watch
-import eu.darken.apl.watch.ui.WatchlistAdapter
+import eu.darken.apl.watch.ui.WatchListAdapter
 import java.time.Instant
 
 
 class SingleAircraftWatchVH(parent: ViewGroup) :
-    WatchlistAdapter.BaseVH<SingleAircraftWatchVH.Item, WatchlistListSingleItemBinding>(
-        R.layout.watchlist_list_single_item,
+    WatchListAdapter.BaseVH<SingleAircraftWatchVH.Item, WatchListSingleItemBinding>(
+        R.layout.watch_list_single_item,
         parent
-    ), BindableVH<SingleAircraftWatchVH.Item, WatchlistListSingleItemBinding> {
+    ), BindableVH<SingleAircraftWatchVH.Item, WatchListSingleItemBinding> {
 
-    override val viewBinding = lazy { WatchlistListSingleItemBinding.bind(itemView) }
+    override val viewBinding = lazy { WatchListSingleItemBinding.bind(itemView) }
 
-    override val onBindData: WatchlistListSingleItemBinding.(
+    override val onBindData: WatchListSingleItemBinding.(
         item: Item,
         payloads: List<Any>
     ) -> Unit = { item, _ ->
@@ -125,7 +125,7 @@ class SingleAircraftWatchVH(parent: ViewGroup) :
         val ourLocation: Location?,
         val onTap: (Item) -> Unit,
         val onThumbnail: (PlanespottersMeta) -> Unit,
-    ) : WatchlistAdapter.Item {
+    ) : WatchListAdapter.Item {
         override val stableId: Long
             get() = status.id.hashCode().toLong()
     }

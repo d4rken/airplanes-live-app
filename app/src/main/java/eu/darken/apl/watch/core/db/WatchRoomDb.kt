@@ -24,7 +24,7 @@ import eu.darken.apl.watch.core.db.types.WatchDao
     exportSchema = true,
 )
 @TypeConverters(InstantConverter::class)
-abstract class WatchlistRoomDb : RoomDatabase() {
+abstract class WatchRoomDb : RoomDatabase() {
     abstract fun watches(): WatchDao
     abstract fun checks(): WatchCheckDao
 }

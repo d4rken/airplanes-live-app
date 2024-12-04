@@ -8,7 +8,7 @@ import androidx.room.Transaction
 import androidx.room.Update
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.watch.core.WatchId
-import eu.darken.apl.watch.core.db.WatchlistDatabase
+import eu.darken.apl.watch.core.db.WatchDatabase
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -45,7 +45,7 @@ interface WatchDao {
         val entity = getBase(watchId) ?: throw IllegalArgumentException("No watch found for $watchId")
 
         if (entity.userNote == newNote) {
-            log(WatchlistDatabase.TAG) { "AircraftWatchEntity note is the same, not updating." }
+            log(WatchDatabase.TAG) { "AircraftWatchEntity note is the same, not updating." }
             return
         }
 

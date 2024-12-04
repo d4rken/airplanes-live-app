@@ -16,7 +16,7 @@ import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.theming.Theming
 import eu.darken.apl.feeder.core.monitor.FeederMonitorService
-import eu.darken.apl.watch.core.alerts.WatchlistWorkerHelper
+import eu.darken.apl.watch.core.alerts.WatchWorkerHelper
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -26,7 +26,7 @@ open class App : Application(), Configuration.Provider {
     @Inject lateinit var bugReporter: AutoReporting
     @Inject lateinit var theming: Theming
     @Inject lateinit var feederMonitorService: FeederMonitorService
-    @Inject lateinit var watchlistWorkerHelper: WatchlistWorkerHelper
+    @Inject lateinit var watchWorkerHelper: WatchWorkerHelper
     @Inject lateinit var imageLoaderFactory: ImageLoaderFactory
 
     override fun onCreate() {
@@ -43,7 +43,7 @@ open class App : Application(), Configuration.Provider {
         Coil.setImageLoader(imageLoaderFactory)
 
         feederMonitorService.setup()
-        watchlistWorkerHelper.setup()
+        watchWorkerHelper.setup()
 
         log(TAG) { "onCreate() done! ${Exception().asLog()}" }
     }
