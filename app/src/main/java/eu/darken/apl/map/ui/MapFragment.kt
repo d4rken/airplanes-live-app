@@ -7,6 +7,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import eu.darken.apl.R
 import eu.darken.apl.common.debug.logging.log
@@ -92,6 +93,12 @@ class MapFragment : Fragment3(R.layout.map_fragment) {
 
                 MapEvents.HomeMap -> {
                     mapHandler.clickHome()
+                }
+
+                is MapEvents.WatchAdded -> {
+                    val ac = event.watch.tracked.firstOrNull()
+                    val text = getString(R.string.watch_item_x_added, ac?.registration ?: ac?.hex)
+                    Snackbar.make(requireView(), text, Snackbar.LENGTH_SHORT).show()
                 }
             }
         }

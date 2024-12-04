@@ -125,33 +125,42 @@
 
     <string name="map_page_label">Map</string>
 
-    <string name="watchlist_page_label">Watchlist</string>
-    <string name="watchlist_add_title">Add new watch</string>
-    <plurals name="watchlist_yours_x_active_msg">
+    <string name="watch_list_page_label">Watchlist</string>
+    <string name="watch_list_add_title">Add new watch</string>
+    <plurals name="watch_list_yours_x_active_msg">
         <item quantity="one">%d watchlist entry</item>
         <item quantity="other">%d watchlist entries</item>
     </plurals>
 
-    <string name="watchlist_list_addnew_msg">Keep your eye on an aircraft O.O!</string>
-    <string name="watchlist_add_watch_type_label_aircraft">Aircraft (hex code) </string>
-    <string name="watchlist_add_watch_type_label_squawk">Transponder code (SQUAWK)</string>
-    <string name="watchlist_add_watch_type_label_flight">Flight (callsign)</string>
-    <string name="watchlist_add_aircraft_title">Watch new aircraft</string>
-    <string name="watchlist_add_aircraft_msg">Enter the hexcode of the aircraft you want to watch.</string>
-    <string name="watchlist_add_squawk_title">New squawk watch</string>
-    <string name="watchlist_add_squawk_msg">Enter the transpoder code you want to watch.</string>
-    <string name="watchlist_add_flight_title">Create flight watch</string>
-    <string name="watchlist_add_flight_msg">Enter the callsign (flight number) you want to watch.</string>
-    <string name="watchlist_item_squawk_subtitle">Transponder code (squawk) watch</string>
-    <string name="watchlist_item_aircraft_subtitle">Watched aircraft</string>
-    <string name="watchlist_item_flight_subtitle">Flight watch</string>
-    <string name="watchlist_spotted_never_label">Never</string>
-    <string name="watchlist_remove_action">Delete watch</string>
-    <string name="watchlist_remove_confirmation_title">Confirmation</string>
-    <string name="watchlist_remove_confirmation_message">Delete this watch?</string>
-    <string name="watchlist_watch_add_label">Add to watchlist</string>
-    <string name="watchlist_watch_edit_label">Edit watchlist</string>
-    <string name="watchlist_show_all_action">Show all</string>
+    <string name="watch_list_list_addnew_msg">Keep your eye on an aircraft O.O!</string>
+    <string name="watch_list_add_watch_type_label_aircraft">Aircraft (hex code) </string>
+    <string name="watch_list_add_watch_type_label_squawk">Transponder code (SQUAWK)</string>
+    <string name="watch_list_add_watch_type_label_flight">Flight (callsign)</string>
+    <string name="watch_list_add_aircraft_title">Watch new aircraft</string>
+    <string name="watch_list_add_aircraft_msg">Enter the hexcode of the aircraft you want to watch.</string>
+    <string name="watch_list_add_squawk_title">New squawk watch</string>
+    <string name="watch_list_add_squawk_msg">Enter the transpoder code you want to watch.</string>
+    <string name="watch_list_add_flight_title">Create flight watch</string>
+    <string name="watch_list_add_flight_msg">Enter the callsign you want to watch.</string>
+    <string name="watch_list_item_squawk_subtitle">Transponder code (squawk) watch</string>
+    <string name="watch_list_item_aircraft_subtitle">Watched aircraft</string>
+    <string name="watch_list_item_flight_subtitle">Callsign watch</string>
+    <string name="watch_list_spotted_never_label">Never</string>
+    <string name="watch_list_remove_action">Delete watch</string>
+    <string name="watch_list_remove_confirmation_title">Confirmation</string>
+    <string name="watch_list_remove_confirmation_message">Delete this watch?</string>
+    <string name="watch_list_watch_add_label">Add to watchlist</string>
+    <string name="watch_list_watch_edit_label">Edit watchlist</string>
+    <string name="watch_list_show_all_action">Show all</string>
+    <string name="watch_item_x_added">Added %s to watch list</string>
+    <string name="watch_details_enable_notifications_label">Notify when spotted</string>
+    <string name="watch_notification_channel_title">Watchlist alerts</string>
+    <string name="watch_notification_alert_aircraft_title">Aircraft alert</string>
+    <string name="watch_notification_alert_aircraft_msg">Aircraft %s has been spotted</string>
+    <string name="watch_notification_alert_flight_title">Callsign alert</string>
+    <string name="watch_notification_alert_flight_msg">%s is airborne</string>
+    <string name="watch_notification_alert_squawk_title">Transponder alert</string>
+    <string name="watch_notification_alert_squawk_msg">Code %s is being transmitted by %d aircraft.</string>
 
     <string name="search_page_label">Search</string>
     <string name="search_search_by_aircraft">Search by aircraft</string>

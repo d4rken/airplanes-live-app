@@ -17,6 +17,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name="eu.darken.apl.main.ui.MainActivity"
+            android:launchMode="singleTop"
             android:exported="true"
             android:theme="@style/AppThemeSplash">
             <intent-filter>

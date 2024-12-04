@@ -35,9 +35,9 @@ class SearchActionDialog : BottomSheetDialogFragment2() {
             }
 
             addWatchAction.text = if (state.watch != null) {
-                getString(R.string.watchlist_watch_edit_label)
+                getString(R.string.watch_list_watch_edit_label)
             } else {
-                getString(R.string.watchlist_watch_add_label)
+                getString(R.string.watch_list_watch_add_label)
             }
         }
 

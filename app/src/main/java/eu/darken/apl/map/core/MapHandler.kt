@@ -17,8 +17,8 @@ import eu.darken.apl.common.debug.logging.Logging.Priority.WARN
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.main.core.aircraft.AircraftHex
-import eu.darken.apl.watchlist.core.types.AircraftWatch
-import eu.darken.apl.watchlist.core.types.Watch
+import eu.darken.apl.watch.core.types.AircraftWatch
+import eu.darken.apl.watch.core.types.Watch
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 

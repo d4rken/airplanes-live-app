@@ -59,7 +59,7 @@
             android:layout_marginEnd="16dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="@string/watchlist_item_aircraft_subtitle"
+            android:text="@string/watch_list_item_aircraft_subtitle"
             app:layout_constraintEnd_toStartOf="@id/extra_info"
             app:layout_constraintStart_toEndOf="@id/alert_icon"
             app:layout_constraintTop_toBottomOf="@id/title" />
@@ -232,6 +232,23 @@
                 tools:text="@tools:sample/lorem" />
         </LinearLayout>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/watch_ribbon"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            android:layout_width="96dp"
+            android:layout_height="32dp"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="-36dp"
+            android:layout_marginBottom="-2dp"
+            android:rotation="-45"
+            android:visibility="gone"
+            app:backgroundTint="?colorTertiary"
+            app:iconTint="?colorOnTertiary"
+            app:icon="@drawable/ic_alerts_24"
+            app:iconGravity="textStart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

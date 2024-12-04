@@ -1,8 +1,10 @@
 package eu.darken.apl.common.planespotters.coil
 
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.ColorFilter
 import android.graphics.Rect
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import eu.darken.apl.common.planespotters.PlanespottersMeta
 
@@ -15,11 +17,11 @@ data class PlanespottersImage(
     }
 
     override fun setAlpha(alpha: Int) {
-        image.setAlpha(alpha)
+        image.alpha = alpha
     }
 
     override fun setColorFilter(colorFilter: ColorFilter?) {
-        image.setColorFilter(colorFilter)
+        image.colorFilter = colorFilter
     }
 
     override fun onBoundsChange(bounds: Rect) {
@@ -27,7 +29,11 @@ data class PlanespottersImage(
         super.onBoundsChange(bounds)
     }
 
+    @Deprecated("Deprecated in Java", ReplaceWith("image.opacity"))
     override fun getOpacity(): Int {
         return image.opacity
     }
+
+    val raw: Bitmap?
+        get() = (image as? BitmapDrawable)?.bitmap
 }

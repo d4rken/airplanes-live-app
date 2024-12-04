@@ -19,8 +19,8 @@ import eu.darken.apl.main.core.aircraft.Aircraft
 import eu.darken.apl.main.core.aircraft.AircraftHex
 import eu.darken.apl.main.core.getByHex
 import eu.darken.apl.map.core.MapOptions
-import eu.darken.apl.watchlist.core.WatchlistRepo
-import eu.darken.apl.watchlist.core.types.Watch
+import eu.darken.apl.watch.core.WatchlistRepo
+import eu.darken.apl.watch.core.types.Watch
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject

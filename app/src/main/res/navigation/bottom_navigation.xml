@@ -23,7 +23,7 @@
     </dialog>
     <fragment
         android:id="@+id/watchlist"
-        android:name="eu.darken.apl.watchlist.ui.WatchlistFragment"
+        android:name="eu.darken.apl.watch.ui.WatchlistFragment"
         tools:layout="@layout/watchlist_fragment">
         <argument
             android:name="targetAircraft"
@@ -51,7 +51,7 @@
     </fragment>
     <dialog
         android:id="@+id/watchlistDetailsFragment"
-        android:name="eu.darken.apl.watchlist.ui.details.WatchlistDetailsFragment"
+        android:name="eu.darken.apl.watch.ui.details.WatchlistDetailsFragment"
         tools:layout="@layout/watchlist_details_fragment">
         <argument
             android:name="watchId"
@@ -98,6 +98,11 @@
             android:id="@+id/action_search_to_createAircraftWatchFragment"
             app:destination="@id/createAircraftWatchFragment" />
     </fragment>
+    <action
+        android:id="@+id/goToMap"
+        app:destination="@id/map"
+        app:popUpTo="@id/map"
+        app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/map"
         android:name="eu.darken.apl.map.ui.MapFragment"
@@ -136,7 +141,7 @@
     </dialog>
     <dialog
         android:id="@+id/createAircraftWatchFragment"
-        android:name="eu.darken.apl.watchlist.ui.create.CreateAircraftWatchFragment"
+        android:name="eu.darken.apl.watch.ui.create.CreateAircraftWatchFragment"
         tools:layout="@layout/watchlist_create_aircraft">
         <argument
             android:name="hex"
@@ -151,7 +156,7 @@
     </dialog>
     <dialog
         android:id="@+id/createSquawkWatchFragment"
-        android:name="eu.darken.apl.watchlist.ui.create.CreateSquawkWatchFragment"
+        android:name="eu.darken.apl.watch.ui.create.CreateSquawkWatchFragment"
         tools:layout="@layout/watchlist_create_squawk">
         <argument
             android:name="squawk"
@@ -166,7 +171,7 @@
     </dialog>
     <dialog
         android:id="@+id/createFlightWatchFragment"
-        android:name="eu.darken.apl.watchlist.ui.create.CreateFlightWatchFragment"
+        android:name="eu.darken.apl.watch.ui.create.CreateFlightWatchFragment"
         tools:layout="@layout/watchlist_create_flight">
         <argument
             android:name="callsign"

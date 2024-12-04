@@ -18,11 +18,15 @@ import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.map.core.MapSettings
 import eu.darken.apl.search.core.SearchQuery
 import eu.darken.apl.search.core.SearchRepo
-import eu.darken.apl.watchlist.core.WatchlistRepo
-import eu.darken.apl.watchlist.core.types.Watch
+import eu.darken.apl.watch.core.WatchlistRepo
+import eu.darken.apl.watch.core.types.AircraftWatch
+import eu.darken.apl.watch.core.types.Watch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.withTimeoutOrNull
 import java.util.UUID
 import javax.inject.Inject
 
@@ -93,6 +97,21 @@ class MapViewModel @Inject constructor(
         MapFragmentDirections.actionMapToCreateAircraftWatchFragment(
             hex = hex,
         ).navigate()
+        launch {
+            val added = withTimeoutOrNull(20 * 1000) {
+                watchlistRepo.status
+                    .mapNotNull { watches ->
+                        watches
+                            .filterIsInstance<AircraftWatch.Status>()
+                            .filter { it.hex == hex }
+                            .filter { it.tracked.isNotEmpty() }
+                            .firstOrNull()
+                    }
+                    .firstOrNull()
+            }
+            log(TAG) { "addWatch(...): $added" }
+            if (added != null) events.postValue(MapEvents.WatchAdded(added))
+        }
     }
 
     fun reset() = launch {

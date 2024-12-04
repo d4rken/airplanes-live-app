@@ -11,7 +11,7 @@
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/watchlist_add_watch_type_label_flight">
+        android:hint="@string/watch_list_add_watch_type_label_flight">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_value"

@@ -11,7 +11,7 @@ import eu.darken.apl.databinding.SearchListAircraftItemBinding
 import eu.darken.apl.main.core.aircraft.Aircraft
 import eu.darken.apl.main.core.aircraft.messageTypeLabel
 import eu.darken.apl.search.ui.SearchAdapter
-import eu.darken.apl.watchlist.core.types.Watch
+import eu.darken.apl.watch.core.types.Watch
 
 
 class AircraftResultVH(parent: ViewGroup) :

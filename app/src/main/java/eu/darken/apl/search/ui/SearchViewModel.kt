@@ -28,8 +28,8 @@ import eu.darken.apl.search.ui.items.LocationPromptVH
 import eu.darken.apl.search.ui.items.NoAircraftVH
 import eu.darken.apl.search.ui.items.SearchingAircraftVH
 import eu.darken.apl.search.ui.items.SummaryVH
-import eu.darken.apl.watchlist.core.WatchlistRepo
-import eu.darken.apl.watchlist.core.types.AircraftWatch
+import eu.darken.apl.watch.core.WatchlistRepo
+import eu.darken.apl.watch.core.types.AircraftWatch
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch

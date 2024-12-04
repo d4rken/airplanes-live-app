@@ -34,7 +34,7 @@
             style="@style/Widget.Material3.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/watchlist_watch_add_label"
+            android:text="@string/watch_list_watch_add_label"
             app:icon="@drawable/ic_watchlist_24"
             app:iconGravity="textStart" />
 
