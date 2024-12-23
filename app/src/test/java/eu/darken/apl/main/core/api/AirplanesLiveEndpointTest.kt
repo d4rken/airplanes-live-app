@@ -58,7 +58,7 @@ class AirplanesLiveEndpointTest : BaseTest() {
 
     @Test
     fun `aircraft by location`() = runTest {
-        endpoint.getByLocation(51.473419, -0.491683, 100f).apply {
+        endpoint.getByLocation(51.473419, -0.491683, 100).apply {
             this shouldNotBe null
         }
     }
