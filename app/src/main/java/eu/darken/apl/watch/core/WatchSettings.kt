@@ -25,11 +25,12 @@ class WatchSettings @Inject constructor(
     override val dataStore: DataStore<Preferences>
         get() = context.dataStore
 
-    val watchMonitorInterval = dataStore.createValue("watch.monitor.interval", Duration.ofMinutes(15), moshi)
+    val watchMonitorInterval = dataStore.createValue("watch.monitor.interval", DEFAULT_CHECK_INTERVAL, moshi)
 
     override val mapper = PreferenceStoreMapper()
 
     companion object {
+        val DEFAULT_CHECK_INTERVAL = Duration.ofMinutes(60)
         internal val TAG = logTag("Watch", "Settings")
     }
 }

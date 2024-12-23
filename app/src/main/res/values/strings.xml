@@ -7,6 +7,7 @@
     <string name="common_accept_action">Accept</string>
     <string name="common_share_action">Share</string>
     <string name="common_done_action">Done</string>
+    <string name="common_save_action">Save</string>
     <string name="common_copy_action">Copy</string>
     <string name="common_continue_action">Continue</string>
     <string name="common_cancel_action">Cancel</string>
@@ -161,6 +162,12 @@
     <string name="watch_notification_alert_flight_msg">%s is airborne</string>
     <string name="watch_notification_alert_squawk_title">Transponder alert</string>
     <string name="watch_notification_alert_squawk_msg">Code %s is being transmitted by %d aircraft.</string>
+    <string name="watch_settings_monitor_interval_title">Check interval</string>
+    <string name="watch_settings_monitor_interval_summary">How often should we check?</string>
+    <plurals name="watch_setting_check_interval_minutes">
+        <item quantity="one">Every %d minute.</item>
+        <item quantity="other">Every %d minutes.</item>
+    </plurals>
 
     <string name="watch_settings_title">Watchlist</string>
     <string name="watch_settings_summary">Watchlist related settings, e.g. check interval.</string>
@@ -196,8 +203,6 @@
     <string name="aircraft_details_description_unknown">Unknown aircraft</string>
     <string name="thumbnail_caption_by_x">by %s</string>
     <string name="thumbnail_caption_prompt">Submit photo</string>
-    <string name="watch_settings_monitor_interval_title">Check interval</string>
-    <string name="watch_settings_monitor_interval_summary">How often should we check?</string>
 
     <plurals name="result_x_items">
         <item quantity="one">%s item</item>
