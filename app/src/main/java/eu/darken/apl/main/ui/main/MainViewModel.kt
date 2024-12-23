@@ -51,7 +51,7 @@ class MainViewModel @Inject constructor(
             log(TAG) { "Current version is $current" }
 
             val latest = try {
-                SemVer.parse(it.tagName.removePrefix("v")).nextMinor()
+                SemVer.parse(it.tagName.removePrefix("v"))
             } catch (e: IllegalArgumentException) {
                 log(TAG, ERROR) { "Failed to parse current version: ${e.asLog()}" }
                 return@filter false
