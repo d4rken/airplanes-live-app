@@ -250,10 +250,12 @@ class SearchViewModel @Inject constructor(
         log(TAG) { "updateMode($mode)" }
         val oldInput = currentInput.value ?: Input()
         val newInput = when (mode) {
-            State.Mode.SQUAWK -> oldInput.copy(raw = "7700,7600,7500", mode = mode, rawMeta = null)
-            State.Mode.INTERESTING -> oldInput.copy(raw = "military,ladd,pia", mode = mode, rawMeta = null)
+            State.Mode.REGISTRATION -> oldInput.copy(mode = mode, raw = "HO-HOHO", rawMeta = null)
+            State.Mode.AIRFRAME -> oldInput.copy(mode = mode, raw = "A320", rawMeta = null)
+            State.Mode.SQUAWK -> oldInput.copy(mode = mode, raw = "7700,7600,7500", rawMeta = null)
+            State.Mode.INTERESTING -> oldInput.copy(mode = mode, raw = "military,ladd,pia", rawMeta = null)
             State.Mode.POSITION -> getCurrentLocationSearch() ?: Input("", mode = State.Mode.POSITION, rawMeta = null)
-            else -> oldInput.copy(mode = mode, rawMeta = null)
+            else -> oldInput.copy(mode = mode, raw = "", rawMeta = null)
         }
         log(TAG) { "updateMode(): $newInput <- $oldInput" }
         search(newInput)
