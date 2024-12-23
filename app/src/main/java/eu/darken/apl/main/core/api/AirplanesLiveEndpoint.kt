@@ -115,14 +115,14 @@ class AirplanesLiveEndpoint @Inject constructor(
     suspend fun getByLocation(
         latitude: Double,
         longitude: Double,
-        radius: Float,
+        radiusInMeter: Long,
     ): Collection<AirplanesLiveApi.Aircraft> = withContext(dispatcherProvider.IO) {
-        log(TAG) { "getByLocation($latitude,$longitude,$radius)" }
+        log(TAG) { "getByLocation($latitude,$longitude,$radiusInMeter)" }
 
         api.getAircraftsByLocation(
             latitude = latitude,
             longitude = longitude,
-            radius = radius.toInt()
+            radius = (radiusInMeter / NAUTICAL_MILE_METER).toInt()
         ).ac
     }
 
@@ -139,6 +139,7 @@ class AirplanesLiveEndpoint @Inject constructor(
     }
 
     companion object {
+        private const val NAUTICAL_MILE_METER = 1852L
         private val TAG = logTag("Core", "Endpoint")
     }
 }

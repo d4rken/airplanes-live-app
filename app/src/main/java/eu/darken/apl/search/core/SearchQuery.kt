@@ -55,7 +55,10 @@ sealed interface SearchQuery {
             get() = !military && !ladd && !pia
     }
 
-    data class Position(val location: Location = Location("empty")) : SearchQuery {
+    data class Position(
+        val location: Location = Location("empty"),
+        val rangeInMeter: Long = 185200L,
+    ) : SearchQuery {
         override val isEmpty: Boolean
             get() = location.provider == "empty"
     }

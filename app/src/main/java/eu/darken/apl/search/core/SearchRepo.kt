@@ -52,6 +52,7 @@ class SearchRepo @Inject constructor(
         var searchPia = false
         var searchLadd = false
         var location: Location? = null
+        var locationRange: Long = 0
 
         when (query) {
             is SearchQuery.All -> {
@@ -90,7 +91,7 @@ class SearchRepo @Inject constructor(
 
             is SearchQuery.Position -> {
                 location = query.location
-//                TODO()
+                locationRange = query.rangeInMeter
             }
         }
 
@@ -111,17 +112,24 @@ class SearchRepo @Inject constructor(
                 emit(endpoint.getByRegistration(registrations) as Collection<Aircraft>?)
             }.onStart { emit(null) },
             flow {
-                if (searchMilitary) emit(endpoint.getMilitary() as Collection<Aircraft>?) else emit(emptySet())
+                if (searchMilitary) {
+                    emit(endpoint.getMilitary() as Collection<Aircraft>?)
+                } else emit(emptySet())
             }.onStart { emit(null) },
             flow {
-                if (searchLadd) emit(endpoint.getLADD() as Collection<Aircraft>?) else emit(emptySet())
+                if (searchLadd) {
+                    emit(endpoint.getLADD() as Collection<Aircraft>?)
+                } else emit(emptySet())
             }.onStart { emit(null) },
             flow {
-                if (searchPia) emit(endpoint.getPIA() as Collection<Aircraft>?) else emit(emptySet())
+                if (searchPia) {
+                    emit(endpoint.getPIA() as Collection<Aircraft>?)
+                } else emit(emptySet())
             }.onStart { emit(null) },
             flow {
-                if (location == null) emit(emptySet())
-                else emit(endpoint.getByLocation(location, 500f) as Collection<Aircraft>?)
+                if (location != null) {
+                    emit(endpoint.getByLocation(location, locationRange) as Collection<Aircraft>?)
+                } else emit(emptySet())
             }.onStart { emit(null) },
         ) { squawkAc, hexAc, airframeAc, callsignAc, registrationAc, militaryAc, laddAc, piaAc, locationAc ->
             val ac = mutableSetOf<Aircraft>()

@@ -26,7 +26,7 @@ fun PlanespottersThumbnailView.load(
         data(data)
         listener(
             onStart = { request ->
-                log(TAG) { "onStart: $request for $data" }
+                log(TAG, VERBOSE) { "onStart: $request for $data" }
                 setImage(null)
             },
             onCancel = { request ->
@@ -34,7 +34,7 @@ fun PlanespottersThumbnailView.load(
                 setImage(null)
             },
             onSuccess = { request, result ->
-                log(TAG) { "onStart: $result for $request for $data" }
+                log(TAG, VERBOSE) { "onSuccess: $result for $request for $data" }
 
                 setImage(result.drawable as PlanespottersImage)
             },

@@ -54,15 +54,15 @@ class PlanespottersFetcher(
             val largeHeight = data.large || options.size.height.pxOrElse { 128 } > photo.thumbnail.size.height
             val largeWidth = data.large || options.size.width.pxOrElse { 128 } > photo.thumbnail.size.width
             val bestSize = if (largeHeight || largeWidth) {
-                log(TAG) { "Picking large thumbnail" }
+                log(TAG, VERBOSE) { "Picking large thumbnail" }
                 photo.thumbnailLarge
             } else {
-                log(TAG) { "Picking small thumbnail" }
+                log(TAG, VERBOSE) { "Picking small thumbnail" }
                 photo.thumbnail
             }
             data(bestSize.src)
             size(options.size)
-            log(TAG) { "OPTION SIZE: ${options.size}" }
+            log(TAG, VERBOSE) { "OPTION SIZE: ${options.size}" }
         }.build()
 
         val result = try {

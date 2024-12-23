@@ -1,6 +1,8 @@
 package eu.darken.apl.common.location
 
 import android.content.Context
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import androidx.core.location.LocationListenerCompat
@@ -8,6 +10,8 @@ import androidx.core.location.LocationManagerCompat
 import androidx.core.location.LocationRequestCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import eu.darken.apl.common.coroutine.AppScope
+import eu.darken.apl.common.debug.logging.Logging.Priority.WARN
+import eu.darken.apl.common.debug.logging.asLog
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.flow.replayingShare
@@ -24,6 +28,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.isActive
+import java.util.Locale
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 import javax.inject.Inject
@@ -94,6 +99,44 @@ class LocationManager2 @Inject constructor(
         .setupCommonEventHandlers(TAG) { "location" }
         .replayingShare(scope)
 
+    private val geocoder by lazy {
+        Geocoder(context, Locale.getDefault())
+    }
+
+    suspend fun toName(location: Location): Address? {
+        log(TAG) { "toName($location)" }
+
+        val addresses = try {
+            geocoder.getFromLocation(location.latitude, location.longitude, 1)
+        } catch (e: Exception) {
+            log(TAG, WARN) { "Failed to get location name for $location: ${e.asLog()}" }
+            null
+        }
+
+        return addresses?.singleOrNull().also {
+            log(TAG) { "toName($location) -> $it" }
+        }
+    }
+
+    suspend fun fromName(locality: String): Location? {
+        log(TAG) { "fromName($locality)" }
+
+        val results = try {
+            geocoder.getFromLocationName(locality, 1)
+        } catch (e: Exception) {
+            log(TAG, WARN) { "Failed to get location for name '$locality': ${e.asLog()}" }
+            null
+        }
+
+        return results?.singleOrNull()?.let {
+            Location("geocoder").apply {
+                latitude = it.latitude
+                longitude = it.longitude
+            }
+        }.also {
+            log(TAG) { "fromName($locality) -> $it" }
+        }
+    }
 
     sealed interface State {
         data object Waiting : State

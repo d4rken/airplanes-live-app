@@ -1,5 +1,6 @@
 package eu.darken.apl.search.ui
 
+import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
@@ -33,8 +34,14 @@ import eu.darken.apl.watch.core.types.AircraftWatch
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 import java.util.UUID
 import javax.inject.Inject
 
@@ -62,30 +69,12 @@ class SearchViewModel @Inject constructor(
 
     val events = SingleLiveEvent<SearchEvents>()
 
-    private val currentInput = MutableStateFlow(
-        when {
-            targetHexes != null -> Input(
-                mode = State.Mode.HEX,
-                raw = targetHexes!!.joinToString(","),
-            )
-
-            targetSquawks != null -> Input(
-                mode = State.Mode.SQUAWK,
-                raw = targetSquawks!!.joinToString(","),
-            )
-
-            else -> Input(
-                mode = State.Mode.SQUAWK,
-                raw = "7700,7600,7500",
-            )
-
-        }
-    )
+    private val currentInput = MutableStateFlow<Input?>(null)
 
     private val searchTrigger = MutableStateFlow(UUID.randomUUID())
     private val currentSearch: Flow<SearchRepo.Result?> = combine(
         searchTrigger,
-        currentInput,
+        currentInput.filterNotNull(),
     ) { _, input ->
         val terms = input.raw.split(",").map { it.trim() }.toSet()
         when (input.mode) {
@@ -101,26 +90,68 @@ class SearchViewModel @Inject constructor(
                 pia = terms.contains("pia"),
             )
 
-            State.Mode.POSITION -> SearchQuery.Position()
+            State.Mode.POSITION -> {
+                var location = input.rawMeta as? Location
+                if (location == null) {
+                    location = locationManager2.fromName(input.raw.trim())
+                }
+                if (location != null) {
+                    SearchQuery.Position(location)
+                } else {
+                    SearchQuery.Position()
+                }
+            }
         }.also { log(TAG) { "Mapped raw query: '$input' to $it" } }
     }
         .map { searchRepo.liveSearch(it) }
         .flatMapLatest { it }
         .replayingShare(viewModelScope)
 
+    private suspend fun getCurrentLocationSearch(): Input? {
+        val locationState = locationManager2.state
+            .filter { it !is LocationManager2.State.Waiting }
+            .first()
+        if (locationState !is LocationManager2.State.Available) return null
+
+        val location = locationState.location
+        val symbols = DecimalFormatSymbols(Locale.US) // Ensure the use of period as decimal separator
+        val formatter = DecimalFormat("#.##", symbols)
+        val roundedLat = formatter.format(location.latitude).toDouble()
+        val roundedLon = formatter.format(location.longitude).toDouble()
+        val altText = "${roundedLat},${roundedLon}"
+        val address = locationManager2.toName(location)
+        return Input(
+            raw = address?.locality ?: altText,
+            rawMeta = location,
+            State.Mode.POSITION
+        )
+    }
+
     init {
         log(TAG) { "init with handle: $handle" }
-//        launch {
-//            if (currentRawQuery.value != null) return@launch
-//            val locationState = locationManager2.state.first()
-//            if (locationState is LocationManager2.State.Available) {
-//                currentRawQuery.value = SearchQuery.Position(locationState.location)
-//            }
-//        }
+        launch {
+            if (currentInput.value != null) return@launch
+
+            currentInput.value = when {
+                targetHexes != null -> Input(
+                    mode = State.Mode.HEX,
+                    raw = targetHexes!!.joinToString(","),
+                )
+
+                targetSquawks != null -> Input(
+                    mode = State.Mode.SQUAWK,
+                    raw = targetSquawks!!.joinToString(","),
+                )
+
+                else -> {
+                    getCurrentLocationSearch() ?: Input()
+                }
+            }.also { log(TAG) { "Setting initial search to $it" } }
+        }
     }
 
     val state: LiveData<State> = combine(
-        currentInput,
+        currentInput.filterNotNull(),
         currentSearch.throttleLatest(500),
         watchRepo.watches,
         generalSettings.searchLocationDismissed.flow,
@@ -195,30 +226,37 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun updateSearchText(raw: String) {
+    fun updateSearchText(raw: String) = launch {
         log(TAG) { "updateSearchText($raw)" }
-        search(
-            currentInput.value.copy(
-                raw = raw,
-            )
-        )
+        val oldInput = currentInput.value ?: Input()
+        val newInput = when (oldInput.mode) {
+            State.Mode.POSITION -> if (raw.trim().isNotEmpty()) {
+                oldInput.copy(
+                    raw = raw,
+                    rawMeta = locationManager2.fromName(raw.trim())
+                )
+            } else {
+                getCurrentLocationSearch() ?: Input()
+            }
+
+            else -> oldInput.copy(raw = raw, rawMeta = null)
+        }
+
+        log(TAG) { "updateSearchText(): $newInput <- $oldInput" }
+        search(newInput)
     }
 
-    fun updateMode(mode: State.Mode) {
+    fun updateMode(mode: State.Mode) = launch {
         log(TAG) { "updateMode($mode)" }
-
-        val oldInput = currentInput.value
-        search(
-            oldInput.copy(
-                raw = when {
-                    mode == State.Mode.INTERESTING -> "military,ladd,pia"
-                    mode == State.Mode.SQUAWK -> "7700,7600,7500"
-                    mode == State.Mode.POSITION -> "" // TODO
-                    else -> ""
-                },
-                mode = mode,
-            )
-        )
+        val oldInput = currentInput.value ?: Input()
+        val newInput = when (mode) {
+            State.Mode.SQUAWK -> oldInput.copy(raw = "7700,7600,7500", mode = mode, rawMeta = null)
+            State.Mode.INTERESTING -> oldInput.copy(raw = "military,ladd,pia", mode = mode, rawMeta = null)
+            State.Mode.POSITION -> getCurrentLocationSearch() ?: Input("", mode = State.Mode.POSITION, rawMeta = null)
+            else -> oldInput.copy(mode = mode, rawMeta = null)
+        }
+        log(TAG) { "updateMode(): $newInput <- $oldInput" }
+        search(newInput)
     }
 
     fun showOnMap(items: Collection<SearchAdapter.Item>) {
@@ -249,7 +287,8 @@ class SearchViewModel @Inject constructor(
     }
 
     data class Input(
-        val raw: String,
-        val mode: State.Mode,
+        val raw: String = "military, pia, ladd",
+        val rawMeta: Any? = null,
+        val mode: State.Mode = State.Mode.INTERESTING,
     )
 }
