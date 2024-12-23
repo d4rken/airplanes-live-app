@@ -64,7 +64,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="2dp"
+        android:layout_marginBottom="4dp"
         android:gravity="start"
         app:layout_constraintBottom_toTopOf="@id/info_box"
         app:layout_constraintEnd_toEndOf="@id/info_box"
@@ -77,8 +77,9 @@
         style="@style/TextAppearance.Material3.LabelSmall"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:gravity="end"
+        android:layout_marginTop="4dp"
+        android:gravity="start"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@id/thumbnail"
         app:layout_constraintEnd_toEndOf="@id/info_box"
         app:layout_constraintStart_toStartOf="@id/info_box"
@@ -98,10 +99,12 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/first_value"
-            style="@style/TextAppearance.Material3.BodyMedium"
+            style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:gravity="start"
+            android:maxLines="1"
             app:layout_constraintBottom_toTopOf="@id/first_label"
             app:layout_constraintEnd_toEndOf="@id/first_label"
             app:layout_constraintStart_toStartOf="@id/first_label"
@@ -114,6 +117,7 @@
             style="@style/TextAppearance.Material3.LabelSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
             android:gravity="start"
             android:text="@string/common_callsign_label"
             app:layout_constraintBottom_toTopOf="@id/third_value"
@@ -123,10 +127,12 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/second_value"
-            style="@style/TextAppearance.Material3.BodyMedium"
+            style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:gravity="start"
+            android:maxLines="1"
             app:layout_constraintBottom_toTopOf="@id/second_label"
             app:layout_constraintEnd_toEndOf="@id/second_label"
             app:layout_constraintStart_toStartOf="@id/second_label"
@@ -139,6 +145,7 @@
             style="@style/TextAppearance.Material3.LabelSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
             android:gravity="start"
             android:text="@string/common_registration_label"
             app:layout_constraintBottom_toTopOf="@id/fourth_value"
@@ -148,11 +155,13 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/third_value"
-            style="@style/TextAppearance.Material3.BodyMedium"
+            style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-
+            android:ellipsize="end"
             android:gravity="start"
+
+            android:maxLines="1"
             app:layout_constraintBottom_toTopOf="@id/third_label"
             app:layout_constraintEnd_toEndOf="@id/third_label"
             app:layout_constraintStart_toStartOf="@id/third_label"
@@ -164,6 +173,7 @@
             style="@style/TextAppearance.Material3.LabelSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
             android:gravity="start"
             android:text="@string/common_hex_label"
             app:layout_constraintBottom_toTopOf="@id/fifth_value"
@@ -173,11 +183,13 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/fourth_value"
-            style="@style/TextAppearance.Material3.BodyMedium"
+            style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-
+            android:ellipsize="end"
             android:gravity="start"
+
+            android:maxLines="1"
             app:layout_constraintBottom_toTopOf="@id/fourth_label"
             app:layout_constraintEnd_toEndOf="@id/fourth_label"
             app:layout_constraintStart_toStartOf="@id/fourth_label"
@@ -189,6 +201,7 @@
             style="@style/TextAppearance.Material3.LabelSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
             android:gravity="start"
             android:text="@string/common_squawk_label"
             app:layout_constraintBottom_toTopOf="@id/sixth_value"
@@ -198,11 +211,13 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/fifth_value"
-            style="@style/TextAppearance.Material3.BodyMedium"
+            style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
 
+            android:ellipsize="end"
             android:gravity="start"
+            android:maxLines="1"
             app:layout_constraintBottom_toTopOf="@id/fifth_label"
             app:layout_constraintEnd_toEndOf="@id/fifth_label"
             app:layout_constraintStart_toStartOf="@id/fifth_label"
@@ -214,6 +229,7 @@
             style="@style/TextAppearance.Material3.LabelSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
             android:gravity="start"
             android:text="@string/common_altitude_label"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -223,11 +239,13 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/sixth_value"
-            style="@style/TextAppearance.Material3.BodyMedium"
+            style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
 
+            android:ellipsize="end"
             android:gravity="start"
+            android:maxLines="1"
             app:layout_constraintBottom_toTopOf="@id/sixth_label"
             app:layout_constraintEnd_toEndOf="@id/sixth_label"
             app:layout_constraintStart_toStartOf="@id/sixth_label"
@@ -239,6 +257,7 @@
             style="@style/TextAppearance.Material3.LabelSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
             android:gravity="start"
             android:text="@string/common_speed_label"
             app:layout_constraintBottom_toBottomOf="parent"
