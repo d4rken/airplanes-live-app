@@ -19,7 +19,6 @@ import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.debug.recorder.ui.RecorderActivity
 import eu.darken.apl.common.flow.DynamicStateFlow
-import eu.darken.apl.common.startServiceCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -76,8 +75,6 @@ class RecorderModule @Inject constructor(
                         if (!triggerFile.exists()) triggerFile.createNewFile()
 
                         logInfos()
-
-                        context.startServiceCompat(Intent(context, RecorderService::class.java))
 
                         copy(
                             recorder = newRecorder

@@ -46,8 +46,6 @@
         <activity
             android:name=".common.debug.recorder.ui.RecorderActivity"
             android:theme="@style/AppThemeFloating" />
-
-        <service android:name=".common.debug.recorder.core.RecorderService" />
     </application>
 
 </manifest>
