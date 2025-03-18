@@ -27,14 +27,14 @@ class FeederEndpoint @Inject constructor(
 
         Retrofit.Builder()
             .client(configHttpClient)
-            .baseUrl("https://api.airplanes.live/v2/")
+            .baseUrl("https://api.airplanes.live/")
             .addConverterFactory(moshiConverterFactory)
             .build()
             .create(FeederApi::class.java)
     }
 
 
-    suspend fun getFeeder(ids: Set<ReceiverId>): FeederInfos = withContext(dispatcherProvider.IO) {
+    suspend fun getFeeder(ids: Set<ReceiverId>): FeedInfos = withContext(dispatcherProvider.IO) {
         log(TAG) { "getFeeder(ids=$ids)" }
 
         ids
@@ -43,16 +43,15 @@ class FeederEndpoint @Inject constructor(
             .map { api.getFeeder(it) }
             .toList()
             .let { infos ->
-                val beasts = infos.flatMap { it.beastInfos }
-                val mlats = infos.flatMap { it.mlatInfos }
-                val anywheres = infos.mapNotNull { it.anywhereLink }
-                FeederInfos(
-                    beastInfos = beasts,
-                    mlatInfos = mlats,
-                    anywhereLink = anywheres
-                        .flatMap { it.removePrefix("https://globe.airplanes.live/?feed=").split(",") }
-                        .toList()
-                        .let { "https://globe.airplanes.live/?feed=${it.joinToString(",")}" }
+                val beasts = infos.flatMap { it.beast }
+                val mlats = infos.flatMap { it.mlat }
+                FeedInfos(
+                    beast = beasts,
+                    mlat = mlats,
+//                    anywhereLink = anywheres
+//                        .flatMap { it.removePrefix("https://globe.airplanes.live/?feed=").split(",") }
+//                        .toList()
+//                        .let { "https://globe.airplanes.live/?feed=${it.joinToString(",")}" }
                 )
             }
     }

@@ -117,23 +117,23 @@ class FeederRepo @Inject constructor(
 
             feederSettings.feederGroup.update { group ->
                 val updatedConfigs = group.configs.map { config ->
-                    val mlatInfos = stats.mlatInfos.singleOrNull { it.uuid == config.receiverId }
+                    val mlatInfos = stats.mlat.singleOrNull { it.uuid == config.receiverId }
                     config.copy(
                         user = mlatInfos?.user ?: config.user,
-                        position = mlatInfos?.position ?: config.position,
+//                        position = mlatInfos?.position ?: config.position,
                     )
                 }.toSet()
                 group.copy(configs = updatedConfigs)
             }
 
-            stats.beastInfos
+            stats.beast
                 .map {
                     BeastStatsEntity(
                         receiverId = it.receiverId,
                         positionRate = it.positionRate,
                         positions = it.positions,
                         messageRate = it.messageRate,
-                        bandwidth = it.bandwidth,
+                        bandwidth = it.avgKBitsPerSecond,
                         connectionTime = it.connTime,
                         latency = 100,
                     )
@@ -143,7 +143,7 @@ class FeederRepo @Inject constructor(
                     feederStatsDatabase.beastStats.insert(it)
                 }
 
-            stats.mlatInfos
+            stats.mlat
                 .map {
                     MlatStatsEntity(
                         receiverId = it.uuid,
