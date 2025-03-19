@@ -6,4 +6,4 @@ relative_links:
 include:
   - PRIVACY_POLICY.md
 
-theme: jekyll-theme-minima
+theme: jekyll-theme-minimal
