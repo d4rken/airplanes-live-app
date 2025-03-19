@@ -1,7 +1,3 @@
-<style>
-  header, nav, footer { display: none; }
-</style>
-
 # Privacy policy
 
 This is the privacy policy for the Android app "Companion for airplanes.live".
