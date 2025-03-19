@@ -7,11 +7,7 @@ relative_links:
   collections: true
   
 include:
-  - _layouts/
-  - _includes/
-  - _sass/
-  - assets/
-  - _config.yml  
-  - CNAME
   - PRIVACY_POLICY.md
   - README.md
+exclude:
+  - "*"
