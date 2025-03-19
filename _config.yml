@@ -1,4 +1,6 @@
+remote_theme: "mmistakes/minimal-mistakes"
 plugins:
+  - jekyll-include-cache
   - jekyll-relative-links
 relative_links:
   enabled: true
@@ -15,5 +17,3 @@ include:
   - CNAME
   - PRIVACY_POLICY.md
   - README.md
-
-theme: jekyll-theme-minimal
