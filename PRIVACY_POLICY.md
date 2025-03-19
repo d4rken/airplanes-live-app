@@ -1,5 +1,5 @@
 <style>
-  nav, footer { display: none; }
+  header, nav, footer { display: none; }
 </style>
 
 # Privacy policy
