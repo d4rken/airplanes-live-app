@@ -4,8 +4,6 @@ relative_links:
   enabled: true
   collections: true
 
-exclude:
-  - "*"
 include:
   - PRIVACY_POLICY.md
   - README.md
