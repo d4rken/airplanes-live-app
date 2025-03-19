@@ -1,5 +1,6 @@
 ---
 permalink: /privacy
+title: ""
 ---
 
 # Privacy policy
