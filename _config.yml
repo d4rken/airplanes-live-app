@@ -6,8 +6,6 @@ relative_links:
   enabled: true
   collections: true
   
-exclude:
-  - "*"
 include:
   - _layouts/
   - _includes/
