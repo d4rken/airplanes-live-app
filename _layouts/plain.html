@@ -1,14 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }}</title>
-    <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
-</head>
-<body>
-    <main>
+<html lang="{{ page.lang | default: site.lang | default: 'en' }}">
+
+  {%- include head.html -%}
+
+  <body>
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
         {{ content }}
+      </div>
     </main>
-</body>
+
+    {%- include footer.html -%}
+
+    {%- include sub-footer.html -%}
+
+  </body>
+
 </html>
