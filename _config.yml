@@ -6,8 +6,8 @@ relative_links:
   collections: true
 
 title: "airplanes.live App"
-description: "An Android app for [airplanes.live](https://airplanes.live)"
-author: "Matthias Urhahn<br>darken development"
+description: "An Android app for airplanes.live"
+author: "Matthias Urhahn (darken development)"
 
 include:
   - PRIVACY_POLICY.md
