@@ -4,6 +4,8 @@ permalink: /privacy
 title: "Privacy Policy"
 ---
 
+# Privacy Policy
+
 This is the privacy policy for the Android app "Companion for airplanes.live".
 
 ## Preamble
