@@ -1,0 +1,9 @@
+plugins:
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: true
+include:
+  - PRIVACY_POLICY.md
+
+theme: jekyll-theme-minima
