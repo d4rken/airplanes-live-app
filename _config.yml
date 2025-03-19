@@ -3,8 +3,16 @@ plugins:
 relative_links:
   enabled: true
   collections: true
-
+  
+exclude:
+  - "*"
 include:
+  - _layouts/
+  - _includes/
+  - _sass/
+  - assets/
+  - _config.yml  
+  - CNAME
   - PRIVACY_POLICY.md
   - README.md
 
