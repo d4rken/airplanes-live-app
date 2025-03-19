@@ -9,9 +9,7 @@ relative_links:
 include:
   - PRIVACY_POLICY.md
   - README.md
-  - assets
-  - _layouts
-  - _includes
-  - _sass
 exclude:
-  - "*"
+  - app
+  - buildSrc
+  - gradle/wrapper
