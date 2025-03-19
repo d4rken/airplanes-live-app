@@ -4,7 +4,11 @@ plugins:
 relative_links:
   enabled: true
   collections: true
-  
+
+title: "airplanes.live App"
+description: "An Android app for https://airplanes.live"
+author: "Your Name"
+
 include:
   - PRIVACY_POLICY.md
   - README.md
