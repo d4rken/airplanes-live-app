@@ -1,6 +1,6 @@
----
-layout: none
----
+<style>
+  nav, footer { display: none; }
+</style>
 
 # Privacy policy
 
