@@ -1,3 +1,7 @@
+---
+layout: none
+---
+
 # Privacy policy
 
 This is the privacy policy for the Android app "Companion for airplanes.live".
