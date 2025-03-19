@@ -1,6 +1,5 @@
-remote_theme: "mmistakes/minimal-mistakes"
+theme: minima
 plugins:
-  - jekyll-include-cache
   - jekyll-relative-links
 relative_links:
   enabled: true
