@@ -3,18 +3,22 @@ package eu.darken.apl.common.uix
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
 import eu.darken.apl.common.debug.logging.log
-import eu.darken.apl.common.debug.logging.logTag
 
-abstract class ViewModel1 : ViewModel() {
-    val TAG: String = logTag("VM", javaClass.simpleName)
+abstract class ViewModel1(
+    open val tag: String = defaultTag()
+) : ViewModel() {
 
     init {
-        log(TAG) { "Initialized" }
+        log(defaultTag()) { "Initialized" }
     }
 
     @CallSuper
     override fun onCleared() {
-        log(TAG) { "onCleared()" }
+        log(tag) { "onCleared()" }
         super.onCleared()
+    }
+
+    companion object {
+        private fun defaultTag(): String = this::class.simpleName ?: "VM1"
     }
 }

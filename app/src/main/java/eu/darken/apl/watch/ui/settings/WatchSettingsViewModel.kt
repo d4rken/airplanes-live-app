@@ -11,10 +11,7 @@ import javax.inject.Inject
 class WatchSettingsViewModel @Inject constructor(
     private val handle: SavedStateHandle,
     private val dispatcherProvider: DispatcherProvider,
-) : ViewModel3(dispatcherProvider) {
-
-
-    companion object {
-        private val TAG = logTag("Settings", "Watch", "VM")
-    }
-}
+) : ViewModel3(
+    dispatcherProvider,
+    tag = logTag("Settings", "Watch", "VM"),
+)

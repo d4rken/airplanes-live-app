@@ -7,12 +7,14 @@ import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
 import eu.darken.apl.common.debug.logging.Logging.Priority.WARN
 import eu.darken.apl.common.debug.logging.log
-import eu.darken.apl.common.livedata.SingleLiveEvent
+import eu.darken.apl.common.debug.logging.logTag
+import eu.darken.apl.common.flow.SingleEventFlow
 import eu.darken.apl.common.uix.ViewModel2
 import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.watch.core.WatchId
 import eu.darken.apl.watch.core.WatchRepo
 import eu.darken.apl.watch.core.getStatus
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -23,17 +25,22 @@ class MainActivityVM @Inject constructor(
     dispatcherProvider: DispatcherProvider,
     private val sponsorHelper: SponsorHelper,
     private val watchRepo: WatchRepo,
-) : ViewModel2(dispatcherProvider = dispatcherProvider) {
+) : ViewModel2(
+    dispatcherProvider = dispatcherProvider,
+    tag = logTag("Main", "ViewModel")
+) {
+
+    override var launchErrorHandler: CoroutineExceptionHandler? = null
 
     private val stateFlow = MutableStateFlow(State())
     val state = stateFlow
         .onEach { log(VERBOSE) { "New state: $it" } }
-        .asLiveData2()
+        .asStateFlow()
 
     private val readyStateInternal = MutableStateFlow(true)
-    val readyState = readyStateInternal.asLiveData2()
+    val readyState = readyStateInternal.asStateFlow()
 
-    val events = SingleLiveEvent<MainActivityEvents>()
+    val events = SingleEventFlow<MainActivityEvents>()
 
     fun onGo() {
         stateFlow.value = stateFlow.value.copy(ready = true)
@@ -55,7 +62,7 @@ class MainActivityVM @Inject constructor(
             val directions = BottomNavigationDirections.goToMap(
                 mapOptions = MapOptions.focus(status.tracked.map { it.hex })
             )
-            events.postValue(MainActivityEvents.BottomNavigation(directions))
+            events.emit(MainActivityEvents.BottomNavigation(directions))
         }
     }
 
@@ -63,4 +70,7 @@ class MainActivityVM @Inject constructor(
         val ready: Boolean = false
     )
 
+    companion object {
+        private val TAG = logTag("Feeder", "Action", "Dialog", "ViewModel")
+    }
 }

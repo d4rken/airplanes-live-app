@@ -5,6 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.Logging.Priority.INFO
 import eu.darken.apl.common.debug.logging.log
+import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.main.core.aircraft.Callsign
@@ -16,7 +17,10 @@ class CreateFlightWatchViewModel @Inject constructor(
     handle: SavedStateHandle,
     dispatcherProvider: DispatcherProvider,
     private val watchRepo: WatchRepo,
-) : ViewModel3(dispatcherProvider = dispatcherProvider) {
+) : ViewModel3(
+    dispatcherProvider = dispatcherProvider,
+    tag = logTag("Watch", "Create", "ViewModel")
+) {
 
     private val args by handle.navArgs<CreateFlightWatchFragmentArgs>()
     val initCallsign: Callsign?
@@ -25,11 +29,11 @@ class CreateFlightWatchViewModel @Inject constructor(
         get() = args.note
 
     init {
-        log(TAG, INFO) { "initCallsign=$initCallsign, initNote=$initNote" }
+        log(tag, INFO) { "initCallsign=$initCallsign, initNote=$initNote" }
     }
 
     fun create(callsign: Callsign, note: String) = launch {
-        log(TAG) { "create($callsign, $note)" }
+        log(tag) { "create($callsign, $note)" }
         watchRepo.createFlight(callsign, note.trim())
         popNavStack()
     }

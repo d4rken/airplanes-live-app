@@ -34,7 +34,7 @@ class MainFragment : Fragment3(R.layout.main_fragment) {
             return
         }
 
-        vm.newRelease.observe2(ui) { release ->
+        vm.newRelease.observeWith(ui) { release ->
             Snackbar
                 .make(
                     requireView(),
@@ -95,7 +95,7 @@ class MainFragment : Fragment3(R.layout.main_fragment) {
             }
         }
 
-        vm.isInternetAvailable.observe2(ui) {
+        vm.isInternetAvailable.observeWith(ui) {
             offlineContainer.isGone = it
         }
 

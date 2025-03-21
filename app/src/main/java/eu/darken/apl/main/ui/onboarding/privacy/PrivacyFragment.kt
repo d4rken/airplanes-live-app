@@ -27,7 +27,7 @@ class PrivacyFragment : Fragment3(R.layout.privacy_fragment) {
 
         ui.updateContainer.setOnClickListener { vm.toggleUpdateCheck() }
 
-        vm.state.observe2(ui) { state ->
+        vm.state.observeWith(ui) { state ->
             updateToggle.setChecked2(state.isUpdateCheckEnabled, false)
             updateContainer.isVisible = state.isUpdateCheckSupported
         }

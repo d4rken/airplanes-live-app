@@ -1,7 +1,6 @@
 package eu.darken.apl.search.ui
 
 import android.location.Location
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,10 +9,11 @@ import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.datastore.valueBlocking
 import eu.darken.apl.common.debug.logging.Logging.Priority.INFO
 import eu.darken.apl.common.debug.logging.log
+import eu.darken.apl.common.debug.logging.logTag
+import eu.darken.apl.common.flow.SingleEventFlow
 import eu.darken.apl.common.flow.combine
 import eu.darken.apl.common.flow.replayingShare
 import eu.darken.apl.common.flow.throttleLatest
-import eu.darken.apl.common.livedata.SingleLiveEvent
 import eu.darken.apl.common.location.LocationManager2
 import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
@@ -54,7 +54,10 @@ class SearchViewModel @Inject constructor(
     private val locationManager2: LocationManager2,
     private val generalSettings: GeneralSettings,
     private val watchRepo: WatchRepo,
-) : ViewModel3(dispatcherProvider) {
+) : ViewModel3(
+    dispatcherProvider,
+    tag = logTag("Search", "ViewModel"),
+) {
 
     private val args by handle.navArgs<SearchFragmentArgs>()
     private val targetHexes: Set<AircraftHex>?
@@ -64,10 +67,10 @@ class SearchViewModel @Inject constructor(
 
 
     init {
-        log(TAG, INFO) { "targetHexes=$targetHexes, targetSquawks=$targetSquawks" }
+        log(tag, INFO) { "targetHexes=$targetHexes, targetSquawks=$targetSquawks" }
     }
 
-    val events = SingleLiveEvent<SearchEvents>()
+    val events = SingleEventFlow<SearchEvents>()
 
     private val currentInput = MutableStateFlow<Input?>(null)
 
@@ -101,7 +104,7 @@ class SearchViewModel @Inject constructor(
                     SearchQuery.Position()
                 }
             }
-        }.also { log(TAG) { "Mapped raw query: '$input' to $it" } }
+        }.also { log(tag) { "Mapped raw query: '$input' to $it" } }
     }
         .map { searchRepo.liveSearch(it) }
         .flatMapLatest { it }
@@ -128,7 +131,7 @@ class SearchViewModel @Inject constructor(
     }
 
     init {
-        log(TAG) { "init with handle: $handle" }
+        log(tag) { "init with handle: $handle" }
         launch {
             if (currentInput.value != null) return@launch
 
@@ -146,11 +149,11 @@ class SearchViewModel @Inject constructor(
                 else -> {
                     getCurrentLocationSearch() ?: Input()
                 }
-            }.also { log(TAG) { "Setting initial search to $it" } }
+            }.also { log(tag) { "Setting initial search to $it" } }
         }
     }
 
-    val state: LiveData<State> = combine(
+    val state = combine(
         currentInput.filterNotNull(),
         currentSearch.throttleLatest(500),
         watchRepo.watches,
@@ -163,7 +166,7 @@ class SearchViewModel @Inject constructor(
             LocationPromptVH.Item(
                 locationState,
                 onGrant = {
-                    events.postValue(SearchEvents.RequestLocationPermission)
+                    events.emitBlocking(SearchEvents.RequestLocationPermission)
                 },
                 onDismiss = {
                     generalSettings.searchLocationDismissed.valueBlocking = true
@@ -215,10 +218,10 @@ class SearchViewModel @Inject constructor(
             isSearching = result?.searching ?: false,
             items = items,
         )
-    }.catch { }.asLiveData2()
+    }.catch { }.asStateFlow()
 
     fun search(input: Input) {
-        log(TAG) { "search($input)" }
+        log(tag) { "search($input)" }
         if (currentInput.value == input) {
             searchTrigger.value = UUID.randomUUID()
         } else {
@@ -227,7 +230,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun updateSearchText(raw: String) = launch {
-        log(TAG) { "updateSearchText($raw)" }
+        log(tag) { "updateSearchText($raw)" }
         val oldInput = currentInput.value ?: Input()
         val newInput = when (oldInput.mode) {
             State.Mode.POSITION -> if (raw.trim().isNotEmpty()) {
@@ -242,12 +245,12 @@ class SearchViewModel @Inject constructor(
             else -> oldInput.copy(raw = raw, rawMeta = null)
         }
 
-        log(TAG) { "updateSearchText(): $newInput <- $oldInput" }
+        log(tag) { "updateSearchText(): $newInput <- $oldInput" }
         search(newInput)
     }
 
     fun updateMode(mode: State.Mode) = launch {
-        log(TAG) { "updateMode($mode)" }
+        log(tag) { "updateMode($mode)" }
         val oldInput = currentInput.value ?: Input()
         val newInput = when (mode) {
             State.Mode.REGISTRATION -> oldInput.copy(mode = mode, raw = "HO-HOHO", rawMeta = null)
@@ -257,12 +260,12 @@ class SearchViewModel @Inject constructor(
             State.Mode.POSITION -> getCurrentLocationSearch() ?: Input("", mode = State.Mode.POSITION, rawMeta = null)
             else -> oldInput.copy(mode = mode, raw = "", rawMeta = null)
         }
-        log(TAG) { "updateMode(): $newInput <- $oldInput" }
+        log(tag) { "updateMode(): $newInput <- $oldInput" }
         search(newInput)
     }
 
     fun showOnMap(items: Collection<SearchAdapter.Item>) {
-        log(TAG) { "showOnMap(${items.size} items)" }
+        log(tag) { "showOnMap(${items.size} items)" }
         val acs = items.filterIsInstance<AircraftResultVH.Item>().map { it.aircraft }
         if (acs.isEmpty()) return
         SearchFragmentDirections.actionSearchToMap(

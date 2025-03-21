@@ -5,6 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.log
+import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.feeder.core.FeederRepo
 import eu.darken.apl.feeder.core.ReceiverId
@@ -23,7 +24,10 @@ class FeederListViewModel @Inject constructor(
     dispatcherProvider: DispatcherProvider,
     private val feederRepo: FeederRepo,
     private val webpageTool: WebpageTool,
-) : ViewModel3(dispatcherProvider = dispatcherProvider) {
+) : ViewModel3(
+    dispatcherProvider = dispatcherProvider,
+    tag = logTag("Feeder", "List", "ViewModel")
+) {
 
     private val refreshTimer = callbackFlow {
         while (isActive) {
@@ -52,10 +56,10 @@ class FeederListViewModel @Inject constructor(
             items = items,
             isRefreshing = isRefreshing,
         )
-    }.asLiveData2()
+    }.asStateFlow()
 
     fun addFeeders(rawId: String) = launch {
-        log(TAG) { "addFeeders($rawId)" }
+        log(tag) { "addFeeders($rawId)" }
         rawId
             .let { if (it.contains(",")) it.split(",") else setOf(it) }
             .map { it.trim() }
@@ -64,7 +68,7 @@ class FeederListViewModel @Inject constructor(
     }
 
     fun refresh() = launch {
-        log(TAG) { "refresh()" }
+        log(tag) { "refresh()" }
         feederRepo.refresh()
     }
 
@@ -73,7 +77,7 @@ class FeederListViewModel @Inject constructor(
     }
 
     data class State(
-        val items: List<FeederListAdapter.Item>,
+        val items: List<FeederListAdapter.Item> = emptyList(),
         val isRefreshing: Boolean = false,
     )
 }

@@ -7,9 +7,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.log
+import eu.darken.apl.common.debug.logging.logTag
+import eu.darken.apl.common.flow.SingleEventFlow
 import eu.darken.apl.common.flow.combine
 import eu.darken.apl.common.flow.replayingShare
-import eu.darken.apl.common.livedata.SingleLiveEvent
 import eu.darken.apl.common.location.LocationManager2
 import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
@@ -21,7 +22,9 @@ import eu.darken.apl.main.core.getByHex
 import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.watch.core.WatchRepo
 import eu.darken.apl.watch.core.types.Watch
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
@@ -34,7 +37,10 @@ class SearchActionViewModel @Inject constructor(
     private val aircraftRepo: AircraftRepo,
     private val watchRepo: WatchRepo,
     private val locationManager2: LocationManager2,
-) : ViewModel3(dispatcherProvider) {
+) : ViewModel3(
+    dispatcherProvider,
+    tag = logTag("Search", "Action", "ViewModel")
+) {
 
     private val navArgs by handle.navArgs<SearchActionDialogArgs>()
     private val aircraftHex: AircraftHex
@@ -44,13 +50,13 @@ class SearchActionViewModel @Inject constructor(
         .filterNotNull()
         .replayingShare(viewModelScope)
 
-    val events = SingleLiveEvent<FeederActionEvents>()
+    val events = SingleEventFlow<FeederActionEvents>()
 
     init {
-        log(TAG) { "Loading for $aircraftHex" }
+        log(tag) { "Loading for $aircraftHex" }
     }
 
-    val state = combine(
+    val state: Flow<State> = combine(
         watchRepo.watches,
         aircraft,
         locationManager2.state,
@@ -64,10 +70,10 @@ class SearchActionViewModel @Inject constructor(
             },
             watch = watches.firstOrNull { it.matches(ac) }
         )
-    }.asLiveData2()
+    }.asStateFlow()
 
     fun showMap() = launch {
-        log(TAG) { "showMap()" }
+        log(tag) { "showMap()" }
         SearchActionDialogDirections.actionSearchActionToMap(
             mapOptions = aircraft.firstOrNull()
                 ?.let { MapOptions.focus(it) }
@@ -76,8 +82,8 @@ class SearchActionViewModel @Inject constructor(
     }
 
     fun showWatch() = launch {
-        log(TAG) { "showWatch()" }
-        val watch = state.value?.watch
+        log(tag) { "showWatch()" }
+        val watch = state.first().watch
         if (watch != null) {
             SearchActionDialogDirections.actionSearchActionToWatchlistDetailsFragment(watch.id)
         } else {

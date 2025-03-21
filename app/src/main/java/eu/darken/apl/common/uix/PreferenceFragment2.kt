@@ -15,6 +15,7 @@ import eu.darken.apl.common.datastore.PreferenceScreenData
 import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.main.ui.settings.SettingsFragment
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -75,5 +76,9 @@ abstract class PreferenceFragment2 : PreferenceFragmentCompat() {
                 true
             }
         }
+    }
+
+    fun <T> Flow<T>.observe(collector: suspend (T) -> Unit) {
+        observe(this@PreferenceFragment2, collector)
     }
 }

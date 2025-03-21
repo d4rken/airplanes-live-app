@@ -11,7 +11,6 @@ import eu.darken.apl.R
 import eu.darken.apl.common.ClipboardHelper
 import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.debug.recorder.ui.RecorderConsentDialog
-import eu.darken.apl.common.observe2
 import eu.darken.apl.common.uix.PreferenceFragment2
 import eu.darken.apl.main.core.GeneralSettings
 import javax.inject.Inject
@@ -33,7 +32,7 @@ class SupportFragment : PreferenceFragment2() {
     private val debugLogPref by lazy { findPreference<Preference>("support.debuglog")!! }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        vm.clipboardEvent.observe2(this) { installId ->
+        vm.clipboardEvent.observe { installId ->
             Snackbar.make(requireView(), installId, Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.common_copy_action) {
                     clipboardHelper.copyToClipboard(installId)
@@ -41,7 +40,7 @@ class SupportFragment : PreferenceFragment2() {
                 .show()
         }
 
-        vm.isRecording.observe2(this) { isRecording ->
+        vm.isRecording.observe { isRecording ->
             debugLogPref.setIcon(
                 if (isRecording) R.drawable.ic_cancel_24
                 else R.drawable.ic_bug_report_24

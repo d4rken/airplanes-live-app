@@ -119,7 +119,7 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
 
         }
 
-        vm.state.observe2(ui) { state ->
+        vm.state.observeWith(ui) { state ->
             adapter.update(state.items)
 
             searchInput.apply {
@@ -190,7 +190,7 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
             ui.searchOptionContainer.addOnButtonCheckedListener(modeListener)
         }
 
-        vm.events.observe2 { event ->
+        vm.events.observe { event ->
             when (event) {
                 SearchEvents.RequestLocationPermission -> {
                     locationPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)

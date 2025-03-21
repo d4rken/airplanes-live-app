@@ -3,10 +3,10 @@ package eu.darken.apl.common.uix
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
 import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
+import kotlinx.coroutines.flow.Flow
 
 abstract class Activity2 : AppCompatActivity() {
     internal val tag: String =
@@ -37,7 +37,7 @@ abstract class Activity2 : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    fun <T> LiveData<T>.observe2(callback: (T) -> Unit) {
+    fun <T> Flow<T>.observe(callback: (T) -> Unit) {
         observe(this@Activity2) { callback.invoke(it) }
     }
 
