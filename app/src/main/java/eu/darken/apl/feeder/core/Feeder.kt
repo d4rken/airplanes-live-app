@@ -8,8 +8,8 @@ import java.time.Instant
 
 data class Feeder(
     val config: FeederConfig,
-    val beastStats: BeastStatsEntity?,
-    val mlatStats: MlatStatsEntity?,
+    val beastStats: BeastStatsEntity? = null,
+    val mlatStats: MlatStatsEntity? = null,
 ) {
 
     val label: String

@@ -45,14 +45,14 @@ class MainActivity : Activity2() {
         ui = MainActivityBinding.inflate(layoutInflater)
         setContentView(ui.root)
 
-        vm.readyState.observe2 { showSplashScreen = false }
+        vm.readyState.observe { showSplashScreen = false }
         feederMonitorNotifications.clearOfflineNotifications()
 
         handleIntent(intent)
 
         vm.onGo()
 
-        vm.events.observe2 { events ->
+        vm.events.observe { events ->
             when (events) {
                 is MainActivityEvents.BottomNavigation -> {
                     bottomNavController?.navigate(events.directions)

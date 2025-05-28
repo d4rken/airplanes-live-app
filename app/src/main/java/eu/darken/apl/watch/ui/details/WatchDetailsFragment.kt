@@ -41,7 +41,7 @@ class WatchDetailsFragment : BottomSheetDialogFragment2() {
         ui.removeFeederAction.setOnClickListener { vm.removeAlert() }
         ui.aircraftDetails.onThumbnailClicked = { webpageTool.open(it.link) }
 
-        vm.state.observe2(ui) { state ->
+        vm.state.observeWith(ui) { state ->
             when (state.status) {
                 is AircraftWatch.Status -> {
                     icon.setImageResource(R.drawable.ic_hexagon_multiple_24)
@@ -77,7 +77,7 @@ class WatchDetailsFragment : BottomSheetDialogFragment2() {
             enableNotificationsToggle.setChecked2(state.status.watch.isNotificationEnabled, animate = false)
         }
 
-        vm.events.observe2(ui) { event ->
+        vm.events.observeWith(ui) { event ->
             when (event) {
                 is WatchDetailsEvents.RemovalConfirmation -> MaterialAlertDialogBuilder(requireContext()).apply {
                     setTitle(R.string.watch_list_remove_confirmation_title)

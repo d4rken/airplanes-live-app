@@ -48,7 +48,7 @@ class WatchListFragment : Fragment3(R.layout.watch_list_fragment) {
         val adapter = WatchListAdapter()
         ui.list.setupDefaults(adapter, verticalDividers = false)
 
-        vm.state.observe2(ui) { state ->
+        vm.state.observeWith(ui) { state ->
             swipeRefreshContainer.isInvisible = false
             loadingContainer.isGone = true
 

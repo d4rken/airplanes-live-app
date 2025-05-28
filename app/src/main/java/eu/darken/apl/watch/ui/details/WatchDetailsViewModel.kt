@@ -6,8 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
+import eu.darken.apl.common.flow.SingleEventFlow
 import eu.darken.apl.common.flow.replayingShare
-import eu.darken.apl.common.livedata.SingleLiveEvent
 import eu.darken.apl.common.location.LocationManager2
 import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
@@ -49,7 +49,7 @@ class WatchDetailsViewModel @Inject constructor(
     private val navArgs by handle.navArgs<WatchDetailsFragmentArgs>()
     private val watchId: WatchId = navArgs.watchId
 
-    val events = SingleLiveEvent<WatchDetailsEvents>()
+    val events = SingleEventFlow<WatchDetailsEvents>()
 
     private val trigger = MutableStateFlow(UUID.randomUUID())
 
@@ -91,16 +91,16 @@ class WatchDetailsViewModel @Inject constructor(
             }
         )
     }
-        .asLiveData2()
+        .asStateFlow()
 
     fun removeAlert(confirmed: Boolean = false) = launch {
         log(TAG) { "removeAlert()" }
         if (!confirmed) {
-            events.postValue(WatchDetailsEvents.RemovalConfirmation(watchId))
+            events.emit(WatchDetailsEvents.RemovalConfirmation(watchId))
             return@launch
         }
 
-        watchRepo.delete(state.value!!.status.id)
+        watchRepo.delete(state.first().status.id)
     }
 
     fun showOnMap() = launch {

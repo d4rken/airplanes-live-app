@@ -6,7 +6,7 @@ import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
-import eu.darken.apl.common.livedata.SingleLiveEvent
+import eu.darken.apl.common.flow.SingleEventFlow
 import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.feeder.core.AnywhereTool
@@ -16,6 +16,7 @@ import eu.darken.apl.feeder.core.ReceiverId
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
@@ -32,12 +33,15 @@ class FeederActionViewModel @Inject constructor(
     private val feederRepo: FeederRepo,
     private val webpageTool: WebpageTool,
     private val anywhereTool: AnywhereTool,
-) : ViewModel3(dispatcherProvider) {
+) : ViewModel3(
+    dispatcherProvider,
+    tag = logTag("Feeder", "Action", "Dialog", "ViewModel"),
+) {
 
     private val navArgs by handle.navArgs<FeederActionDialogArgs>()
     private val feederId: ReceiverId = navArgs.receiverId
     private val trigger = MutableStateFlow(UUID.randomUUID())
-    val events = SingleLiveEvent<FeederActionEvents>()
+    val events = SingleEventFlow<FeederActionEvents>()
 
     init {
         feederRepo.feeders
@@ -45,29 +49,25 @@ class FeederActionViewModel @Inject constructor(
             .filter { it == null }
             .take(1)
             .onEach {
-                log(TAG) { "App data for $feederId is no longer available" }
+                log(tag) { "App data for $feederId is no longer available" }
                 popNavStack()
             }
             .launchInViewModel()
     }
 
-
     val state = combine(
         trigger,
         feederRepo.feeders.mapNotNull { data -> data.singleOrNull { it.id == feederId } },
     ) { _, feeder ->
-
-
         State(
             feeder = feeder,
         )
-    }
-        .asLiveData2()
+    }.asStateFlow()
 
     fun removeFeeder(confirmed: Boolean = false) = launch {
-        log(TAG) { "removeFeeder()" }
+        log(tag) { "removeFeeder()" }
         if (!confirmed) {
-            events.postValue(FeederActionEvents.RemovalConfirmation(feederId))
+            events.emit(FeederActionEvents.RemovalConfirmation(feederId))
             return@launch
         }
 
@@ -75,8 +75,8 @@ class FeederActionViewModel @Inject constructor(
     }
 
     fun toggleNotifyWhenOffline() = launch {
-        log(TAG) { "toggleNotifyWhenOffline()" }
-        val newTimeout = if (state.value!!.feeder.config.offlineCheckTimeout != null) {
+        log(tag) { "toggleNotifyWhenOffline()" }
+        val newTimeout = if (state.first().feeder.config.offlineCheckTimeout != null) {
             null
         } else {
             Duration.ofHours(6)
@@ -85,8 +85,8 @@ class FeederActionViewModel @Inject constructor(
     }
 
     fun showFeedOnMap() = launch {
-        log(TAG) { "showFeedOnMap()" }
-        val feeder = state.value!!.feeder
+        log(tag) { "showFeedOnMap()" }
+        val feeder = state.first().feeder
         webpageTool.open(
             anywhereTool.createLink(
                 ids = setOf(feeder.anywhereId),
@@ -98,9 +98,4 @@ class FeederActionViewModel @Inject constructor(
     data class State(
         val feeder: Feeder,
     )
-
-    companion object {
-        private val TAG = logTag("Feeder", "Action", "Dialog", "ViewModel")
-    }
-
 }

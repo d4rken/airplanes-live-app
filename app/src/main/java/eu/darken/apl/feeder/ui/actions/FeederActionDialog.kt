@@ -30,7 +30,7 @@ class FeederActionDialog : BottomSheetDialogFragment2() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        vm.state.observe2(ui) { (feeder) ->
+        vm.state.observeWith(ui) { (feeder) ->
             primary.text = feeder.label
             secondary.text = feeder.id
             tertiary.text = "\uD83C\uDF7B"
@@ -50,7 +50,7 @@ class FeederActionDialog : BottomSheetDialogFragment2() {
         ui.removeFeederAction.setOnClickListener { vm.removeFeeder() }
 
 
-        vm.events.observe2(ui) { event ->
+        vm.events.observeWith(ui) { event ->
             when (event) {
                 is FeederActionEvents.RemovalConfirmation -> MaterialAlertDialogBuilder(requireContext()).apply {
                     setTitle(R.string.feeder_remove_confirmation_title)

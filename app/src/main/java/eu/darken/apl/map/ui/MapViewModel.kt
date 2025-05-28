@@ -8,7 +8,8 @@ import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.Logging.Priority.INFO
 import eu.darken.apl.common.debug.logging.log
-import eu.darken.apl.common.livedata.SingleLiveEvent
+import eu.darken.apl.common.debug.logging.logTag
+import eu.darken.apl.common.flow.SingleEventFlow
 import eu.darken.apl.common.permissions.Permission
 import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.main.core.AircraftRepo
@@ -40,59 +41,62 @@ class MapViewModel @Inject constructor(
     private val searchRepo: SearchRepo,
     private val watchRepo: WatchRepo,
     private val aircraftRepo: AircraftRepo,
-) : ViewModel3(dispatcherProvider = dispatcherProvider) {
+) : ViewModel3(
+    dispatcherProvider = dispatcherProvider,
+    tag = logTag("Map", "ViewModel"),
+) {
 
     private val args = MapFragmentArgs.fromSavedStateHandle(handle)
     private val currentOptions = MutableStateFlow(args.mapOptions ?: MapOptions())
 
-    val events = SingleLiveEvent<MapEvents>()
+    val events = SingleEventFlow<MapEvents>()
     private val refreshTrigger = MutableStateFlow(UUID.randomUUID())
 
     val state = combine(
         refreshTrigger,
         watchRepo.watches,
-        currentOptions.onEach { log(TAG, INFO) { "New MapOptions: $it" } },
+        currentOptions.onEach { log(tag, INFO) { "New MapOptions: $it" } },
     ) { _, alerts, options ->
 
         State(
             options = options,
             alerts = alerts,
         )
-    }.asLiveData2()
+    }.asStateFlow()
 
     fun checkLocationPermission() {
         if (Permission.ACCESS_COARSE_LOCATION.isGranted(context)) {
-            log(TAG) { "checkLocationPermission(): Already granted" }
+            log(tag) { "checkLocationPermission(): Already granted" }
         } else {
-            log(TAG, INFO) { "checkLocationPermission(): Requesting location permission" }
-            events.postValue(MapEvents.RequestLocationPermission)
+            log(tag, INFO) { "checkLocationPermission(): Requesting location permission" }
+            events.emitBlocking(MapEvents.RequestLocationPermission)
         }
     }
 
     fun homeMap() {
-        log(TAG) { "homeMap()" }
-        events.postValue(MapEvents.HomeMap)
+        log(tag) { "homeMap()" }
+        events.emitBlocking(MapEvents.HomeMap)
     }
 
     fun onOpenUrl(url: String) {
-        log(TAG) { "onOpenUrl($url)" }
+        log(tag) { "onOpenUrl($url)" }
         webpageTool.open(url)
     }
 
     fun onOptionsUpdated(options: MapOptions) {
-        log(TAG) { "onUrlUpdated($options)" }
+        log(tag) { "onUrlUpdated($options)" }
         currentOptions.value = options
     }
 
     fun showInSearch(hex: AircraftHex) {
-        log(TAG) { "showInSearch($hex)" }
+        log(tag) { "showInSearch($hex)" }
         MapFragmentDirections.actionMapToSearch(
             targetHexes = arrayOf(hex)
         ).navigate()
     }
 
     fun addWatch(hex: AircraftHex) = launch {
-        log(TAG) { "addWatch($hex)" }
+        log(tag) { "addWatch($hex)" }
         aircraftRepo.findByHex(hex) ?: searchRepo.search(SearchQuery.Hex(hex)).aircraft.single()
         MapFragmentDirections.actionMapToCreateAircraftWatchFragment(
             hex = hex,
@@ -109,13 +113,13 @@ class MapViewModel @Inject constructor(
                     }
                     .firstOrNull()
             }
-            log(TAG) { "addWatch(...): $added" }
-            if (added != null) events.postValue(MapEvents.WatchAdded(added))
+            log(tag) { "addWatch(...): $added" }
+            if (added != null) events.emit(MapEvents.WatchAdded(added))
         }
     }
 
     fun reset() = launch {
-        log(TAG) { "reset()" }
+        log(tag) { "reset()" }
         currentOptions.value = MapOptions()
     }
 

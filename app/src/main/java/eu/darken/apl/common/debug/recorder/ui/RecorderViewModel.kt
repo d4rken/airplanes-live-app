@@ -18,10 +18,10 @@ import eu.darken.apl.common.debug.logging.asLog
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.flow.DynamicStateFlow
+import eu.darken.apl.common.flow.SingleEventFlow
 import eu.darken.apl.common.flow.combine
 import eu.darken.apl.common.flow.onError
 import eu.darken.apl.common.flow.replayingShare
-import eu.darken.apl.common.livedata.SingleLiveEvent
 import eu.darken.apl.common.uix.ViewModel3
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
@@ -84,9 +84,9 @@ class RecorderViewModel @Inject constructor(
         .replayingShare(vmScope + dispatcherProvider.IO)
 
     private val stater = DynamicStateFlow(TAG, vmScope) { State() }
-    val state = stater.asLiveData2()
+    val state = stater.flow.asStateFlow()
 
-    val shareEvent = SingleLiveEvent<Intent>()
+    val shareEvent = SingleEventFlow<Intent>()
 
     init {
         logObsDefault
@@ -105,13 +105,13 @@ class RecorderViewModel @Inject constructor(
                     )
                 }
             }
-            .onError { errorEvents.postValue(it) }
+            .onError { errorEvents.emit(it) }
             .launchInViewModel()
 
     }
 
     fun share() = launch {
-        val (file, size) = resultCacheCompressedObs.first()
+        val (file, _) = resultCacheCompressedObs.first()
 
         val intent = Intent(Intent.ACTION_SEND).apply {
             val uri = FileProvider.getUriForFile(
@@ -136,7 +136,7 @@ class RecorderViewModel @Inject constructor(
 
 
         val chooserIntent = Intent.createChooser(intent, context.getString(R.string.debug_debuglog_file_label))
-        shareEvent.postValue(chooserIntent)
+        shareEvent.emit(chooserIntent)
     }
 
     fun goPrivacyPolicy() {

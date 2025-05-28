@@ -3,7 +3,6 @@ package eu.darken.apl.common.uix
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
-import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
@@ -13,13 +12,14 @@ import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.error.asErrorDialogBuilder
 import eu.darken.apl.common.navigation.doNavigate
 import eu.darken.apl.common.navigation.popBackStack
+import kotlinx.coroutines.flow.Flow
 
 
 abstract class Fragment3(@LayoutRes layoutRes: Int?) : Fragment2(layoutRes) {
 
     constructor() : this(null)
 
-    abstract val ui: ViewBinding?
+    open val ui: ViewBinding? = null
     abstract val vm: ViewModel3
 
     var onErrorEvent: ((Throwable) -> Boolean)? = null
@@ -31,29 +31,27 @@ abstract class Fragment3(@LayoutRes layoutRes: Int?) : Fragment2(layoutRes) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        vm.navEvents.observe2(ui) {
+        vm.navEvents.observe {
             log { "navEvents: $it" }
 
             it?.run { doNavigate(this) } ?: onFinishEvent?.invoke() ?: popBackStack()
         }
 
-        vm.errorEvents.observe2(ui) {
+        vm.errorEvents.observe {
             val showDialog = onErrorEvent?.invoke(it) ?: true
             if (showDialog) it.asErrorDialogBuilder(requireContext()).show()
         }
     }
 
-    inline fun <T> LiveData<T>.observe2(
-        crossinline callback: (T) -> Unit
-    ) {
-        observe(viewLifecycleOwner) { callback.invoke(it) }
+    fun <T> Flow<T>.observe(collector: suspend (T) -> Unit) {
+        observe(this@Fragment3, collector)
     }
 
-    inline fun <T, reified VB : ViewBinding?> LiveData<T>.observe2(
+    inline fun <T, reified VB> Flow<T>.observeWith(
         ui: VB,
         crossinline callback: VB.(T) -> Unit
     ) {
-        observe(viewLifecycleOwner) { callback.invoke(ui, it) }
+        observe { callback.invoke(ui, it) }
     }
 
     fun NavDirections.navigate() {

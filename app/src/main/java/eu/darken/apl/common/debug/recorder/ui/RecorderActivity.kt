@@ -33,7 +33,7 @@ class RecorderActivity : Activity2() {
         ui = DebugRecorderActivityBinding.inflate(layoutInflater)
         setContentView(ui.root)
 
-        vm.state.observe2 { state ->
+        vm.state.observe { state ->
             ui.loadingIndicator.isInvisible = !state.loading
             ui.shareAction.isInvisible = state.loading
 
@@ -47,12 +47,12 @@ class RecorderActivity : Activity2() {
             }
         }
 
-        vm.errorEvents.observe2 {
+        vm.errorEvents.observe {
             it.asErrorDialogBuilder(this).show()
         }
 
         ui.shareAction.setOnClickListener { vm.share() }
-        vm.shareEvent.observe2 { startActivity(it) }
+        vm.shareEvent.observe { startActivity(it) }
 
         ui.privacyPolicyAction.apply {
             setOnClickListener { vm.goPrivacyPolicy() }
