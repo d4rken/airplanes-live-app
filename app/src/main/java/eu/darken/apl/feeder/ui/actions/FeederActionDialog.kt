@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,6 +37,7 @@ class FeederActionDialog : BottomSheetDialogFragment2() {
             secondary.text = feeder.id
             tertiary.text = feeder.config.address ?: "\uD83C\uDF7B"
             monitorFeederOfflineToggle.isChecked = feeder.config.offlineCheckTimeout != null
+            addressActions.isGone = feeder.config.address == null
         }
 
         ui.monitorFeederOfflineToggle.apply {
@@ -50,6 +52,8 @@ class FeederActionDialog : BottomSheetDialogFragment2() {
         ui.showFeedAction.setOnClickListener { vm.showFeedOnMap() }
         ui.renameAction.setOnClickListener { vm.renameFeeder() }
         ui.setAddressAction.setOnClickListener { vm.changeAddress() }
+        ui.addressTar1090Action.setOnClickListener { vm.openTar1090() }
+        ui.addressGraphs1090Action.setOnClickListener { vm.openGraphs1090() }
         ui.removeFeederAction.setOnClickListener { vm.removeFeeder() }
 
 

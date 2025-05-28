@@ -106,6 +106,32 @@
             android:layout_height="wrap_content"
             android:text="@string/feeder_address_change_action" />
 
+        <LinearLayout
+            android:id="@+id/address_actions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/address_tar1090_action"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TAR1090"
+                tools:ignore="HardcodedText" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/address_graphs1090_action"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="GRAPHS1090"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/remove_feeder_action"
             style="@style/Widget.Material3.Button.TonalButton"

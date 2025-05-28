@@ -122,6 +122,18 @@ class FeederActionViewModel @Inject constructor(
         ).navigate()
     }
 
+    fun openTar1090() = launch {
+        log(tag) { "openTar1090()" }
+        val feeder = state.first().feeder
+        webpageTool.open("http://${feeder.config.address}/tar1090")
+    }
+
+    fun openGraphs1090() = launch {
+        log(tag) { "openGraphs1090()" }
+        val feeder = state.first().feeder
+        webpageTool.open("http://${feeder.config.address}/graphs1090")
+    }
+
     data class State(
         val feeder: Feeder,
     )
