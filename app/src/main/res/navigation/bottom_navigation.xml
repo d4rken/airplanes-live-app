@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_feeder_to_feederActionDialog"
             app:destination="@id/feederActionDialog" />
+        <action
+            android:id="@+id/action_feeder_to_map"
+            app:destination="@id/map" />
     </fragment>
     <dialog
         android:id="@+id/feederActionDialog"
@@ -20,6 +23,9 @@
         <argument
             android:name="receiverId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_feederActionDialog_to_map"
+            app:destination="@id/map" />
     </dialog>
     <fragment
         android:id="@+id/watchlist"

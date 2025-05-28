@@ -28,7 +28,4 @@ data class Feeder(
     val id: ReceiverId
         get() = config.receiverId
 
-    val anywhereId: String
-        get() = id.split("-").take(3).joinToString("")
-
 }

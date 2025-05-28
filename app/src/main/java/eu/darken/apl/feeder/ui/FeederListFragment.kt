@@ -1,15 +1,18 @@
 package eu.darken.apl.feeder.ui
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.selection.SelectionTracker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import eu.darken.apl.R
 import eu.darken.apl.common.lists.differ.update
+import eu.darken.apl.common.lists.installListSelection
 import eu.darken.apl.common.lists.setupDefaults
 import eu.darken.apl.common.uix.Fragment3
 import eu.darken.apl.common.viewbinding.viewBinding
@@ -23,6 +26,7 @@ class FeederListFragment : Fragment3(R.layout.feeder_list_fragment) {
 
     override val vm: FeederListViewModel by viewModels()
     override val ui: FeederListFragmentBinding by viewBinding()
+    private var tracker: SelectionTracker<String>? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         ui.toolbar.apply {
@@ -49,6 +53,24 @@ class FeederListFragment : Fragment3(R.layout.feeder_list_fragment) {
         val adapter = FeederListAdapter()
         ui.list.setupDefaults(adapter, verticalDividers = false)
 
+        tracker = installListSelection(
+            adapter = adapter,
+            cabMenuRes = R.menu.menu_feeder_cab,
+            onSelected = { tracker: SelectionTracker<String>, item: MenuItem, selected: Collection<FeederListAdapter.Item> ->
+                if (selected.isEmpty()) return@installListSelection false
+
+                when (item.itemId) {
+                    R.id.menu_show_on_map_action -> {
+                        vm.showFeedsOnMap(selected)
+                        tracker.clearSelection()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        )
+
         vm.state.observeWith(ui) { state ->
             swipeRefreshContainer.isInvisible = false
             loadingContainer.isGone = true
@@ -69,6 +91,11 @@ class FeederListFragment : Fragment3(R.layout.feeder_list_fragment) {
         ui.mainAction.setOnClickListener { vm.refresh() }
 
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onDestroyView() {
+        tracker?.clearSelection()
+        super.onDestroyView()
     }
 
     private fun showAddFeederDialog() {

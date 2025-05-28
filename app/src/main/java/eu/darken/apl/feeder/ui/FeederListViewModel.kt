@@ -10,6 +10,8 @@ import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.feeder.core.FeederRepo
 import eu.darken.apl.feeder.ui.types.DefaultFeederVH
 import eu.darken.apl.map.core.AirplanesLive
+import eu.darken.apl.map.core.MapOptions
+import eu.darken.apl.map.core.toMapFeedId
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.callbackFlow
@@ -44,9 +46,6 @@ class FeederListViewModel @Inject constructor(
                 onTap = {
                     FeederListFragmentDirections.actionFeederToFeederActionDialog(feeder.id).navigate()
                 },
-                onLongPress = {
-
-                }
             )
         }
         State(
@@ -71,6 +70,17 @@ class FeederListViewModel @Inject constructor(
 
     fun startFeeding() = launch {
         webpageTool.open(AirplanesLive.URL_START_FEEDING)
+    }
+
+    fun showFeedsOnMap(ids: Collection<FeederListAdapter.Item>) = launch {
+        log(tag) { "showFeedsOnMap($ids)" }
+        val ids = ids
+            .filterIsInstance<DefaultFeederVH.Item>()
+            .map { it.feeder.id.toMapFeedId() }
+            .toSet()
+        FeederListFragmentDirections.actionFeederToMap(
+            mapOptions = MapOptions(feeds = ids)
+        ).navigate()
     }
 
     data class State(

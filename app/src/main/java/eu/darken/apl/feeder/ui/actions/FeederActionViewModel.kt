@@ -9,10 +9,11 @@ import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.flow.SingleEventFlow
 import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
-import eu.darken.apl.feeder.core.AnywhereTool
 import eu.darken.apl.feeder.core.Feeder
 import eu.darken.apl.feeder.core.FeederRepo
 import eu.darken.apl.feeder.core.ReceiverId
+import eu.darken.apl.map.core.MapOptions
+import eu.darken.apl.map.core.toMapFeedId
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
@@ -35,7 +36,6 @@ class FeederActionViewModel @Inject constructor(
     dispatcherProvider: DispatcherProvider,
     private val feederRepo: FeederRepo,
     private val webpageTool: WebpageTool,
-    private val anywhereTool: AnywhereTool,
 ) : ViewModel3(
     dispatcherProvider,
     tag = logTag("Feeder", "Action", "Dialog", "ViewModel"),
@@ -117,12 +117,9 @@ class FeederActionViewModel @Inject constructor(
     fun showFeedOnMap() = launch {
         log(tag) { "showFeedOnMap()" }
         val feeder = state.first().feeder
-        webpageTool.open(
-            anywhereTool.createLink(
-                ids = setOf(feeder.anywhereId),
-                center = feeder.config.position,
-            ),
-        )
+        FeederActionDialogDirections.actionFeederActionDialogToMap(
+            mapOptions = MapOptions(feeds = setOf(feeder.id.toMapFeedId()))
+        ).navigate()
     }
 
     data class State(
