@@ -9,6 +9,7 @@ import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.datastore.value
 import eu.darken.apl.common.datastore.valueBlocking
 import eu.darken.apl.common.debug.logging.log
+import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.main.core.GeneralSettings
 import kotlinx.coroutines.flow.combine
@@ -21,7 +22,10 @@ class PrivacyViewModel @Inject constructor(
     dispatcherProvider: DispatcherProvider,
     private val generalSettings: GeneralSettings,
     private val webpageTool: WebpageTool,
-) : ViewModel3(dispatcherProvider = dispatcherProvider) {
+) : ViewModel3(
+    dispatcherProvider = dispatcherProvider,
+    tag = logTag("Privacy", "ViewModel"),
+) {
 
     val state = combine(
         generalSettings.isUpdateCheckEnabled.flow,
@@ -32,15 +36,15 @@ class PrivacyViewModel @Inject constructor(
             isUpdateCheckSupported = BuildConfigWrap.FLAVOR == BuildConfigWrap.Flavor.FOSS,
         )
     }
-        .asLiveData2()
+        .asStateFlow()
 
     fun goPrivacyPolicy() {
-        log(TAG) { "goPrivacyPolicy()" }
+        log(tag) { "goPrivacyPolicy()" }
         webpageTool.open(PrivacyPolicy.URL)
     }
 
     fun toggleUpdateCheck() {
-        log(TAG) { "toggleUpdateCheck()" }
+        log(tag) { "toggleUpdateCheck()" }
         generalSettings.isUpdateCheckEnabled.valueBlocking = !generalSettings.isUpdateCheckEnabled.valueBlocking
     }
 

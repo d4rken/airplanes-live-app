@@ -93,6 +93,20 @@
             android:text="@string/feeder_show_map_action" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/rename_action"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/feeder_name_change_action" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/set_address_action"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/feeder_address_change_action" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/remove_feeder_action"
             style="@style/Widget.Material3.Button.TonalButton"
             android:layout_width="match_parent"

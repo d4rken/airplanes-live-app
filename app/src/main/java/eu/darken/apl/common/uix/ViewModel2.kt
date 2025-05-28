@@ -1,19 +1,20 @@
 package eu.darken.apl.common.uix
 
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import eu.darken.apl.common.coroutine.DefaultDispatcherProvider
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.Logging.Priority.WARN
 import eu.darken.apl.common.debug.logging.asLog
 import eu.darken.apl.common.debug.logging.log
-import eu.darken.apl.common.error.ErrorEventSource
-import eu.darken.apl.common.flow.DynamicStateFlow
+import eu.darken.apl.common.flow.setupCommonEventHandlers
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlin.coroutines.CoroutineContext
@@ -21,34 +22,17 @@ import kotlin.coroutines.CoroutineContext
 
 abstract class ViewModel2(
     private val dispatcherProvider: DispatcherProvider = DefaultDispatcherProvider(),
-) : ViewModel1() {
+    override val tag: String = defaultTag(),
+) : ViewModel1(tag = tag) {
 
     val vmScope = viewModelScope + dispatcherProvider.Default
 
-    var launchErrorHandler: CoroutineExceptionHandler? = null
+    abstract var launchErrorHandler: CoroutineExceptionHandler?
 
     private fun getVMContext(): CoroutineContext {
         val dispatcher = dispatcherProvider.Default
-        return getErrorHandler()?.let { dispatcher + it } ?: dispatcher
+        return launchErrorHandler?.let { dispatcher + it } ?: dispatcher
     }
-
-    private fun getErrorHandler(): CoroutineExceptionHandler? {
-        val handler = launchErrorHandler
-        if (handler != null) return handler
-
-        if (this is ErrorEventSource) {
-            return CoroutineExceptionHandler { _, ex ->
-                log(WARN) { "Error during launch: ${ex.asLog()}" }
-                errorEvents.postValue(ex)
-            }
-        }
-
-        return null
-    }
-
-    fun <T : Any> DynamicStateFlow<T>.asLiveData2() = flow.asLiveData2()
-
-    fun <T> Flow<T>.asLiveData2() = this.asLiveData(context = getVMContext())
 
     fun launch(
         scope: CoroutineScope = viewModelScope,
@@ -58,10 +42,21 @@ abstract class ViewModel2(
         try {
             scope.launch(context = context, block = block)
         } catch (e: CancellationException) {
-            log(TAG, WARN) { "launch()ed coroutine was canceled (scope=$scope): ${e.asLog()}" }
+            log(tag, WARN) { "launch()ed coroutine was canceled (scope=$scope): ${e.asLog()}" }
         }
     }
 
-    open fun <T> Flow<T>.launchInViewModel() = this.launchIn(vmScope)
+    open fun <T> Flow<T>.launchInViewModel() = this
+        .setupCommonEventHandlers(tag) { "launchInViewModel()" }
+        .launchIn(vmScope)
 
+    fun <T> Flow<T>.asStateFlow(defaultValue: T? = null): Flow<T> = stateIn(
+        vmScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = defaultValue,
+    ).mapNotNull { it }
+
+    companion object {
+        private fun defaultTag(): String = this::class.simpleName ?: "VM2"
+    }
 }

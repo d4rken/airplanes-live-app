@@ -13,10 +13,9 @@ import eu.darken.apl.common.lists.differ.update
 import eu.darken.apl.common.lists.setupDefaults
 import eu.darken.apl.common.uix.Fragment3
 import eu.darken.apl.common.viewbinding.viewBinding
-import eu.darken.apl.databinding.CommonTextinputDialogBinding
+import eu.darken.apl.databinding.FeederAddDialogBinding
 import eu.darken.apl.databinding.FeederListFragmentBinding
 import eu.darken.apl.main.ui.MainActivity
-import java.util.UUID
 
 
 @AndroidEntryPoint
@@ -50,7 +49,7 @@ class FeederListFragment : Fragment3(R.layout.feeder_list_fragment) {
         val adapter = FeederListAdapter()
         ui.list.setupDefaults(adapter, verticalDividers = false)
 
-        vm.state.observe2(ui) { state ->
+        vm.state.observeWith(ui) { state ->
             swipeRefreshContainer.isInvisible = false
             loadingContainer.isGone = true
 
@@ -73,18 +72,18 @@ class FeederListFragment : Fragment3(R.layout.feeder_list_fragment) {
     }
 
     private fun showAddFeederDialog() {
-        val layout = CommonTextinputDialogBinding.inflate(layoutInflater, null, false)
-        layout.input.hint = UUID.randomUUID().toString()
+        val layout = FeederAddDialogBinding.inflate(layoutInflater, null, false)
         MaterialAlertDialogBuilder(requireContext()).apply {
             setTitle(R.string.feeder_list_add_title)
             setMessage(R.string.feeder_list_add_message)
             setView(layout.root)
             setPositiveButton(R.string.common_add_action) { _, _ ->
-                vm.addFeeders(layout.input.text.toString())
+                vm.addFeeder(
+                    label = layout.feederLabel.text.toString(),
+                    rawId = layout.feederId.text.toString()
+                )
             }
-            setNegativeButton(R.string.common_cancel_action) { dialog, _ ->
-                dialog.dismiss()
-            }
+            setNegativeButton(R.string.common_cancel_action) { dialog, _ -> dialog.dismiss() }
         }.show()
     }
 }

@@ -2,7 +2,7 @@ package eu.darken.apl.feeder.core.api
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import eu.darken.apl.feeder.core.ReceiverId
+import java.util.UUID
 
 @JsonClass(generateAdapter = true)
 data class FeedInfos(
@@ -12,7 +12,7 @@ data class FeedInfos(
 
     @JsonClass(generateAdapter = true)
     data class Beast(
-        @Json(name = "uuid") val receiverId: ReceiverId,
+        @Json(name = "uuid") val uuid: UUID,
         @Json(name = "avg_kbit_s") val avgKBitsPerSecond: Double,
         @Json(name = "conn_time") val connTime: Long,
         @Json(name = "msgs_s") val messageRate: Double,
@@ -24,7 +24,7 @@ data class FeedInfos(
     @JsonClass(generateAdapter = true)
     data class Mlat(
         @Json(name = "user") val user: String,
-        @Json(name = "uuid") val uuid: ReceiverId,
+        @Json(name = "uuid") val uuid: UUID,
         @Json(name = "message_rate") val messageRate: Double,
         @Json(name = "peer_count") val peerCount: Int,
         @Json(name = "bad_sync_timeout") val badSyncTimeout: Long,

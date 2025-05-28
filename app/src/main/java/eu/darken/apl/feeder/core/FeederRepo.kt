@@ -113,28 +113,34 @@ class FeederRepo @Inject constructor(
         isRefreshing.value = true
 
         try {
-            val stats = feederEndpoint.getFeeder(ids.toSet())
+            val feedInfos = feederEndpoint.getFeedInfos(ids.toSet())
 
             feederSettings.feederGroup.update { group ->
                 val updatedConfigs = group.configs.map { config ->
-                    val mlatInfos = stats.mlat.singleOrNull { it.uuid == config.receiverId }
+                    val infos = feedInfos[config.receiverId] ?: return@map config
+
+                    val mlatLabel = infos.mlat.firstOrNull()?.user?.takeIf { it.isNotEmpty() }
+
                     config.copy(
-                        user = mlatInfos?.user ?: config.user,
-//                        position = mlatInfos?.position ?: config.position,
+                        label = when {
+                            config.label == null && mlatLabel != null -> mlatLabel
+                            else -> config.label
+                        },
                     )
-                }.toSet()
-                group.copy(configs = updatedConfigs)
+                }
+                group.copy(configs = updatedConfigs.toSet())
             }
 
-            stats.beast
-                .map {
+            feedInfos.entries
+                .flatMap { (id, infos) -> infos.beast.map { id to it } }
+                .map { (id, beast) ->
                     BeastStatsEntity(
-                        receiverId = it.receiverId,
-                        positionRate = it.positionRate,
-                        positions = it.positions,
-                        messageRate = it.messageRate,
-                        bandwidth = it.avgKBitsPerSecond,
-                        connectionTime = it.connTime,
+                        receiverId = id,
+                        positionRate = beast.positionRate,
+                        positions = beast.positions,
+                        messageRate = beast.messageRate,
+                        bandwidth = beast.avgKBitsPerSecond,
+                        connectionTime = beast.connTime,
                         latency = 100,
                     )
                 }
@@ -143,14 +149,15 @@ class FeederRepo @Inject constructor(
                     feederStatsDatabase.beastStats.insert(it)
                 }
 
-            stats.mlat
-                .map {
+            feedInfos.entries
+                .flatMap { (id, infos) -> infos.mlat.map { id to it } }
+                .map { (id, mlat) ->
                     MlatStatsEntity(
-                        receiverId = it.uuid,
-                        messageRate = it.messageRate,
-                        peerCount = it.peerCount,
-                        badSyncTimeout = it.badSyncTimeout,
-                        outlierPercent = it.outlierPercent,
+                        receiverId = id,
+                        messageRate = mlat.messageRate,
+                        peerCount = mlat.peerCount,
+                        badSyncTimeout = mlat.badSyncTimeout,
+                        outlierPercent = mlat.outlierPercent,
                     )
                 }
                 .forEach {
@@ -166,21 +173,29 @@ class FeederRepo @Inject constructor(
 
     suspend fun setOfflineCheckTimeout(id: ReceiverId, timeout: Duration?) {
         log(TAG) { "setOfflineCheckTimeout($id,$timeout)" }
+        updateFeeder(id) { copy(offlineCheckTimeout = timeout) }
+    }
 
+    suspend fun setLabel(id: ReceiverId, label: String?) {
+        log(TAG) { "setLabel($id,$label" }
+        updateFeeder(id) { copy(label = label) }
+    }
+
+    suspend fun setAddress(id: ReceiverId, address: String?) {
+        log(TAG) { "setAddress($id,$address" }
+        updateFeeder(id) { copy(address = address) }
+    }
+
+    private suspend fun updateFeeder(id: ReceiverId, update: FeederConfig.() -> FeederConfig) {
         feederSettings.feederGroup.update { group ->
-            group.copy(
-                configs = group.configs.map { config ->
-                    if (config.receiverId != id) {
-                        return@map config
-                    }
-                    config.copy(offlineCheckTimeout = timeout)
-                }.toSet()
-            )
+            val updatedConfigs = group.configs.map { config ->
+                if (config.receiverId == id) update(config) else config
+            }
+            group.copy(configs = updatedConfigs.toSet())
         }
     }
 
     companion object {
-        private const val ANYWHERE_PREFIX = "https://globe.airplanes.live/?feed="
         private val TAG = logTag("Feeder", "Repo")
     }
 }
