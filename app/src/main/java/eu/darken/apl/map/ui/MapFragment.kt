@@ -80,12 +80,12 @@ class MapFragment : Fragment3(R.layout.map_fragment) {
                 .launchIn(viewLifecycleOwner.lifecycleScope)
         }
 
-        vm.state.observe2(ui) { state ->
+        vm.state.observeWith(ui) { state ->
             mapHandler.loadMap(state.options)
             mapHandler.updateWatches(state.alerts)
         }
 
-        vm.events.observe2 { event ->
+        vm.events.observe { event ->
             when (event) {
                 MapEvents.RequestLocationPermission -> {
                     locationPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)

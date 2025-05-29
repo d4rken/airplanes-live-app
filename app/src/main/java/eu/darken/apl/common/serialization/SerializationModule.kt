@@ -18,5 +18,6 @@ class SerializationModule {
         add(SemVerAdapter())
         add(UUIDAdapter())
         add(DurationAdapter())
+        add(InstantAdapter())
     }.build()
 }

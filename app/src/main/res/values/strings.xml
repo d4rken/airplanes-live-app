@@ -109,12 +109,16 @@
     <string name="feeder_list_add_yours_now_msg">Add your first feeder now!</string>
     <string name="feeder_list_add_your_feeder_action">Add feeder</string>
     <string name="feeder_list_add_title">New feeder</string>
-    <string name="feeder_list_add_message">Enter your feeders UUID (comma sepparated lists are supported).</string>
+    <string name="feeder_list_add_message">Enter your feeders UUID and an optional label.</string>
     <string name="feeder_beast_stats_label">Beast stats</string>
     <string name="feeder_mlat_stats_label">MLAT stats</string>
     <string name="feeder_monitor_offline_label">Notify when offline</string>
     <string name="feeder_remove_action">Remove feeder</string>
     <string name="feeder_show_map_action">Show feed on map</string>
+    <string name="feeder_name_change_action">Rename</string>
+    <string name="feeder_name_change_title">New name</string>
+    <string name="feeder_name_change_body">Rename this feeder locally. This only affects how it is displayed on this device.</string>
+    <string name="feeder_address_change_action">Set IP address</string>
 
     <string name="feeder_remove_confirmation_title">Confirmation</string>
     <string name="feeder_remove_confirmation_message">Remove this feeder from the app?</string>
@@ -123,6 +127,15 @@
     <string name="feeder_monitor_offline_message">Some of your airplanes.live feeders are offline: %s</string>
     <string name="feeder_options_label">Options</string>
     <string name="feeder_startfeeding_msg">Not feeding airplanes.live yet?\nStart now, it\'s not rocket science 🚀.</string>
+
+    <string name="feeder_settings_title">Feeder</string>
+    <string name="feeder_settings_summary">Feeder related settings, e.g. monitoring interval.</string>
+    <string name="feeder_settings_monitor_interval_title">Check interval</string>
+    <string name="feeder_settings_monitor_interval_summary">How often should we check the feeder?</string>
+    <plurals name="feeder_setting_check_interval_minutes">
+        <item quantity="one">Every %d minute.</item>
+        <item quantity="other">Every %d minutes.</item>
+    </plurals>
 
     <string name="map_page_label">Map</string>
 

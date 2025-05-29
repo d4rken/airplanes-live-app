@@ -9,9 +9,7 @@ import eu.darken.apl.common.uix.ViewModel3
 class AcknowledgementsViewModel @AssistedInject constructor(
     @Suppress("unused") private val handle: SavedStateHandle,
     dispatcherProvider: DispatcherProvider
-) : ViewModel3(dispatcherProvider) {
-
-    companion object {
-        private val TAG = logTag("Settings", "Acknowledgements", "VM")
-    }
-}
+) : ViewModel3(
+    dispatcherProvider,
+    tag = logTag("Settings", "Acknowledgements", "VM"),
+)

@@ -2,6 +2,8 @@ package eu.darken.apl.feeder.core.api
 
 import eu.darken.apl.common.http.HttpModule
 import eu.darken.apl.common.serialization.SerializationModule
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -22,7 +24,13 @@ class FeederEndpointTest : BaseTest() {
 
     @Test
     fun `de-serialization`() = runTest {
-//        val alerts = endpoint.getFeeder(setOf("7ff8b692-176c-4676-99d4-a3c22563a72e"))
-//        alerts shouldNotBe null
+        val infos = endpoint.getFeedInfos(setOf("04e5c4d5-2068-4759-b1a5-8398e8f60f66"))
+        infos.apply {
+            beast shouldNotBe emptyList<FeedInfos.Beast>()
+            mlat shouldNotBe emptyList<FeedInfos.Mlat>()
+            mlat.first().apply {
+                user shouldBe "fremont"
+            }
+        }
     }
 }

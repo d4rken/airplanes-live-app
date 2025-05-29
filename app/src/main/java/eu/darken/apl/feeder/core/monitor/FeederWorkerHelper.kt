@@ -6,22 +6,25 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.await
 import eu.darken.apl.common.coroutine.AppScope
-import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
+import eu.darken.apl.common.datastore.value
+import eu.darken.apl.common.debug.logging.Logging.Priority.ERROR
+import eu.darken.apl.common.debug.logging.asLog
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
-import eu.darken.apl.feeder.core.FeederRepo
+import eu.darken.apl.feeder.core.config.FeederSettings
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import java.time.Duration
 import javax.inject.Inject
 import javax.inject.Singleton
 
 
 @Singleton
-class FeederMonitorService @Inject constructor(
+class FeederWorkerHelper @Inject constructor(
     @AppScope private val appScope: CoroutineScope,
     private val workManager: WorkManager,
-    private val feederRepo: FeederRepo,
+    private val monitor: FeederMonitor,
+    private val feederSettings: FeederSettings,
 ) {
 
     private var isInit = false
@@ -30,18 +33,26 @@ class FeederMonitorService @Inject constructor(
         require(!isInit)
         isInit = true
 
-        runBlocking { setupPeriodicWorker() }
+        appScope.launch { updateWorker() }
 
-//        appScope.launch {
-//            try {
-//                networkStatsRepo.refresh()
-//            } catch (e: Exception) {
-//                log(TAG, ERROR) { "Failed to refresh: ${e.asLog()}" }
-//            }
-//        }
+        triggerNow()
     }
 
-    private suspend fun setupPeriodicWorker() {
+    fun triggerNow() {
+        log(TAG) { "runNow()" }
+        appScope.launch {
+            try {
+                monitor.check()
+            } catch (e: Exception) {
+                log(TAG, ERROR) { "Failed to refresh: ${e.asLog()}" }
+            }
+        }
+    }
+
+    suspend fun updateWorker() {
+        val interval = feederSettings.feederMonitorInterval.value()
+        log(TAG) { "updateWorker() to $interval" }
+
         val workRequest = PeriodicWorkRequestBuilder<FeederMonitorWorker>(
             Duration.ofHours(1),
             Duration.ofMinutes(10)
@@ -49,11 +60,9 @@ class FeederMonitorService @Inject constructor(
             setInputData(Data.Builder().build())
         }.build()
 
-        log(TAG, VERBOSE) { "Worker request: $workRequest" }
-
         val operation = workManager.enqueueUniquePeriodicWork(
             "feeder.monitor.worker",
-            ExistingPeriodicWorkPolicy.KEEP,
+            ExistingPeriodicWorkPolicy.UPDATE,
             workRequest,
         )
 
@@ -61,6 +70,6 @@ class FeederMonitorService @Inject constructor(
     }
 
     companion object {
-        val TAG = logTag("Feeder", "Monitor", "Service")
+        val TAG = logTag("Feeder", "Worker", "Helper")
     }
 }

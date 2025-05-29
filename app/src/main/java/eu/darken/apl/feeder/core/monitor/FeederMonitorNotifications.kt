@@ -66,7 +66,7 @@ class FeederMonitorNotifications @Inject constructor(
 
             val msgText = context.getString(
                 R.string.feeder_monitor_offline_message,
-                offlineFeeders.joinToString(",") { it.label }
+                offlineFeeders.joinToString(", ") { it.label }
             )
             setContentText(msgText)
             setStyle(BigTextStyle().bigText(msgText))

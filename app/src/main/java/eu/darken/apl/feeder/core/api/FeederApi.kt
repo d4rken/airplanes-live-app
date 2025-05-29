@@ -5,7 +5,7 @@ import retrofit2.http.Query
 
 interface FeederApi {
 
-    @GET("feeder")
-    suspend fun getFeeder(@Query("id", encoded = true) ids: String): FeederInfos
+    @GET("feed")
+    suspend fun getFeeder(@Query("id", encoded = true) id: String): FeedInfos
 
 }

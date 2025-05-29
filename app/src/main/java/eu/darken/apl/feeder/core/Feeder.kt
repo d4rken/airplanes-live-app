@@ -8,12 +8,12 @@ import java.time.Instant
 
 data class Feeder(
     val config: FeederConfig,
-    val beastStats: BeastStatsEntity?,
-    val mlatStats: MlatStatsEntity?,
+    val beastStats: BeastStatsEntity? = null,
+    val mlatStats: MlatStatsEntity? = null,
 ) {
 
     val label: String
-        get() = config.user ?: config.receiverId.takeLast(5)
+        get() = config.label ?: config.receiverId.takeLast(5)
 
     val isOffline: Boolean
         get() = if (config.offlineCheckTimeout != null) {
@@ -23,12 +23,9 @@ data class Feeder(
         }
 
     val lastSeen: Instant?
-        get() = listOfNotNull(beastStats?.receivedAt, mlatStats?.receivedAt).maxOrNull()
+        get() = listOfNotNull(beastStats?.receivedAt).maxOrNull()
 
     val id: ReceiverId
         get() = config.receiverId
-
-    val anywhereId: String
-        get() = id.split("-").take(3).joinToString("")
 
 }

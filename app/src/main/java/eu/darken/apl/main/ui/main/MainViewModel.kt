@@ -7,6 +7,7 @@ import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.Logging.Priority.ERROR
 import eu.darken.apl.common.debug.logging.asLog
 import eu.darken.apl.common.debug.logging.log
+import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.github.GithubReleaseCheck
 import eu.darken.apl.common.network.NetworkStateProvider
 import eu.darken.apl.common.uix.ViewModel3
@@ -25,17 +26,20 @@ class MainViewModel @Inject constructor(
     githubReleaseCheck: GithubReleaseCheck,
     private val generalSettings: GeneralSettings,
     private val networkStateProvider: NetworkStateProvider,
-) : ViewModel3(dispatcherProvider = dispatcherProvider) {
+) : ViewModel3(
+    dispatcherProvider = dispatcherProvider,
+    tag = logTag("Main", "ViewModel")
+) {
 
     val isInternetAvailable = networkStateProvider.networkState
         .map { it.isInternetAvailable }
-        .asLiveData2()
+        .asStateFlow()
 
     val newRelease = flow {
         val latestRelease = try {
             githubReleaseCheck.latestRelease("d4rken", "airplanes-live-app")
         } catch (e: Exception) {
-            log(TAG, ERROR) { "Release check failed: ${e.asLog()}" }
+            log(tag, ERROR) { "Release check failed: ${e.asLog()}" }
             null
         }
         emit(latestRelease)
@@ -45,20 +49,20 @@ class MainViewModel @Inject constructor(
             val current = try {
                 SemVer.parse(BuildConfigWrap.VERSION_NAME.removePrefix("v"))
             } catch (e: IllegalArgumentException) {
-                log(TAG, ERROR) { "Failed to parse current version: ${e.asLog()}" }
+                log(tag, ERROR) { "Failed to parse current version: ${e.asLog()}" }
                 return@filter false
             }
-            log(TAG) { "Current version is $current" }
+            log(tag) { "Current version is $current" }
 
             val latest = try {
                 SemVer.parse(it.tagName.removePrefix("v"))
             } catch (e: IllegalArgumentException) {
-                log(TAG, ERROR) { "Failed to parse current version: ${e.asLog()}" }
+                log(tag, ERROR) { "Failed to parse current version: ${e.asLog()}" }
                 return@filter false
             }
-            log(TAG) { "Latest version is $latest" }
+            log(tag) { "Latest version is $latest" }
             current < latest
         }
-        .asLiveData2()
+        .asStateFlow()
 
 }

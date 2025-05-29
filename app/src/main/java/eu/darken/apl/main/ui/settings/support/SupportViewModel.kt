@@ -5,7 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.recorder.core.RecorderModule
-import eu.darken.apl.common.livedata.SingleLiveEvent
+import eu.darken.apl.common.flow.SingleEventFlow
 import eu.darken.apl.common.uix.ViewModel3
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -17,9 +17,9 @@ class SupportViewModel @Inject constructor(
     private val recorderModule: RecorderModule,
 ) : ViewModel3(dispatcherProvider) {
 
-    val clipboardEvent = SingleLiveEvent<String>()
+    val clipboardEvent = SingleEventFlow<String>()
 
-    val isRecording = recorderModule.state.map { it.isRecording }.asLiveData2()
+    val isRecording = recorderModule.state.map { it.isRecording }.asStateFlow()
 
     fun startDebugLog() = launch {
         log { "startDebugLog()" }
