@@ -6,14 +6,14 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.await
 import eu.darken.apl.common.coroutine.AppScope
+import eu.darken.apl.common.datastore.value
 import eu.darken.apl.common.debug.logging.Logging.Priority.ERROR
-import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
 import eu.darken.apl.common.debug.logging.asLog
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
+import eu.darken.apl.watch.core.WatchSettings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.time.Duration
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,6 +24,7 @@ class WatchWorkerHelper @Inject constructor(
     @AppScope private val appScope: CoroutineScope,
     private val workManager: WorkManager,
     private val monitor: WatchMonitor,
+    private val watchSettings: WatchSettings,
 ) {
 
     private var isInit = false
@@ -32,7 +33,7 @@ class WatchWorkerHelper @Inject constructor(
         require(!isInit)
         isInit = true
 
-        runBlocking { setupPeriodicWorker() }
+        appScope.launch { updateWorker() }
 
         triggerNow()
     }
@@ -48,19 +49,20 @@ class WatchWorkerHelper @Inject constructor(
         }
     }
 
-    private suspend fun setupPeriodicWorker() {
+    suspend fun updateWorker() {
+        val interval = watchSettings.watchMonitorInterval.value()
+        log(TAG) { "updateWorker() to $interval" }
+
         val workRequest = PeriodicWorkRequestBuilder<WatchWorker>(
-            Duration.ofHours(1),
+            interval,
             Duration.ofMinutes(10)
         ).apply {
             setInputData(Data.Builder().build())
         }.build()
 
-        log(TAG, VERBOSE) { "Worker request: $workRequest" }
-
         val operation = workManager.enqueueUniquePeriodicWork(
             "alerts.monitor.worker",
-            ExistingPeriodicWorkPolicy.KEEP,
+            ExistingPeriodicWorkPolicy.UPDATE,
             workRequest,
         )
 
@@ -68,6 +70,6 @@ class WatchWorkerHelper @Inject constructor(
     }
 
     companion object {
-        val TAG = logTag("Watch", "Monitor", "Manager")
+        val TAG = logTag("Watch", "Worker", "Helper")
     }
 }
