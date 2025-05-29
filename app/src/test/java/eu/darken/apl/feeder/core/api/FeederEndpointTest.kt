@@ -24,11 +24,13 @@ class FeederEndpointTest : BaseTest() {
 
     @Test
     fun `de-serialization`() = runTest {
-        val infos = endpoint.getFeedInfos(setOf("04e5c4d5-2068-4759-b1a5-8398e8f60f66"))
-        infos.apply {
-            beast shouldNotBe emptyList<FeedInfos.Beast>()
-            mlat shouldNotBe emptyList<FeedInfos.Mlat>()
-            mlat.first().apply {
+        val testId = "04e5c4d5-2068-4759-b1a5-8398e8f60f66"
+        val infos = endpoint.getFeedInfos(setOf(testId))
+        infos.entries.single().apply {
+            key shouldBe testId
+            value.beast shouldNotBe emptyList<FeedInfos.Beast>()
+            value.mlat shouldNotBe emptyList<FeedInfos.Mlat>()
+            value.mlat.first().apply {
                 user shouldBe "fremont"
             }
         }
