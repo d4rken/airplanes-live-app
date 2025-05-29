@@ -35,7 +35,7 @@ class FeederActionDialog : BottomSheetDialogFragment2() {
         vm.state.observeWith(ui) { (feeder) ->
             primary.text = feeder.label
             secondary.text = feeder.id
-            tertiary.text = feeder.config.address ?: "\uD83C\uDF7B"
+            tertiary.text = "Host-address: ${feeder.config.address ?: "\uD83C\uDF7B"}"
             monitorFeederOfflineToggle.isChecked = feeder.config.offlineCheckTimeout != null
             addressActions.isGone = feeder.config.address == null
         }

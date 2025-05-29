@@ -128,6 +128,15 @@
     <string name="feeder_options_label">Options</string>
     <string name="feeder_startfeeding_msg">Not feeding airplanes.live yet?\nStart now, it\'s not rocket science 🚀.</string>
 
+    <string name="feeder_settings_title">Feeder</string>
+    <string name="feeder_settings_summary">Feeder related settings, e.g. monitoring interval.</string>
+    <string name="feeder_settings_monitor_interval_title">Check interval</string>
+    <string name="feeder_settings_monitor_interval_summary">How often should we check the feeder?</string>
+    <plurals name="feeder_setting_check_interval_minutes">
+        <item quantity="one">Every %d minute.</item>
+        <item quantity="other">Every %d minutes.</item>
+    </plurals>
+
     <string name="map_page_label">Map</string>
 
     <string name="watch_list_page_label">Watchlist</string>
