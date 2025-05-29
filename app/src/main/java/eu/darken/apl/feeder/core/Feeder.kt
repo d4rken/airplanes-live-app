@@ -23,7 +23,7 @@ data class Feeder(
         }
 
     val lastSeen: Instant?
-        get() = listOfNotNull(beastStats?.receivedAt, mlatStats?.receivedAt).maxOrNull()
+        get() = listOfNotNull(beastStats?.receivedAt).maxOrNull()
 
     val id: ReceiverId
         get() = config.receiverId
