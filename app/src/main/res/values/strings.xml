@@ -194,12 +194,12 @@
     <string name="general_xdistance_away_label">%s away</string>
     <string name="search_mode_all_hint">Search all categories</string>
     <string name="search_mode_hex_hint">Search HEX codes, e.g. ABCDEF</string>
-    <string name="search_mode_callsign_hint">Search callsigns, e.g. LHX2503</string>
+    <string name="search_mode_callsign_hint">Search callsigns, e.g. FLGHRN</string>
     <string name="search_mode_registration_hint">Search registrations</string>
     <string name="search_mode_squawk_hint">Search SQUAWKs, e.g. 7700</string>
     <string name="search_mode_airframe_hint">Search airframe types, e.g. A320</string>
     <string name="search_mode_military_hint">Show interesting aircraft</string>
-    <string name="search_mode_location_hint">Search via location</string>
+    <string name="search_mode_location_hint">Location, e.g. \'Berlin, Germany\'</string>
     <string name="search_empty_title">No aircraft found</string>
     <string name="search_empty_body">No aircraft that match your search are currently tracked. Want to see more planes? Contribute data and help the skies fill up!</string>
     <string name="search_progress_title">Searching</string>

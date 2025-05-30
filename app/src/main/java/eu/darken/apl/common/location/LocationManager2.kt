@@ -10,6 +10,7 @@ import androidx.core.location.LocationManagerCompat
 import androidx.core.location.LocationRequestCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import eu.darken.apl.common.coroutine.AppScope
+import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.Logging.Priority.WARN
 import eu.darken.apl.common.debug.logging.asLog
 import eu.darken.apl.common.debug.logging.log
@@ -28,6 +29,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.withContext
 import java.util.Locale
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
@@ -39,6 +41,7 @@ class LocationManager2 @Inject constructor(
     @AppScope private val scope: CoroutineScope,
     @ApplicationContext private val context: Context,
     private val locationManager: LocationManager,
+    private val dispatchers: DispatcherProvider,
 ) {
     private val executor: Executor = Executors.newSingleThreadExecutor()
 
@@ -64,6 +67,13 @@ class LocationManager2 @Inject constructor(
 
         trySend(State.Waiting)
 
+        @Suppress("MissingPermission")
+        val lastKnown = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+        if (lastKnown != null) {
+            log(TAG) { "Emitting last known location: $lastKnown" }
+            trySend(State.Available(lastKnown, isLastKnown = true))
+        }
+
         log(TAG) { "Requesting location updates" }
         @Suppress("MissingPermission")
         LocationManagerCompat.requestLocationUpdates(
@@ -71,7 +81,7 @@ class LocationManager2 @Inject constructor(
             LocationManager.NETWORK_PROVIDER,
             LocationRequestCompat.Builder(60 * 1000L).apply {
                 setMinUpdateDistanceMeters(100f)
-                setQuality(LocationRequestCompat.QUALITY_BALANCED_POWER_ACCURACY)
+                setQuality(LocationRequestCompat.QUALITY_LOW_POWER)
             }.build(),
             executor,
             locationListener
@@ -103,32 +113,34 @@ class LocationManager2 @Inject constructor(
         Geocoder(context, Locale.getDefault())
     }
 
-    suspend fun toName(location: Location): Address? {
+    suspend fun toName(location: Location): Address? = withContext(dispatchers.IO) {
         log(TAG) { "toName($location)" }
 
         val addresses = try {
+            @Suppress("DEPRECATION")
             geocoder.getFromLocation(location.latitude, location.longitude, 1)
         } catch (e: Exception) {
             log(TAG, WARN) { "Failed to get location name for $location: ${e.asLog()}" }
             null
         }
 
-        return addresses?.singleOrNull().also {
+        addresses?.singleOrNull().also {
             log(TAG) { "toName($location) -> $it" }
         }
     }
 
-    suspend fun fromName(locality: String): Location? {
+    suspend fun fromName(locality: String): Location? = withContext(dispatchers.IO) {
         log(TAG) { "fromName($locality)" }
 
         val results = try {
+            @Suppress("DEPRECATION")
             geocoder.getFromLocationName(locality, 1)
         } catch (e: Exception) {
             log(TAG, WARN) { "Failed to get location for name '$locality': ${e.asLog()}" }
             null
         }
 
-        return results?.singleOrNull()?.let {
+        results?.singleOrNull()?.let {
             Location("geocoder").apply {
                 latitude = it.latitude
                 longitude = it.longitude
@@ -143,6 +155,7 @@ class LocationManager2 @Inject constructor(
 
         data class Available(
             val location: Location,
+            val isLastKnown: Boolean = false,
         ) : State
 
         data class Unavailable(
