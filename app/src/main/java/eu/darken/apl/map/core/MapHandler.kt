@@ -82,6 +82,7 @@ class MapHandler @AssistedInject constructor(
                 javaScriptEnabled = true
                 javaScriptCanOpenWindowsAutomatically = false
                 setGeolocationEnabled(true)
+                domStorageEnabled = true
             }
             webChromeClient = object : WebChromeClient() {
                 override fun onGeolocationPermissionsShowPrompt(
@@ -89,7 +90,7 @@ class MapHandler @AssistedInject constructor(
                     callback: GeolocationPermissions.Callback,
                 ) {
                     log(TAG) { "onGeolocationPermissionsShowPrompt($origin,$callback)" }
-                    callback.invoke(origin, true, false)
+                    callback.invoke(origin, true, true)
                 }
 
                 override fun onConsoleMessage(message: ConsoleMessage): Boolean {

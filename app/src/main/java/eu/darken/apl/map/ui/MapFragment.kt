@@ -37,7 +37,6 @@ class MapFragment : Fragment3(R.layout.map_fragment) {
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             log(TAG) { "locationPermissionLauncher: $isGranted" }
-            if (isGranted) vm.homeMap()
         }
         super.onCreate(savedInstanceState)
     }
