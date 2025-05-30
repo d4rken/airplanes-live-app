@@ -82,7 +82,7 @@ class FeederActionViewModel @Inject constructor(
         val newTimeout = if (state.first().feeder.config.offlineCheckTimeout != null) {
             null
         } else {
-            Duration.ofHours(6)
+            Duration.ofHours(12)
         }
         feederRepo.setOfflineCheckTimeout(feederId, newTimeout)
     }

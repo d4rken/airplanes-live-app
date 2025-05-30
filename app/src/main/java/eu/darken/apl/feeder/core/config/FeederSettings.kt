@@ -11,6 +11,7 @@ import eu.darken.apl.common.datastore.PreferenceStoreMapper
 import eu.darken.apl.common.datastore.createValue
 import eu.darken.apl.common.debug.logging.logTag
 import java.time.Duration
+import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,6 +29,7 @@ class FeederSettings @Inject constructor(
     val feederGroup = dataStore.createValue("feeder.group", FeederGroup(), moshi)
 
     val feederMonitorInterval = dataStore.createValue("feeder.monitor.interval", DEFAULT_CHECK_INTERVAL, moshi)
+    val lastUpdate = dataStore.createValue("feeder.update.last", Instant.EPOCH, moshi)
 
     override val mapper = PreferenceStoreMapper()
 

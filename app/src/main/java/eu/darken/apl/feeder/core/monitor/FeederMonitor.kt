@@ -1,5 +1,6 @@
 package eu.darken.apl.feeder.core.monitor
 
+import eu.darken.apl.common.datastore.value
 import eu.darken.apl.common.debug.logging.Logging.Priority.ERROR
 import eu.darken.apl.common.debug.logging.Logging.Priority.INFO
 import eu.darken.apl.common.debug.logging.asLog
@@ -30,7 +31,16 @@ class FeederMonitor @Inject constructor(
 
         val offlineDevices = feederRepo.feeders.first()
             .filter { it.config.offlineCheckTimeout != null }
-            .filter { Duration.between(it.lastSeen, Instant.now()) > it.config.offlineCheckTimeout }
+            .filter {
+                // Never seen? Maybe just added?
+                if (it.lastSeen == null) return@filter false
+
+                // Stale data
+                val timeSinceUpdate = Duration.between(settings.lastUpdate.value(), Instant.now())
+                if (timeSinceUpdate > it.config.offlineCheckTimeout) return@filter false
+
+                Duration.between(it.lastSeen, Instant.now()) > it.config.offlineCheckTimeout
+            }
             .onEach { log(TAG, INFO) { "Feeder has been offline for a while... $it" } }
 
         notifications.notifyOfOfflineDevices(offlineDevices)
