@@ -1,5 +1,6 @@
 package eu.darken.apl.feeder.core
 
+import eu.darken.apl.common.datastore.value
 import eu.darken.apl.common.debug.logging.Logging.Priority.INFO
 import eu.darken.apl.common.debug.logging.Logging.Priority.WARN
 import eu.darken.apl.common.debug.logging.log
@@ -21,6 +22,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.time.Duration
+import java.time.Instant
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -164,6 +166,8 @@ class FeederRepo @Inject constructor(
                     log(TAG) { "Updating mlat stats : $it" }
                     feederStatsDatabase.mlatStats.insert(it)
                 }
+
+            feederSettings.lastUpdate.value(Instant.now())
 
             delay(1000)
         } finally {
