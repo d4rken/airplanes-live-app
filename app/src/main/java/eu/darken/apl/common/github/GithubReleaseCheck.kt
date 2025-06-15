@@ -1,6 +1,6 @@
 package eu.darken.apl.common.github
 
-import com.squareup.moshi.Moshi
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Reusable
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.Logging.Priority.INFO
@@ -8,9 +8,10 @@ import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import javax.inject.Inject
 
@@ -18,7 +19,7 @@ import javax.inject.Inject
 class GithubReleaseCheck @Inject constructor(
     private val dispatcherProvider: DispatcherProvider,
     private val baseHttpClient: OkHttpClient,
-    private val baseMoshi: Moshi,
+    private val baseJson: Json,
 ) {
 
     private val api: GithubApi by lazy {
@@ -26,7 +27,8 @@ class GithubReleaseCheck @Inject constructor(
             baseUrl("https://api.github.com")
             client(baseHttpClient)
             addConverterFactory(ScalarsConverterFactory.create())
-            addConverterFactory(MoshiConverterFactory.create(baseMoshi).asLenient())
+            val contentType = "application/json".toMediaType()
+            addConverterFactory(baseJson.asConverterFactory(contentType))
         }.build().create(GithubApi::class.java)
     }
 

@@ -1,36 +1,37 @@
 package eu.darken.apl.feeder.core.api
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import java.util.UUID
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class FeedInfos(
-    @Json(name = "beast_clients") val beast: List<Beast>,
-    @Json(name = "mlat_clients") val mlat: List<Mlat>,
+    @SerialName("beast_clients") val beast: List<Beast>,
+    @SerialName("mlat_clients") val mlat: List<Mlat>,
 ) {
 
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class Beast(
-        @Json(name = "uuid") val uuid: UUID,
-        @Json(name = "avg_kbit_s") val avgKBitsPerSecond: Double,
-        @Json(name = "conn_time") val connTime: Long,
-        @Json(name = "msgs_s") val messageRate: Double,
-        @Json(name = "pos_s") val positionRate: Double,
-        @Json(name = "rtt") val recentRtt: Long,
-        @Json(name = "pos") val positions: Int,
+        @Contextual @SerialName("uuid") val uuid: UUID,
+        @SerialName("avg_kbit_s") val avgKBitsPerSecond: Double,
+        @SerialName("conn_time") val connTime: Long,
+        @SerialName("msgs_s") val messageRate: Double,
+        @SerialName("pos_s") val positionRate: Double,
+        @SerialName("rtt") val recentRtt: Long,
+        @SerialName("pos") val positions: Int,
     )
 
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class Mlat(
-        @Json(name = "user") val user: String,
-        @Json(name = "uuid") val uuid: UUID,
-        @Json(name = "message_rate") val messageRate: Double,
-        @Json(name = "peer_count") val peerCount: Int,
-        @Json(name = "bad_sync_timeout") val badSyncTimeout: Long,
-        @Json(name = "outlier_percent") val outlierPercent: Float,
-        @Json(name = "bad_peer_list") val badPeerList: String,
-        @Json(name = "sync_interest") val syncInterest: List<String>,
-        @Json(name = "mlat_interest") val mlatInterest: List<String>,
+        @SerialName("user") val user: String,
+        @Contextual @SerialName("uuid") val uuid: UUID,
+        @SerialName("message_rate") val messageRate: Double,
+        @SerialName("peer_count") val peerCount: Int,
+        @SerialName("bad_sync_timeout") val badSyncTimeout: Long,
+        @SerialName("outlier_percent") val outlierPercent: Float,
+        @SerialName("bad_peer_list") val badPeerList: String,
+        @SerialName("sync_interest") val syncInterest: List<String>,
+        @SerialName("mlat_interest") val mlatInterest: List<String>,
     )
 }

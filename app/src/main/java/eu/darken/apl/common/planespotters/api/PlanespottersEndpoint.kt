@@ -9,15 +9,15 @@ import eu.darken.apl.main.core.aircraft.AircraftHex
 import eu.darken.apl.main.core.aircraft.Registration
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
+import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Inject
 
 
 @Reusable
 class PlanespottersEndpoint @Inject constructor(
     private val baseClient: OkHttpClient,
-    private val moshiConverterFactory: MoshiConverterFactory,
+    private val jsonConverterFactory: Converter.Factory,
     private val dispatcherProvider: DispatcherProvider,
 ) {
 
@@ -29,7 +29,7 @@ class PlanespottersEndpoint @Inject constructor(
         Retrofit.Builder()
             .client(configHttpClient)
             .baseUrl("https://api.planespotters.net/")
-            .addConverterFactory(moshiConverterFactory)
+            .addConverterFactory(jsonConverterFactory)
             .build()
             .create(PlanespottersApi::class.java)
     }

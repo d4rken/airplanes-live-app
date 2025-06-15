@@ -8,15 +8,15 @@ import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.feeder.core.ReceiverId
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
+import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Inject
 
 
 @Reusable
 class FeederEndpoint @Inject constructor(
     private val baseClient: OkHttpClient,
-    private val moshiConverterFactory: MoshiConverterFactory,
+    private val jsonConverterFactory: Converter.Factory,
     private val dispatcherProvider: DispatcherProvider,
 ) {
 
@@ -28,7 +28,7 @@ class FeederEndpoint @Inject constructor(
         Retrofit.Builder()
             .client(configHttpClient)
             .baseUrl("https://api.airplanes.live/")
-            .addConverterFactory(moshiConverterFactory)
+            .addConverterFactory(jsonConverterFactory)
             .build()
             .create(FeederApi::class.java)
     }

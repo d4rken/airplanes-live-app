@@ -5,7 +5,6 @@ import android.os.Build
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import com.squareup.moshi.Moshi
 import dagger.hilt.android.qualifiers.ApplicationContext
 import eu.darken.apl.common.datastore.PreferenceScreenData
 import eu.darken.apl.common.datastore.PreferenceStoreMapper
@@ -13,13 +12,16 @@ import eu.darken.apl.common.datastore.createValue
 import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.theming.ThemeMode
 import eu.darken.apl.common.theming.ThemeStyle
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
+// Import the specific createValue function from DataStoreValueJson
+import eu.darken.apl.common.datastore.createValue as createJsonValue
 
 @Singleton
 class GeneralSettings @Inject constructor(
     @ApplicationContext private val context: Context,
-    moshi: Moshi,
+    json: Json,
 ) : PreferenceScreenData {
 
     private val Context.dataStore by preferencesDataStore(name = "settings_core")
@@ -34,8 +36,8 @@ class GeneralSettings @Inject constructor(
 
     val isOnboardingFinished = dataStore.createValue("core.onboarding.finished", false)
 
-    val themeMode = dataStore.createValue("core.ui.theme.mode", ThemeMode.SYSTEM, moshi)
-    val themeStyle = dataStore.createValue("core.ui.theme.style", ThemeStyle.DEFAULT, moshi)
+    val themeMode = dataStore.createJsonValue("core.ui.theme.mode", ThemeMode.SYSTEM, json)
+    val themeStyle = dataStore.createJsonValue("core.ui.theme.style", ThemeStyle.DEFAULT, json)
 
     val searchLocationDismissed = dataStore.createValue("search.location.dismissed", false)
 

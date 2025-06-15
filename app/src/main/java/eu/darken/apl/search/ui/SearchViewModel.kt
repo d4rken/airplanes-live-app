@@ -3,8 +3,6 @@ package eu.darken.apl.search.ui
 import android.location.Location
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
@@ -43,6 +41,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withTimeoutOrNull
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.Locale
@@ -326,16 +326,16 @@ class SearchViewModel @Inject constructor(
         val items: List<SearchAdapter.Item>,
         val isSearching: Boolean = false,
     ) {
-        @JsonClass(generateAdapter = false)
+        @Serializable
         enum class Mode {
-            @Json(name = "ALL") ALL,
-            @Json(name = "HEX") HEX,
-            @Json(name = "CALLSIGN") CALLSIGN,
-            @Json(name = "REGISTRATION") REGISTRATION,
-            @Json(name = "SQUAWK") SQUAWK,
-            @Json(name = "AIRFRAME") AIRFRAME,
-            @Json(name = "INTERESTING") INTERESTING,
-            @Json(name = "POSITION") POSITION,
+            @SerialName("ALL") ALL,
+            @SerialName("HEX") HEX,
+            @SerialName("CALLSIGN") CALLSIGN,
+            @SerialName("REGISTRATION") REGISTRATION,
+            @SerialName("SQUAWK") SQUAWK,
+            @SerialName("AIRFRAME") AIRFRAME,
+            @SerialName("INTERESTING") INTERESTING,
+            @SerialName("POSITION") POSITION,
             ;
         }
     }
