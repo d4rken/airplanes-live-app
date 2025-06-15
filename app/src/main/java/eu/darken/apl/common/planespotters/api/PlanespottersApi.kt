@@ -1,35 +1,35 @@
 package eu.darken.apl.common.planespotters.api
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface PlanespottersApi {
 
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class PhotosResponse(
-        @Json(name = "photos") val photos: List<Photo>
+        @SerialName("photos") val photos: List<Photo>
     )
 
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class Photo(
-        @Json(name = "id") val id: String,
-        @Json(name = "thumbnail") val thumbnail: Thumbnail,
-        @Json(name = "thumbnail_large") val thumbnailLarge: Thumbnail,
-        @Json(name = "link") val link: String,
-        @Json(name = "photographer") val photographer: String
+        @SerialName("id") val id: String,
+        @SerialName("thumbnail") val thumbnail: Thumbnail,
+        @SerialName("thumbnail_large") val thumbnailLarge: Thumbnail,
+        @SerialName("link") val link: String,
+        @SerialName("photographer") val photographer: String
     ) {
 
-        @JsonClass(generateAdapter = true)
+        @Serializable
         data class Thumbnail(
-            @Json(name = "src") val src: String,
-            @Json(name = "size") val size: Size
+            @SerialName("src") val src: String,
+            @SerialName("size") val size: Size
         ) {
-            @JsonClass(generateAdapter = true)
+            @Serializable
             data class Size(
-                @Json(name = "width") val width: Int,
-                @Json(name = "height") val height: Int
+                @SerialName("width") val width: Int,
+                @SerialName("height") val height: Int
             )
         }
     }

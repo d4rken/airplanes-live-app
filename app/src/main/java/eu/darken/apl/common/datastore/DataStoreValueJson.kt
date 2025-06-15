@@ -3,35 +3,36 @@ package eu.darken.apl.common.datastore
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.squareup.moshi.Moshi
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 
-inline fun <reified T> moshiReader(
-    moshi: Moshi,
+inline fun <reified T> jsonReader(
+    json: Json,
     defaultValue: T,
 ): (Any?) -> T {
-    val adapter = moshi.adapter(T::class.java)
+    val serializer = json.serializersModule.serializer<T>()
     return { rawValue ->
         rawValue as String?
-        rawValue?.let { adapter.fromJson(it) } ?: defaultValue
+        rawValue?.let { json.decodeFromString(serializer, it) } ?: defaultValue
     }
 }
 
-inline fun <reified T> moshiWriter(
-    moshi: Moshi,
+inline fun <reified T> jsonWriter(
+    json: Json,
 ): (T) -> Any? {
-    val adapter = moshi.adapter(T::class.java)
+    val serializer = json.serializersModule.serializer<T>()
     return { newValue: T ->
-        newValue?.let { adapter.toJson(it) }
+        newValue?.let { json.encodeToString(serializer, it) }
     }
 }
 
 inline fun <reified T : Any?> DataStore<Preferences>.createValue(
     key: String,
     defaultValue: T = null as T,
-    moshi: Moshi,
+    json: Json,
 ) = DataStoreValue(
     dataStore = this,
     key = stringPreferencesKey(key),
-    reader = moshiReader(moshi, defaultValue),
-    writer = moshiWriter(moshi),
+    reader = jsonReader(json, defaultValue),
+    writer = jsonWriter(json),
 )

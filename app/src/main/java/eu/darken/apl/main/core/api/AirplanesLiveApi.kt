@@ -1,13 +1,14 @@
 package eu.darken.apl.main.core.api
 
 import android.location.Location
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import eu.darken.apl.main.core.aircraft.AircraftHex
 import eu.darken.apl.main.core.aircraft.Airframe
 import eu.darken.apl.main.core.aircraft.Callsign
 import eu.darken.apl.main.core.aircraft.Registration
 import eu.darken.apl.main.core.aircraft.SquawkCode
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import retrofit2.http.GET
 import retrofit2.http.Path
 import java.time.Instant
@@ -21,105 +22,105 @@ interface AirplanesLiveApi {
         val ptime: Int
     }
 
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class HexesResponse(
-        @Json(name = "ac") val ac: List<Aircraft>,
-        @Json(name = "total") val total: Int,
-        @Json(name = "now") override val now: Long,
-        @Json(name = "msg") override val message: String,
-        @Json(name = "ctime") override val ctime: Long,
-        @Json(name = "ptime") override val ptime: Int
+        @SerialName("ac") val ac: List<@Contextual Aircraft>,
+        @SerialName("total") val total: Int,
+        @SerialName("now") override val now: Long,
+        @SerialName("msg") override val message: String,
+        @SerialName("ctime") override val ctime: Long,
+        @SerialName("ptime") override val ptime: Int
     ) : BaseResponse
 
     @GET("hex/{hexes}")
     suspend fun getAircraftByHex(@Path("hexes", encoded = true) hexes: String): HexesResponse
 
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class SquawksResponse(
-        @Json(name = "ac") val ac: List<Aircraft>,
-        @Json(name = "total") val total: Int,
-        @Json(name = "msg") override val message: String,
-        @Json(name = "now") override val now: Long,
-        @Json(name = "ctime") override val ctime: Long,
-        @Json(name = "ptime") override val ptime: Int
+        @SerialName("ac") val ac: List<@Contextual Aircraft>,
+        @SerialName("total") val total: Int,
+        @SerialName("msg") override val message: String,
+        @SerialName("now") override val now: Long,
+        @SerialName("ctime") override val ctime: Long,
+        @SerialName("ptime") override val ptime: Int
     ) : BaseResponse
 
     @GET("squawk/{codes}")
     suspend fun getAircraftBySquawk(@Path("codes", encoded = true) codes: String): SquawksResponse
 
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class CallsignsResponse(
-        @Json(name = "ac") val ac: List<Aircraft>,
-        @Json(name = "total") val total: Int,
-        @Json(name = "msg") override val message: String,
-        @Json(name = "now") override val now: Long,
-        @Json(name = "ctime") override val ctime: Long,
-        @Json(name = "ptime") override val ptime: Int
+        @SerialName("ac") val ac: List<@Contextual Aircraft>,
+        @SerialName("total") val total: Int,
+        @SerialName("msg") override val message: String,
+        @SerialName("now") override val now: Long,
+        @SerialName("ctime") override val ctime: Long,
+        @SerialName("ptime") override val ptime: Int
     ) : BaseResponse
 
     @GET("callsign/{signs}")
     suspend fun getAircraftByCallsign(@Path("signs", encoded = true) codes: String): CallsignsResponse
 
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class RegistrationsResponse(
-        @Json(name = "ac") val ac: List<Aircraft>,
-        @Json(name = "total") val total: Int,
-        @Json(name = "msg") override val message: String,
-        @Json(name = "now") override val now: Long,
-        @Json(name = "ctime") override val ctime: Long,
-        @Json(name = "ptime") override val ptime: Int
+        @SerialName("ac") val ac: List<@Contextual Aircraft>,
+        @SerialName("total") val total: Int,
+        @SerialName("msg") override val message: String,
+        @SerialName("now") override val now: Long,
+        @SerialName("ctime") override val ctime: Long,
+        @SerialName("ptime") override val ptime: Int
     ) : BaseResponse
 
     @GET("reg/{regs}")
     suspend fun getAircraftByRegistration(@Path("regs", encoded = true) codes: String): RegistrationsResponse
 
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class AirframesResponse(
-        @Json(name = "ac") val ac: List<Aircraft>,
-        @Json(name = "total") val total: Int,
-        @Json(name = "msg") override val message: String,
-        @Json(name = "now") override val now: Long,
-        @Json(name = "ctime") override val ctime: Long,
-        @Json(name = "ptime") override val ptime: Int
+        @SerialName("ac") val ac: List<@Contextual Aircraft>,
+        @SerialName("total") val total: Int,
+        @SerialName("msg") override val message: String,
+        @SerialName("now") override val now: Long,
+        @SerialName("ctime") override val ctime: Long,
+        @SerialName("ptime") override val ptime: Int
     ) : BaseResponse
 
     @GET("type/{types}")
     suspend fun getAircraftByAirframe(@Path("types", encoded = true) types: String): AirframesResponse
 
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class MilitaryResponse(
-        @Json(name = "ac") val ac: List<Aircraft>,
-        @Json(name = "total") val total: Int,
-        @Json(name = "msg") override val message: String,
-        @Json(name = "now") override val now: Long,
-        @Json(name = "ctime") override val ctime: Long,
-        @Json(name = "ptime") override val ptime: Int
+        @SerialName("ac") val ac: List<@Contextual Aircraft>,
+        @SerialName("total") val total: Int,
+        @SerialName("msg") override val message: String,
+        @SerialName("now") override val now: Long,
+        @SerialName("ctime") override val ctime: Long,
+        @SerialName("ptime") override val ptime: Int
     ) : BaseResponse
 
     @GET("mil")
     suspend fun getMilitary(): MilitaryResponse
 
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class LADDResponse(
-        @Json(name = "ac") val ac: List<Aircraft>,
-        @Json(name = "total") val total: Int,
-        @Json(name = "msg") override val message: String,
-        @Json(name = "now") override val now: Long,
-        @Json(name = "ctime") override val ctime: Long,
-        @Json(name = "ptime") override val ptime: Int
+        @SerialName("ac") val ac: List<@Contextual Aircraft>,
+        @SerialName("total") val total: Int,
+        @SerialName("msg") override val message: String,
+        @SerialName("now") override val now: Long,
+        @SerialName("ctime") override val ctime: Long,
+        @SerialName("ptime") override val ptime: Int
     ) : BaseResponse
 
     @GET("ladd")
     suspend fun getLADD(): LADDResponse
 
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class PIAResponse(
-        @Json(name = "ac") val ac: List<Aircraft>,
-        @Json(name = "total") val total: Int,
-        @Json(name = "msg") override val message: String,
-        @Json(name = "now") override val now: Long,
-        @Json(name = "ctime") override val ctime: Long,
-        @Json(name = "ptime") override val ptime: Int
+        @SerialName("ac") val ac: List<@Contextual Aircraft>,
+        @SerialName("total") val total: Int,
+        @SerialName("msg") override val message: String,
+        @SerialName("now") override val now: Long,
+        @SerialName("ctime") override val ctime: Long,
+        @SerialName("ptime") override val ptime: Int
     ) : BaseResponse
 
     @GET("pia")
@@ -132,48 +133,50 @@ interface AirplanesLiveApi {
         @Path("radius") radius: Int
     ): AirframesResponse
 
-    @JsonClass(generateAdapter = true)
+    @Serializable
     data class Aircraft(
-        @Json(name = "hex") val rawHex: AircraftHex,
-        @Json(name = "type") override val messageType: String,
-        @Json(name = "dbFlags") override val dbFlags: Int?,
-        @Json(name = "r") override val registration: Registration?,
-        @Json(name = "flight") override val callsign: Callsign?,
+        @SerialName("hex") val rawHex: AircraftHex,
+        @SerialName("type") override val messageType: String,
+        @SerialName("dbFlags") override val dbFlags: Int?,
+        @SerialName("r") override val registration: Registration?,
+        @SerialName("flight") override val callsign: Callsign?,
 
-        @Json(name = "ownOp") override val operator: String?,
-        @Json(name = "t") override val airframe: Airframe?,
-        @Json(name = "desc") override val description: String?,
+        @SerialName("ownOp") override val operator: String?,
+        @SerialName("t") override val airframe: Airframe?,
+        @SerialName("desc") override val description: String?,
 
-        @Json(name = "squawk") override val squawk: SquawkCode?,
-        @Json(name = "emergency") override val emergency: String?,
+        @SerialName("squawk") override val squawk: SquawkCode?,
+        @SerialName("emergency") override val emergency: String?,
 
-        @Json(name = "oat") val oat: Int?, // outer/static air temperature (C)
-        @Json(name = "tat") val tat: Int?, // total air temperature (C)
-        @Json(name = "alt_baro") override val altitude: String?, // Altitude in feet or "ground"
-        @Json(name = "baro_rate") val rateBaro: Int?,
-        @Json(name = "geom_rate") val rateGeometric: Int?,
-        @Json(name = "gs") override val groundSpeed: Float?, // ground speed in knots
-        @Json(name = "ias") override val indicatedAirSpeed: Int?, // indicated air speed in knots
-        @Json(name = "mag_heading") val headingMagnetic: Double?, // Heading, degrees clockwise from magnetic north
-        @Json(name = "true_heading") val headingTrue: Double?, // Heading, degrees clockwise from true north
-        @Json(name = "lat") val latitude: String?,
-        @Json(name = "lon") val longitude: String?,
-        @Json(name = "track") val track: Float?, // true track over ground in degrees (0-359)
-        @Json(name = "rr_lat") val roughLat: Double?, // If no ADS-B or MLAT position available, a rough estimated position for the aircraft based on the receiver’s estimated coordinates.
-        @Json(name = "rr_lon") val roughLon: Double?, // If no ADS-B or MLAT position available, a rough estimated position for the aircraft based on the receiver’s estimated coordinates.
-        @Json(name = "lastPosition") val lastPosition: LastPosition?,
+        @SerialName("oat") val oat: Int?, // outer/static air temperature (C)
+        @SerialName("tat") val tat: Int?, // total air temperature (C)
+        @SerialName("alt_baro") override val altitude: String?, // Altitude in feet or "ground"
+        @SerialName("baro_rate") val rateBaro: Int?,
+        @SerialName("geom_rate") val rateGeometric: Int?,
+        @SerialName("gs") override val groundSpeed: Float?, // ground speed in knots
+        @SerialName("ias") override val indicatedAirSpeed: Int?, // indicated air speed in knots
+        @SerialName("mag_heading") val headingMagnetic: Double?, // Heading, degrees clockwise from magnetic north
+        @SerialName("true_heading") val headingTrue: Double?, // Heading, degrees clockwise from true north
+        @SerialName("lat") val latitude: String?,
+        @SerialName("lon") val longitude: String?,
+        @SerialName("track") val track: Float?, // true track over ground in degrees (0-359)
+        @SerialName("rr_lat") val roughLat: Double?, // If no ADS-B or MLAT position available, a rough estimated position for the aircraft based on the receiver's estimated coordinates.
+        @SerialName("rr_lon") val roughLon: Double?, // If no ADS-B or MLAT position available, a rough estimated position for the aircraft based on the receiver's estimated coordinates.
+        @SerialName("lastPosition") val lastPosition: LastPosition?,
 
-        @Json(name = "version") val version: Int?,
+        @SerialName("version") val version: Int?,
 
-        @Json(name = "messages") override val messages: Int,
-        @Json(name = "rssi") override val rssi: Double,
-        @Json(name = "seen") val seenSecondsAgo: Double
+        @SerialName("messages") override val messages: Int,
+        @SerialName("rssi") override val rssi: Double,
+        @SerialName("seen") val seenSecondsAgo: Double
     ) : eu.darken.apl.main.core.aircraft.Aircraft {
 
         override val hex: AircraftHex
             get() = rawHex.uppercase()
 
-        override val seenAt: Instant = Instant.now().minusSeconds(seenSecondsAgo.toLong())
+        @Contextual
+        override val seenAt: Instant
+            get() = Instant.now().minusSeconds(seenSecondsAgo.toLong())
 
         override val outsideTemp: Int?
             get() = oat ?: tat
@@ -195,13 +198,13 @@ interface AirplanesLiveApi {
                 }
             }
 
-        @JsonClass(generateAdapter = true)
+        @Serializable
         data class LastPosition(
-            @Json(name = "lat") val lat: Double,
-            @Json(name = "lon") val lon: Double,
-            @Json(name = "nic") val nic: Int,
-            @Json(name = "rc") val rc: Int,
-            @Json(name = "seen_pos") val lastSeen: Double
+            @SerialName("lat") val lat: Double,
+            @SerialName("lon") val lon: Double,
+            @SerialName("nic") val nic: Int,
+            @SerialName("rc") val rc: Int,
+            @SerialName("seen_pos") val lastSeen: Double
         )
 
         override fun toString(): String {

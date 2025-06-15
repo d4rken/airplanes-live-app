@@ -1,13 +1,13 @@
 package eu.darken.apl.common.theming
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import eu.darken.apl.R
 import eu.darken.apl.common.preferences.EnumPreference
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = false)
+@Serializable
 enum class ThemeStyle(override val labelRes: Int) : EnumPreference<ThemeStyle> {
-    @Json(name = "DEFAULT") DEFAULT(R.string.ui_theme_style_default_label),
-    @Json(name = "MATERIAL_YOU") MATERIAL_YOU(R.string.ui_theme_style_materialyou_label),
+    @SerialName("DEFAULT") DEFAULT(R.string.ui_theme_style_default_label),
+    @SerialName("MATERIAL_YOU") MATERIAL_YOU(R.string.ui_theme_style_materialyou_label),
     ;
 }

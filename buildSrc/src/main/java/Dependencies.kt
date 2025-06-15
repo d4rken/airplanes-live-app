@@ -27,15 +27,15 @@ private fun DependencyHandler.`debugImplementation`(dependencyNotation: Any): De
     add("debugImplementation", dependencyNotation)
 
 fun DependencyHandlerScope.addBase() {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.25")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.1.21")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 
-    testImplementation("org.jetbrains.kotlin:kotlin-reflect:1.9.25")
+    testImplementation("org.jetbrains.kotlin:kotlin-reflect:2.1.21")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
     androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
 
-    val daggerVersion = "2.47"
+    val daggerVersion = "2.56.2"
     implementation("com.google.dagger:dagger:$daggerVersion")
     implementation("com.google.dagger:dagger-android:$daggerVersion")
 
@@ -93,16 +93,15 @@ fun DependencyHandlerScope.addWorker() {
 
 fun DependencyHandlerScope.addHttp() {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
     implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
 }
 
 fun DependencyHandlerScope.addIO() {
-    implementation("com.squareup.moshi:moshi:1.15.1")
-    implementation("com.squareup.moshi:moshi-adapters:1.15.1")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.15.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
     implementation("com.squareup.okio:okio:3.3.0")
+    implementation("com.squareup:kotlinpoet:2.2.0")
 }
 
 fun DependencyHandlerScope.addTesting() {
