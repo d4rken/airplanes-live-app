@@ -32,15 +32,14 @@ class FeederMonitor @Inject constructor(
         val offlineDevices = feederRepo.feeders.first()
             .filter { it.config.offlineCheckTimeout != null }
             .filter {
-                // Never seen? Maybe just added?
                 if (it.lastSeen == null) return@filter false
 
-                // Stale data
                 val timeSinceUpdate = Duration.between(settings.lastUpdate.value(), Instant.now())
                 if (timeSinceUpdate > it.config.offlineCheckTimeout) return@filter false
 
                 Duration.between(it.lastSeen, Instant.now()) > it.config.offlineCheckTimeout
             }
+            .filter { it.config.offlineCheckSnoozedAt == null }
             .onEach { log(TAG, INFO) { "Feeder has been offline for a while... $it" } }
 
         notifications.notifyOfOfflineDevices(offlineDevices)

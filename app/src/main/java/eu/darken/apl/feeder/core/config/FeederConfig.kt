@@ -1,17 +1,19 @@
 package eu.darken.apl.feeder.core.config
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import eu.darken.apl.feeder.core.ReceiverId
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import java.time.Duration
 import java.time.Instant
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class FeederConfig(
-    @Json(name = "receiverId") val receiverId: ReceiverId,
-    @Json(name = "addedAt") val addedAt: Instant = Instant.now(),
-    @Json(name = "label") val label: String? = null,
-    @Json(name = "position") val position: FeederPosition? = null,
-    @Json(name = "offlineCheckTimeout") val offlineCheckTimeout: Duration? = null,
-    @Json(name = "address") val address: String? = null,
+    @SerialName("receiverId") val receiverId: ReceiverId,
+    @Contextual @SerialName("addedAt") val addedAt: Instant = Instant.now(),
+    @SerialName("label") val label: String? = null,
+    @SerialName("position") val position: FeederPosition? = null,
+    @Contextual @SerialName("offlineCheckTimeout") val offlineCheckTimeout: Duration? = null,
+    @Contextual @SerialName("offlineCheckSnoozedAt") val offlineCheckSnoozedAt: Instant? = null,
+    @SerialName("address") val address: String? = null,
 )
