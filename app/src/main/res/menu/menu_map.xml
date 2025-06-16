@@ -17,6 +17,7 @@
         android:title="@string/common_refresh_action"
         app:showAsAction="ifRoom" />
 
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
