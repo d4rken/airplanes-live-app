@@ -136,6 +136,7 @@
         <item quantity="one">Every %d minute.</item>
         <item quantity="other">Every %d minutes.</item>
     </plurals>
+    <string name="feeder_notification_snooze_action">Snooze</string>
 
     <string name="map_page_label">Map</string>
 

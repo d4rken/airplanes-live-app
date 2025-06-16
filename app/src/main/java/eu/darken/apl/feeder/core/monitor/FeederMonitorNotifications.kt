@@ -18,6 +18,7 @@ import eu.darken.apl.feeder.core.Feeder
 import eu.darken.apl.main.ui.MainActivity
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.math.absoluteValue
 
 @Singleton
 class FeederMonitorNotifications @Inject constructor(
@@ -60,29 +61,66 @@ class FeederMonitorNotifications @Inject constructor(
             return
         }
 
-        val notification = builder.apply {
-            clearActions()
-            setContentTitle(context.getString(R.string.feeder_monitor_offline_title))
+        offlineFeeders.forEach { feeder ->
+            val notificationId = getNotificationIdForFeeder(feeder.id)
 
-            val msgText = context.getString(
-                R.string.feeder_monitor_offline_message,
-                offlineFeeders.joinToString(", ") { it.label }
-            )
-            setContentText(msgText)
-            setStyle(BigTextStyle().bigText(msgText))
+            val notification = builder.apply {
+                clearActions()
+                setContentTitle(context.getString(R.string.feeder_monitor_offline_title))
 
-        }.build()
-        notificationManager.notify(NOTIFICATION_ID, notification)
+                val msgText = context.getString(
+                    R.string.feeder_monitor_offline_message,
+                    feeder.label
+                )
+                setContentText(msgText)
+                setStyle(BigTextStyle().bigText(msgText))
+
+                val ignoreIntent = FeederMonitorIgnoreReceiver.createIntent(
+                    context,
+                    feeder.id,
+                    notificationId
+                )
+                val ignorePendingIntent = PendingIntent.getBroadcast(
+                    context,
+                    feeder.id.hashCode(), // Use feeder ID as request code to make PendingIntents unique
+                    ignoreIntent,
+                    PendingIntentFlagCompat.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                )
+
+                addAction(
+                    R.drawable.ic_outline_snooze_24,
+                    context.getString(R.string.feeder_notification_snooze_action),
+                    ignorePendingIntent
+                )
+            }.build()
+
+            notificationManager.notify(notificationId, notification)
+        }
     }
 
     fun clearOfflineNotifications() {
         log(TAG) { "clearOfflineNotifications()" }
-        notificationManager.cancel(NOTIFICATION_ID)
+        for (id in BASE_NOTIFICATION_ID until (BASE_NOTIFICATION_ID + MAX_NOTIFICATION_OFFSET)) {
+            notificationManager.cancel(id)
+        }
+    }
+
+    fun cancelNotification(notificationId: Int) {
+        log(TAG) { "cancelNotification($notificationId)" }
+        notificationManager.cancel(notificationId)
+    }
+
+    fun getNotificationIdForFeeder(feederId: String): Int {
+        val prefix = if (feederId.length >= 4) feederId.substring(0, 4) else feederId
+        val suffix = if (feederId.length > 4) feederId.substring(feederId.length - 4) else ""
+        val combinedHash = (prefix + suffix).hashCode().absoluteValue
+        return BASE_NOTIFICATION_ID + (combinedHash % MAX_NOTIFICATION_OFFSET)
     }
 
     companion object {
         val TAG = logTag("Feeder", "Monitor", "Notifications")
         private val CHANNEL_ID = "${BuildConfigWrap.APPLICATION_ID}.notification.channel.feeder.monitor"
-        internal const val NOTIFICATION_ID = 75
+        internal const val BASE_NOTIFICATION_ID = 1000
+        internal const val MAX_NOTIFICATION_OFFSET = 50
     }
 }

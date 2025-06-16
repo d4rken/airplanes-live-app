@@ -46,6 +46,10 @@
         <activity
             android:name=".common.debug.recorder.ui.RecorderActivity"
             android:theme="@style/AppThemeFloating" />
+
+        <receiver
+            android:name=".feeder.core.monitor.FeederMonitorIgnoreReceiver"
+            android:exported="false" />
     </application>
 
 </manifest>

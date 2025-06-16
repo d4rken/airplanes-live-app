@@ -128,6 +128,7 @@ class FeederRepo @Inject constructor(
                             config.label == null && mlatLabel != null -> mlatLabel
                             else -> config.label
                         },
+                        offlineCheckSnoozedAt = if (infos.beast.any()) null else config.offlineCheckSnoozedAt
                     )
                 }
                 group.copy(configs = updatedConfigs.toSet())
@@ -177,7 +178,12 @@ class FeederRepo @Inject constructor(
 
     suspend fun setOfflineCheckTimeout(id: ReceiverId, timeout: Duration?) {
         log(TAG) { "setOfflineCheckTimeout($id,$timeout)" }
-        updateFeeder(id) { copy(offlineCheckTimeout = timeout) }
+        updateFeeder(id) {
+            copy(
+                offlineCheckTimeout = timeout,
+                offlineCheckSnoozedAt = null,
+            )
+        }
     }
 
     suspend fun setLabel(id: ReceiverId, label: String?) {
@@ -188,6 +194,11 @@ class FeederRepo @Inject constructor(
     suspend fun setAddress(id: ReceiverId, address: String?) {
         log(TAG) { "setAddress($id,$address" }
         updateFeeder(id) { copy(address = address) }
+    }
+
+    suspend fun setOfflineCheckSnoozedAt(id: ReceiverId, snoozedAt: Instant?) {
+        log(TAG) { "setOfflineCheckSnoozedAt($id,$snoozedAt)" }
+        updateFeeder(id) { copy(offlineCheckSnoozedAt = snoozedAt) }
     }
 
     private suspend fun updateFeeder(id: ReceiverId, update: FeederConfig.() -> FeederConfig) {
@@ -203,4 +214,3 @@ class FeederRepo @Inject constructor(
         private val TAG = logTag("Feeder", "Repo")
     }
 }
-
