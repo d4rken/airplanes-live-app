@@ -46,30 +46,11 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <LinearLayout
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/close_button"
+        style="@style/Widget.Material3.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/share_button"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:text="@string/common_share_action"
-            app:icon="@drawable/ic_plus_network_24" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/close_button"
-            style="@style/Widget.Material3.Button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:text="@string/common_close_action" />
-
-    </LinearLayout>
+        android:text="@string/common_close_action" />
 
 </LinearLayout>

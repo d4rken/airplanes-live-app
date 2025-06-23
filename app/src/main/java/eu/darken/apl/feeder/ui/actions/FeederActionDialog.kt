@@ -1,6 +1,5 @@
 package eu.darken.apl.feeder.ui.actions
 
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
@@ -102,10 +101,10 @@ class FeederActionDialog : BottomSheetDialogFragment2() {
                         input.hint = "192.168.0.42/myfeeder.domain.tld"
                         input.setText(event.feeder.config.address)
                     }
-                    setTitle(R.string.feeder_name_change_title)
-                    setMessage(R.string.feeder_name_change_body)
+                    setTitle(R.string.feeder_address_change_title)
+                    setMessage(R.string.feeder_address_change_body)
                     setView(layout.root)
-                    setPositiveButton(R.string.feeder_name_change_action) { _, _ ->
+                    setPositiveButton(R.string.feeder_address_change_action) { _, _ ->
                         vm.changeAddress(layout.input.text.toString())
                     }
                     setNegativeButton(R.string.common_cancel_action) { dialog, _ ->
@@ -134,15 +133,7 @@ class FeederActionDialog : BottomSheetDialogFragment2() {
                 .setView(dialogBinding.root)
                 .create()
 
-            dialogBinding.shareButton.setOnClickListener {
-                val shareIntent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    type = "text/plain"
-                    putExtra(Intent.EXTRA_TEXT, qrCodeText)
-                    putExtra(Intent.EXTRA_SUBJECT, "Feeder QR Code: ${qr.receiverLabel ?: "Feeder"}")
-                }
-                startActivity(Intent.createChooser(shareIntent, getString(R.string.common_share_action)))
-            }
+
 
             dialogBinding.closeButton.setOnClickListener {
                 dialog.dismiss()

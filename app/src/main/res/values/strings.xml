@@ -139,6 +139,8 @@
     <string name="feeder_name_change_title">New name</string>
     <string name="feeder_name_change_body">Rename this feeder locally. This only affects how it is displayed on this device.</string>
     <string name="feeder_address_change_action">Set IP address</string>
+    <string name="feeder_address_change_title">Set IP Address</string>
+    <string name="feeder_address_change_body">Set the IP address or domain name where tar1090 or graphs1090 is accessible for this feeder.</string>
     <string name="feeder_generate_qr_action">Generate QR Code</string>
     <string name="feeder_qr_code_title">Feeder QR Code</string>
     <string name="feeder_qr_code_description">Scan this QR code to add this feeder to another device</string>
