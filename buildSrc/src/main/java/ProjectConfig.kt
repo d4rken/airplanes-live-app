@@ -15,7 +15,19 @@ object ProjectConfig {
 
     object Version {
         val versionProperties = Properties().apply {
-            load(FileInputStream(File("version.properties")))
+            var currentDir = File(System.getProperty("user.dir"))
+            var versionFile = File(currentDir, "version.properties")
+
+            if (!versionFile.exists()) {
+                currentDir = currentDir.parentFile
+                versionFile = File(currentDir, "version.properties")
+            }
+
+            if (!versionFile.exists()) {
+                throw IllegalStateException("Could not find version.properties in ${currentDir.absolutePath}")
+            }
+
+            load(FileInputStream(versionFile))
         }
         val major = versionProperties.getProperty("project.versioning.major").toInt()
         val minor = versionProperties.getProperty("project.versioning.minor").toInt()

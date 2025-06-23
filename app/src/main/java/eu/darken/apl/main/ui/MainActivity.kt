@@ -27,7 +27,7 @@ class MainActivity : Activity2() {
 
     private val vm: MainActivityVM by viewModels()
     private lateinit var ui: MainActivityBinding
-    private val navController by lazy { supportFragmentManager.findNavController(R.id.nav_host) }
+    val navController by lazy { supportFragmentManager.findNavController(R.id.nav_host) }
     @Inject lateinit var theming: Theming
 
     var showSplashScreen = true
