@@ -18,6 +18,7 @@
     <string name="common_photo_author_label">von %s</string>
     <string name="common_grant_permission_action">Berechtigung erteilen</string>
     <string name="common_dismiss_action">Verwerfen</string>
+    <string name="common_close_action">Schließen</string>
     <string name="common_internet_unavailable_message">Internet ist nicht verfügbar.</string>
     <string name="common_list_select_all_action">Alle auswählen</string>
     <string name="common_show_on_map_action">Auf Karte anzeigen</string>
@@ -110,6 +111,15 @@
     <string name="feeder_list_add_your_feeder_action">Feeder hinzufügen</string>
     <string name="feeder_list_add_title">Neuer Feeder</string>
     <string name="feeder_list_add_message">Gib die UUID deines Feeders und ein optionales Label ein.</string>
+    <string name="feeder_list_label_hint">Label</string>
+    <string name="feeder_list_label_helper">Optional: Ein benutzerfreundlicher Name für deinen Feeder</string>
+    <string name="feeder_list_feeder_id_hint">Feeder-ID</string>
+    <string name="feeder_list_ip_address_hint">IP-Adresse (optional)</string>
+    <string name="feeder_list_ip_address_explanation">Optional: Gib die IP-Adresse ein, wenn tar1090 oder graphs1090 unter dieser Adresse verfügbar ist.</string>
+    <string name="feeder_list_quick_setup_title">Schnelle Einrichtung</string>
+    <string name="feeder_list_quick_setup_description">Scanne einen QR-Code, um alle Felder automatisch auszufüllen</string>
+    <string name="feeder_list_feeder_id_helper">Erforderlich: Die UUID deines Feeders</string>
+    <string name="feeder_list_camera_error">Fehler beim Starten der Kamera: %s</string>
     <string name="feeder_beast_stats_label">Beast-Statistiken</string>
     <string name="feeder_mlat_stats_label">MLAT-Statistiken</string>
     <string name="feeder_monitor_offline_label">Benachrichtigen, wenn offline</string>
@@ -119,6 +129,10 @@
     <string name="feeder_name_change_title">Neuer Name</string>
     <string name="feeder_name_change_body">Benenne diesen Feeder lokal um. Das wirkt sich nur darauf aus, wie er auf diesem Gerät angezeigt wird.</string>
     <string name="feeder_address_change_action">IP-Adresse festlegen</string>
+    <string name="feeder_generate_qr_action">QR-Code generieren</string>
+    <string name="feeder_qr_code_title">Feeder QR-Code</string>
+    <string name="feeder_qr_code_description">Scannen Sie diesen QR-Code, um diesen Feeder zu einem anderen Gerät hinzuzufügen</string>
+    <string name="feeder_qr_code_content_description">QR-Code zum Teilen des Feeders</string>
 
     <string name="feeder_remove_confirmation_title">Bestätigung</string>
     <string name="feeder_remove_confirmation_message">Diesen Feeder aus der App entfernen?</string>

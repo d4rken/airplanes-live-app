@@ -173,6 +173,9 @@ dependencies {
     // QR code scanning
     implementation("com.google.mlkit:barcode-scanning:17.2.0")
 
+    // QR code generation
+    implementation("com.google.zxing:core:3.5.3")
+
     // CameraX
     val cameraxVersion = "1.3.0"
     implementation("androidx.camera:camera-core:${cameraxVersion}")

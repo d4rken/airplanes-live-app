@@ -1,5 +1,8 @@
 package eu.darken.apl.feeder.ui.actions
 
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +11,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.WriterException
+import com.google.zxing.common.BitMatrix
 import dagger.hilt.android.AndroidEntryPoint
 import eu.darken.apl.R
 import eu.darken.apl.common.hasApiLevel
@@ -15,11 +22,18 @@ import eu.darken.apl.common.permissions.Permission
 import eu.darken.apl.common.uix.BottomSheetDialogFragment2
 import eu.darken.apl.databinding.CommonTextinputDialogBinding
 import eu.darken.apl.databinding.FeederActionDialogBinding
+import eu.darken.apl.databinding.QrCodeDialogBinding
+import eu.darken.apl.feeder.ui.add.NewFeederQR
+import kotlinx.serialization.json.Json
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class FeederActionDialog : BottomSheetDialogFragment2() {
     override val vm: FeederActionViewModel by viewModels()
     override lateinit var ui: FeederActionDialogBinding
+
+    @Inject
+    lateinit var json: Json
 
     private val permissionlauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
 
@@ -52,6 +66,7 @@ class FeederActionDialog : BottomSheetDialogFragment2() {
         ui.showFeedAction.setOnClickListener { vm.showFeedOnMap() }
         ui.renameAction.setOnClickListener { vm.renameFeeder() }
         ui.setAddressAction.setOnClickListener { vm.changeAddress() }
+        ui.generateQrIconAction.setOnClickListener { vm.generateQrCode() }
         ui.addressTar1090Action.setOnClickListener { vm.openTar1090() }
         ui.addressGraphs1090Action.setOnClickListener { vm.openGraphs1090() }
         ui.removeFeederAction.setOnClickListener { vm.removeFeeder() }
@@ -97,9 +112,62 @@ class FeederActionDialog : BottomSheetDialogFragment2() {
                         dialog.dismiss()
                     }
                 }.show()
+
+                is FeederActionEvents.ShowQrCode -> showQrCodeDialog(event.qr)
             }
         }
 
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun showQrCodeDialog(qr: NewFeederQR) {
+        try {
+            val qrCodeText = qr.toUri(json).toString()
+            val writer = MultiFormatWriter()
+            val bitMatrix: BitMatrix = writer.encode(qrCodeText, BarcodeFormat.QR_CODE, 512, 512)
+            val bitmap = createBitmapFromBitMatrix(bitMatrix)
+
+            val dialogBinding = QrCodeDialogBinding.inflate(layoutInflater, null, false)
+            dialogBinding.qrCodeImage.setImageBitmap(bitmap)
+
+            val dialog = MaterialAlertDialogBuilder(requireContext())
+                .setView(dialogBinding.root)
+                .create()
+
+            dialogBinding.shareButton.setOnClickListener {
+                val shareIntent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, qrCodeText)
+                    putExtra(Intent.EXTRA_SUBJECT, "Feeder QR Code: ${qr.receiverLabel ?: "Feeder"}")
+                }
+                startActivity(Intent.createChooser(shareIntent, getString(R.string.common_share_action)))
+            }
+
+            dialogBinding.closeButton.setOnClickListener {
+                dialog.dismiss()
+            }
+
+            dialog.show()
+
+        } catch (e: WriterException) {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.common_error_label)
+                .setMessage("Failed to generate QR code: ${e.message}")
+                .setPositiveButton(R.string.common_close_action) { dialog, _ -> dialog.dismiss() }
+                .show()
+        }
+    }
+
+    private fun createBitmapFromBitMatrix(matrix: BitMatrix): Bitmap {
+        val width = matrix.width
+        val height = matrix.height
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+        for (x in 0 until width) {
+            for (y in 0 until height) {
+                bitmap.setPixel(x, y, if (matrix[x, y]) Color.BLACK else Color.WHITE)
+            }
+        }
+        return bitmap
     }
 }

@@ -1,17 +1,20 @@
 package eu.darken.apl.feeder.ui.add
 
+import eu.darken.apl.common.serialization.SerializationModule
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import testhelper.json.toComparableJson
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [28])
 class NewFeederQRTest {
+
+    private val json = SerializationModule().json()
 
     @Test
     fun `toUri generates correct URI scheme and format`() {
@@ -20,7 +23,7 @@ class NewFeederQRTest {
             receiverLabel = "Test Feeder"
         )
 
-        val result = feederQR.toUri()
+        val result = feederQR.toUri(json)
 
         result.toString() shouldContain "eu_darken_apl://feeder?data="
         result.toString() shouldContain "receiverId"
@@ -36,13 +39,16 @@ class NewFeederQRTest {
             receiverLabel = null
         )
 
-        val result = feederQR.toUri()
+        val result = feederQR.toUri(json)
+        val uriString = result.toString()
 
-        result.toString() shouldContain "eu_darken_apl://feeder?data="
-        result.toString() shouldContain "receiverId"
-        result.toString() shouldContain "test456"
-        result.toString() shouldContain "receiverLabel"
-        result.toString() shouldContain "null"
+        uriString shouldContain "eu_darken_apl://feeder?data="
+        uriString shouldContain "receiverId"
+        uriString shouldContain "test456"
+
+        // With explicitNulls = false, null fields are omitted
+        (uriString.contains("receiverLabel")) shouldBe false
+        (uriString.contains("null")) shouldBe false
     }
 
     @Test
@@ -52,9 +58,14 @@ class NewFeederQRTest {
             receiverLabel = "My Custom Feeder"
         )
 
-        val jsonString = Json.encodeToString(feederQR)
+        val jsonString = json.encodeToString(feederQR)
 
-        jsonString shouldBe "{\"receiverId\":\"receiver789\",\"receiverLabel\":\"My Custom Feeder\"}"
+        jsonString.toComparableJson() shouldBe """
+            {
+                "receiverId": "receiver789",
+                "receiverLabel": "My Custom Feeder"
+            }
+        """.toComparableJson()
     }
 
     @Test
@@ -64,9 +75,13 @@ class NewFeederQRTest {
             receiverLabel = null
         )
 
-        val jsonString = Json.encodeToString(feederQR)
+        val jsonString = json.encodeToString(feederQR)
 
-        jsonString shouldBe "{\"receiverId\":\"receiver456\",\"receiverLabel\":null}"
+        jsonString.toComparableJson() shouldBe """
+            {
+                "receiverId": "receiver456"
+            }
+        """.toComparableJson()
     }
 
     @Test
@@ -76,7 +91,7 @@ class NewFeederQRTest {
             receiverLabel = "Feeder with spaces"
         )
 
-        val result = feederQR.toUri()
+        val result = feederQR.toUri(json)
         val uriString = result.toString()
 
         uriString shouldContain "eu_darken_apl://feeder?data="
@@ -86,7 +101,7 @@ class NewFeederQRTest {
         val jsonData = uriString.substring(dataStart)
 
         // Verify it's valid JSON that can be parsed back
-        val parsedQR = Json.decodeFromString<NewFeederQR>(jsonData)
+        val parsedQR = json.decodeFromString<NewFeederQR>(jsonData)
         parsedQR.receiverId shouldBe "special-chars_123"
         parsedQR.receiverLabel shouldBe "Feeder with spaces"
     }
@@ -98,9 +113,20 @@ class NewFeederQRTest {
             receiverLabel = "Test Label"
         )
 
-        val result = feederQR.toUri()
+        val result = feederQR.toUri(json)
+        val uriString = result.toString()
 
-        result.toString() shouldBe "eu_darken_apl://feeder?data={\"receiverId\":\"test-receiver\",\"receiverLabel\":\"Test Label\"}"
+        // Check the URI prefix
+        uriString.startsWith("eu_darken_apl://feeder?data=") shouldBe true
+
+        // Extract and check the JSON part
+        val jsonData = uriString.substringAfter("data=")
+        jsonData.toComparableJson() shouldBe """
+            {
+                "receiverId": "test-receiver",
+                "receiverLabel": "Test Label"
+            }
+        """.toComparableJson()
     }
 
     @Test
@@ -110,7 +136,7 @@ class NewFeederQRTest {
             receiverLabel = "label"
         )
 
-        val result = feederQR.toUri()
+        val result = feederQR.toUri(json)
 
         result.scheme shouldBe "eu_darken_apl"
         result.host shouldBe "feeder"
@@ -124,9 +150,9 @@ class NewFeederQRTest {
             receiverLabel = "Round Trip Label"
         )
 
-        val uri = originalQR.toUri()
+        val uri = originalQR.toUri(json)
         val jsonData = uri.getQueryParameter("data")!!
-        val parsedQR = Json.decodeFromString<NewFeederQR>(jsonData)
+        val parsedQR = json.decodeFromString<NewFeederQR>(jsonData)
 
         parsedQR.receiverId shouldBe originalQR.receiverId
         parsedQR.receiverLabel shouldBe originalQR.receiverLabel

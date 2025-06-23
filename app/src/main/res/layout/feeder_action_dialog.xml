@@ -16,7 +16,7 @@
         android:orientation="vertical"
         android:paddingVertical="8dp"
         android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:paddingEnd="8dp">
 
         <ImageView
             android:id="@+id/icon"
@@ -33,11 +33,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
             android:ellipsize="end"
             android:singleLine="true"
             android:textIsSelectable="true"
             app:layout_constraintBottom_toTopOf="@id/secondary"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/generate_qr_icon_action"
             app:layout_constraintStart_toEndOf="@id/icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
@@ -70,6 +71,17 @@
             app:layout_constraintTop_toBottomOf="@id/secondary"
             tools:text="-" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/generate_qr_icon_action"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/feeder_generate_qr_action"
+            app:icon="@drawable/ic_qr_code_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
@@ -92,19 +104,30 @@
             android:layout_height="wrap_content"
             android:text="@string/feeder_show_map_action" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/rename_action"
-            style="@style/Widget.Material3.Button"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/feeder_name_change_action" />
+            android:orientation="horizontal">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/set_address_action"
-            style="@style/Widget.Material3.Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/feeder_address_change_action" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/rename_action"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:text="@string/feeder_name_change_action" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/set_address_action"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:text="@string/feeder_address_change_action" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/address_actions"
@@ -140,8 +163,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/feeder_remove_action"
-            android:textColor="?colorOnError"
-            app:backgroundTint="@color/error" />
+            android:textColor="?colorOnErrorContainer"
+            app:backgroundTint="?colorErrorContainer" />
 
         <com.google.android.material.textview.MaterialTextView
             style="@style/TextAppearance.Material3.LabelLarge"

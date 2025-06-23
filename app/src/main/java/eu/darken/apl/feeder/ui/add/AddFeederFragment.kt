@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.OptIn
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
@@ -13,8 +14,10 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
@@ -33,7 +36,6 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 @AndroidEntryPoint
-@OptIn(ExperimentalGetImage::class)
 class AddFeederFragment : Fragment3(R.layout.add_feeder_fragment) {
 
     override val vm: AddFeederViewModel by viewModels()
@@ -71,28 +73,55 @@ class AddFeederFragment : Fragment3(R.layout.add_feeder_fragment) {
 
         ui.scanQrButton.setOnClickListener { startQrCodeScanning() }
 
-        ui.addButton.setOnClickListener {
-            val feederId = ui.feederId.text.toString()
-            val feederLabel = ui.feederLabel.text.toString()
-
-            if (feederId.isBlank()) {
-                ui.feederId.error = "Feeder ID is required"
-                return@setOnClickListener
-            }
-
-            vm.addFeeder(
-                label = feederLabel,
-                rawId = feederId
-            )
-
-            findNavController().popBackStack()
+        ui.feederId.doAfterTextChanged { text ->
+            vm.updateReceiverId(text.toString())
+        }
+        ui.feederLabel.doAfterTextChanged { text ->
+            vm.updateReceiverLabel(text.toString())
+        }
+        ui.feederIpAddress.doAfterTextChanged { text ->
+            vm.updateReceiverIpAddress(text.toString())
         }
 
-        ui.cancelButton.setOnClickListener { findNavController().popBackStack() }
+        ui.addButton.setOnClickListener {
+            vm.addFeeder()
+        }
 
         vm.state.observeWith(ui) { state ->
-            if (feederId.text?.isBlank() == true) feederId.setText(state.receiverId)
-            if (feederLabel.text?.isBlank() == true) feederLabel.setText(state.receiverLabel)
+            if (feederId.text.toString() != state.receiverId) {
+                feederId.setText(state.receiverId)
+            }
+            if (feederLabel.text.toString() != state.receiverLabel) {
+                feederLabel.setText(state.receiverLabel)
+            }
+            if (feederIpAddress.text.toString() != state.receiverIpAddress) {
+                feederIpAddress.setText(state.receiverIpAddress)
+            }
+
+            // Handle loading state
+            val isEnabled = !state.isLoading
+            feederId.isEnabled = isEnabled
+            feederLabel.isEnabled = isEnabled
+            feederIpAddress.isEnabled = isEnabled
+            scanQrButton.isEnabled = isEnabled
+
+            // Handle button and progress indicator
+            if (state.isLoading) {
+                addButton.visibility = View.INVISIBLE
+                progressIndicator.visibility = View.VISIBLE
+                progressIndicator.show()
+            } else {
+                addButton.visibility = View.VISIBLE
+                progressIndicator.hide()
+                progressIndicator.visibility = View.GONE
+                addButton.isEnabled = state.isAddButtonEnabled
+            }
+        }
+
+        vm.events.observeWith(ui) { event ->
+            when (event) {
+                is AddFeederEvents.StopCamera -> stopCameraPreview()
+            }
         }
 
         super.onViewCreated(view, savedInstanceState)
@@ -132,6 +161,7 @@ class AddFeederFragment : Fragment3(R.layout.add_feeder_fragment) {
         }
     }
 
+    @OptIn(ExperimentalGetImage::class)
     private fun startCameraPreview() {
         if (isScanning) return
         isScanning = true
@@ -139,8 +169,22 @@ class AddFeederFragment : Fragment3(R.layout.add_feeder_fragment) {
         cameraPreviewBinding = CameraPreviewLayoutBinding.inflate(layoutInflater)
         val cameraPreviewView = cameraPreviewBinding?.root ?: return
 
+        // Hide everything except toolbar
         ui.formContainer.visibility = View.GONE
-        ui.root.addView(cameraPreviewView)
+        ui.buttonContainer.visibility = View.GONE
+
+        // Add camera preview as full screen overlay
+        val layoutParams = androidx.constraintlayout.widget.ConstraintLayout.LayoutParams(
+            androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_PARENT,
+            androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.MATCH_PARENT
+        ).apply {
+            topToBottom = ui.toolbar.id
+            bottomToBottom = androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
+            startToStart = androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
+            endToEnd = androidx.constraintlayout.widget.ConstraintLayout.LayoutParams.PARENT_ID
+        }
+
+        ui.root.addView(cameraPreviewView, layoutParams)
 
         cameraPreviewBinding?.closeButton?.setOnClickListener {
             stopCameraPreview()
@@ -172,7 +216,11 @@ class AddFeederFragment : Fragment3(R.layout.add_feeder_fragment) {
                 )
             } catch (e: Exception) {
                 log(TAG) { "Error starting camera: ${e.message}" }
-                Toast.makeText(requireContext(), "Error starting camera: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.feeder_list_camera_error, e.message),
+                    Toast.LENGTH_SHORT
+                ).show()
                 stopCameraPreview()
             }
         }, ContextCompat.getMainExecutor(requireContext()))
@@ -181,50 +229,42 @@ class AddFeederFragment : Fragment3(R.layout.add_feeder_fragment) {
     private fun stopCameraPreview() {
         if (!isScanning) return
         isScanning = false
-
         cameraProvider?.unbindAll()
-
         cameraPreviewBinding?.let { binding -> ui.root.removeView(binding.root) }
 
+        // Restore all UI elements
         ui.formContainer.visibility = View.VISIBLE
-
+        ui.buttonContainer.visibility = View.VISIBLE
         cameraPreviewBinding = null
     }
 
+    @ExperimentalGetImage
     private inner class QrCodeAnalyzer : ImageAnalysis.Analyzer {
-        @androidx.annotation.OptIn(ExperimentalGetImage::class)
         override fun analyze(imageProxy: ImageProxy) {
             try {
                 val mediaImage = imageProxy.image
-                if (mediaImage != null) {
-                    val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+                if (mediaImage == null) {
+                    imageProxy.close()
+                    return
+                }
 
-                    barcodeScanner?.process(image)?.addOnSuccessListener { barcodes ->
-                        if (barcodes.isNotEmpty()) {
-                            for (barcode in barcodes) {
-                                val rawValue = barcode.rawValue
-                                if (rawValue == null) continue
+                val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
 
-                                log(TAG) { "QR code detected: $rawValue" }
-                                if (!rawValue.startsWith(NewFeederQR.PREFIX)) continue
+                barcodeScanner?.process(image)
+                    ?.addOnSuccessListener { barcodes ->
 
-                                vm.handleQrScan(rawValue)
+                        for (barcode in barcodes) {
+                            val rawValue = barcode.rawValue
+                            if (rawValue == null) continue
 
-                                requireActivity().runOnUiThread { stopCameraPreview() }
+                            log(TAG) { "QR code detected: $rawValue" }
+                            vm.handleQrScan(rawValue)
 
-                                break
-                            }
+                            break
                         }
                     }
-                        ?.addOnFailureListener { e ->
-                            log(TAG) { "Barcode scanning failed: ${e.message}" }
-                        }
-                        ?.addOnCompleteListener {
-                            imageProxy.close()
-                        }
-                } else {
-                    imageProxy.close()
-                }
+                    ?.addOnFailureListener { e -> log(TAG) { "Barcode scanning failed: ${e.message}" } }
+                    ?.addOnCompleteListener { imageProxy.close() }
             } catch (e: Exception) {
                 log(TAG) { "Error analyzing image: ${e.message}" }
                 imageProxy.close()

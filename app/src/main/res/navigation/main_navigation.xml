@@ -49,6 +49,12 @@
     <fragment
         android:id="@+id/addFeederFragment"
         android:name="eu.darken.apl.feeder.ui.add.AddFeederFragment"
-        tools:layout="@layout/add_feeder_fragment" />
+        tools:layout="@layout/add_feeder_fragment">
+        <argument
+            android:name="qr_data"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 
 </navigation>

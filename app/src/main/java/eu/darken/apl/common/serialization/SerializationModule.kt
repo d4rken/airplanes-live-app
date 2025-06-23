@@ -18,7 +18,6 @@ import javax.inject.Singleton
 @Module
 class SerializationModule {
 
-
     @Provides
     @Singleton
     fun json(): Json = Json {
