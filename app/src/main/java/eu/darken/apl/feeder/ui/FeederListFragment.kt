@@ -80,7 +80,7 @@ class FeederListFragment : Fragment3(R.layout.feeder_list_fragment) {
             swipeRefreshContainer.isRefreshing = state.isRefreshing
 
             adapter.update(state.items)
-            toolbar.subtitle = resources.getQuantityString(R.plurals.feeder_yours_x_active_msg, 0, state.items.size)
+            toolbar.subtitle = resources.getQuantityString(R.plurals.feeder_yours_x_active_msg, 0, state.feederCount)
         }
 
         ui.addFeederAction.setOnClickListener { goToAddFeeder() }
