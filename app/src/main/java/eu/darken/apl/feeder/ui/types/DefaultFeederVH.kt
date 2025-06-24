@@ -37,7 +37,7 @@ class DefaultFeederVH(parent: ViewGroup) :
         receiverName.apply {
             text = feeder.label
             setTextColor(
-                if (feeder.isOffline) getColorForAttr(com.google.android.material.R.attr.colorError)
+                if (item.isOffline) getColorForAttr(com.google.android.material.R.attr.colorError)
                 else getColorForAttr(com.google.android.material.R.attr.colorOnBackground)
             )
         }
@@ -63,7 +63,7 @@ class DefaultFeederVH(parent: ViewGroup) :
 
         monitorIcon.isGone = feeder.config.offlineCheckTimeout == null
         monitorIcon.setImageResource(
-            if (feeder.isOffline) R.drawable.ic_fire_alert_24 else R.drawable.ic_alarm_bell_24
+            if (item.isOffline) R.drawable.ic_fire_alert_24 else R.drawable.ic_alarm_bell_24
         )
 
         root.setOnClickListener { item.onTap(item) }
@@ -71,6 +71,7 @@ class DefaultFeederVH(parent: ViewGroup) :
 
     data class Item(
         val feeder: Feeder,
+        val isOffline: Boolean,
         val onTap: (Item) -> Unit,
     ) : FeederListAdapter.Item {
         override val stableId: Long

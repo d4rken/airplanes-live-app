@@ -9,6 +9,7 @@ import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.feeder.core.FeederRepo
 import eu.darken.apl.feeder.ui.types.DefaultFeederVH
+import eu.darken.apl.feeder.ui.types.FeederHeaderVH
 import eu.darken.apl.map.core.AirplanesLive
 import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.map.core.toMapFeedId
@@ -39,16 +40,24 @@ class FeederListViewModel @Inject constructor(
         feederRepo.feeders,
         feederRepo.isRefreshing
     ) { _, feeders, isRefreshing ->
-        val items = feeders.map { feeder ->
+        val offlineStates = feeders.associate { it.id to feederRepo.isOffline(it) }
+
+        val feederItems = feeders.map { feeder ->
             DefaultFeederVH.Item(
                 feeder = feeder,
+                isOffline = offlineStates[feeder.id]!!,
                 onTap = {
                     FeederListFragmentDirections.actionFeederToFeederActionDialog(feeder.id).navigate()
                 },
             )
         }
+
+        val headerItem = FeederHeaderVH.Item(hasOfflineFeeders = offlineStates.any { it.value })
+
+        val allItems = listOf(headerItem) + feederItems
+
         State(
-            items = items,
+            items = allItems,
             isRefreshing = isRefreshing,
         )
     }.asStateFlow()
