@@ -173,10 +173,7 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:2.7.1")
     kapt("androidx.room:room-compiler:2.7.1")
 
-    // QR code scanning
-    implementation("com.google.mlkit:barcode-scanning:17.2.0")
-
-    // QR code generation
+    // QR code scanning and generation
     implementation("com.google.zxing:core:3.5.3")
 
     // CameraX
