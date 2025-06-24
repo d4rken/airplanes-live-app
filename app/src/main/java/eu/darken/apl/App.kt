@@ -48,10 +48,11 @@ open class App : Application(), Configuration.Provider {
         log(TAG) { "onCreate() done! ${Exception().asLog()}" }
     }
 
-    override fun getWorkManagerConfiguration(): Configuration = Configuration.Builder()
-        .setMinimumLoggingLevel(VERBOSE)
-        .setWorkerFactory(workerFactory)
-        .build()
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
+            .setMinimumLoggingLevel(VERBOSE)
+            .setWorkerFactory(workerFactory)
+            .build()
 
     companion object {
         internal val TAG = logTag("App")

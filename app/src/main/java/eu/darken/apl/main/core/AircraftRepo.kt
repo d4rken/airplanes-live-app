@@ -16,7 +16,7 @@ import javax.inject.Singleton
 
 @Singleton
 class AircraftRepo @Inject constructor(
-    @AppScope private val appScope: CoroutineScope,
+    @param:AppScope private val appScope: CoroutineScope,
     private val aircraftDatabase: AircraftDatabase,
 ) {
 

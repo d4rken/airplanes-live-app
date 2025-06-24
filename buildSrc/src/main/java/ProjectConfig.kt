@@ -40,17 +40,16 @@ object ProjectConfig {
 }
 
 /**
- * Configures the [kotlinOptions][org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions] extension.
+ * Configures the Kotlin compiler options.
  */
-private fun LibraryExtension.kotlinOptions(configure: Action<org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions>): Unit =
-    (this as org.gradle.api.plugins.ExtensionAware).extensions.configure("kotlinOptions", configure)
+private fun LibraryExtension.compilerOptions(configure: Action<org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions>): Unit =
+    (this as org.gradle.api.plugins.ExtensionAware).extensions.configure("compilerOptions", configure)
 
 fun LibraryExtension.setupLibraryDefaults() {
     compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {
         minSdk = ProjectConfig.minSdk
-        targetSdk = ProjectConfig.targetSdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -69,9 +68,9 @@ fun LibraryExtension.setupLibraryDefaults() {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-        freeCompilerArgs = freeCompilerArgs + listOf(
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        freeCompilerArgs.addAll(
             "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
             "-Xopt-in=kotlinx.coroutines.FlowPreview",
             "-Xopt-in=kotlin.time.ExperimentalTime",
@@ -79,8 +78,8 @@ fun LibraryExtension.setupLibraryDefaults() {
         )
     }
 
-    fun Packaging.() {
-        resources.excludes += "DebugProbesKt.bin"
+    fun configurePackaging(packaging: Packaging) {
+        packaging.resources.excludes += "DebugProbesKt.bin"
     }
 }
 

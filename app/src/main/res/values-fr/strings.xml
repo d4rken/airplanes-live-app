@@ -214,7 +214,7 @@
     <string name="watch_notification_alert_flight_title">Alerte indicatif</string>
     <string name="watch_notification_alert_flight_msg">%s est en vol</string>
     <string name="watch_notification_alert_squawk_title">Alerte transpondeur</string>
-    <string name="watch_notification_alert_squawk_msg">Le code %s est transmis par %d aéronef.</string>
+    <string name="watch_notification_alert_squawk_msg">Le code %1$s est transmis par %2$d aéronef.</string>
     <string name="watch_settings_monitor_interval_title">Intervalle de vérification</string>
     <string name="watch_settings_monitor_interval_summary">À quelle fréquence devons-nous vérifier?</string>
     <plurals name="watch_setting_check_interval_minutes">

@@ -1,14 +1,11 @@
 package eu.darken.apl.watch.core.history
 
-import eu.darken.apl.common.coroutine.AppScope
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.watch.core.WatchId
-import eu.darken.apl.watch.core.WatchSettings
 import eu.darken.apl.watch.core.db.WatchDatabase
 import eu.darken.apl.watch.core.db.history.WatchCheckDao
 import eu.darken.apl.watch.core.db.history.WatchCheckEntity
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -16,8 +13,6 @@ import javax.inject.Singleton
 
 @Singleton
 class WatchHistoryRepo @Inject constructor(
-    @AppScope private val appScope: CoroutineScope,
-    private val settings: WatchSettings,
     private val database: WatchDatabase,
 ) {
 

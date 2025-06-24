@@ -22,7 +22,7 @@ import kotlin.math.absoluteValue
 
 @Singleton
 class FeederMonitorNotifications @Inject constructor(
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val notificationManager: NotificationManager,
 ) {
 

@@ -35,7 +35,7 @@ import javax.inject.Inject
 class MapViewModel @Inject constructor(
     handle: SavedStateHandle,
     dispatcherProvider: DispatcherProvider,
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val mapSettings: MapSettings,
     private val webpageTool: WebpageTool,
     private val searchRepo: SearchRepo,

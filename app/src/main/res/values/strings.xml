@@ -220,7 +220,7 @@
     <string name="watch_notification_alert_flight_title">Callsign alert</string>
     <string name="watch_notification_alert_flight_msg">%s is airborne</string>
     <string name="watch_notification_alert_squawk_title">Transponder alert</string>
-    <string name="watch_notification_alert_squawk_msg">Code %s is being transmitted by %d aircraft.</string>
+    <string name="watch_notification_alert_squawk_msg">Code %1$s is being transmitted by %2$d aircraft.</string>
     <string name="watch_settings_monitor_interval_title">Check interval</string>
     <string name="watch_settings_monitor_interval_summary">How often should we check?</string>
     <plurals name="watch_setting_check_interval_minutes">

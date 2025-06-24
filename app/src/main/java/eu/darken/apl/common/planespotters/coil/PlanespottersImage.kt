@@ -30,6 +30,7 @@ data class PlanespottersImage(
     }
 
     @Deprecated("Deprecated in Java", ReplaceWith("image.opacity"))
+    @Suppress("DEPRECATION")
     override fun getOpacity(): Int {
         return image.opacity
     }

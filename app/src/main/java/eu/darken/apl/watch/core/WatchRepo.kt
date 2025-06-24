@@ -25,11 +25,10 @@ import javax.inject.Singleton
 
 @Singleton
 class WatchRepo @Inject constructor(
-    @AppScope private val appScope: CoroutineScope,
-    private val settings: WatchSettings,
+    @param:AppScope private val appScope: CoroutineScope,
     private val db: WatchDatabase,
     private val watchHistory: WatchHistoryRepo,
-    private val aircraftRepo: AircraftRepo,
+    aircraftRepo: AircraftRepo,
 ) {
 
     private val refreshTrigger = MutableStateFlow(UUID.randomUUID())
