@@ -162,6 +162,8 @@
     <string name="feeder_monitor_offline_message">Some of your airplanes.live feeders are offline: %s</string>
     <string name="feeder_options_label">Options</string>
     <string name="feeder_startfeeding_msg">Not feeding airplanes.live yet?\nStart now, it\'s not rocket science 🚀.</string>
+    <string name="feeder_status_header_all_online">All feeders online</string>
+    <string name="feeder_status_header_some_offline">Some feeders offline</string>
 
     <string name="feeder_settings_title">Feeder</string>
     <string name="feeder_settings_summary">Feeder related settings, e.g. monitoring interval.</string>

@@ -5,6 +5,7 @@ import eu.darken.apl.common.debug.logging.Logging.Priority.INFO
 import eu.darken.apl.common.debug.logging.Logging.Priority.WARN
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
+import eu.darken.apl.common.network.NetworkStateProvider
 import eu.darken.apl.feeder.core.api.FeederEndpoint
 import eu.darken.apl.feeder.core.config.FeederConfig
 import eu.darken.apl.feeder.core.config.FeederPosition
@@ -33,6 +34,7 @@ class FeederRepo @Inject constructor(
     private val feederSettings: FeederSettings,
     private val feederEndpoint: FeederEndpoint,
     private val feederStatsDatabase: FeederStatsDatabase,
+    private val networkStateProvider: NetworkStateProvider,
 ) {
 
     private val refreshTrigger = MutableStateFlow(UUID.randomUUID())
@@ -214,6 +216,41 @@ class FeederRepo @Inject constructor(
             }
             group.copy(configs = updatedConfigs.toSet())
         }
+    }
+
+    suspend fun isOffline(feeder: Feeder): Boolean {
+        // If internet is not available, don't consider feeders as offline
+        val networkState = networkStateProvider.networkState.first()
+        if (!networkState.isInternetAvailable) {
+            log(TAG) { "Internet is not available, not considering feeder as offline" }
+            return false
+        }
+
+        // If offline check is not enabled for this feeder, it's not considered offline
+        val offlineCheckTimeout = feeder.config.offlineCheckTimeout
+        if (offlineCheckTimeout == null) {
+            return false
+        }
+
+        // If the feeder has never been seen, it's not considered offline
+        val lastSeen = feeder.lastSeen
+        if (lastSeen == null) {
+            return false
+        }
+
+        // If the feeder is snoozed, it's not considered offline
+        if (feeder.config.offlineCheckSnoozedAt != null) {
+            return false
+        }
+
+        // Check if the time since the last update is not greater than the offlineCheckTimeout
+        val timeSinceUpdate = Duration.between(feederSettings.lastUpdate.value(), Instant.now())
+        if (timeSinceUpdate > offlineCheckTimeout) {
+            return false
+        }
+
+        // Check if the time since the feeder was last seen is greater than the offlineCheckTimeout
+        return Duration.between(lastSeen, Instant.now()) > offlineCheckTimeout
     }
 
     companion object {

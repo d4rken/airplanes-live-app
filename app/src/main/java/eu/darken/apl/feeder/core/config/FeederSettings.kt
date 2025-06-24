@@ -1,6 +1,5 @@
 package eu.darken.apl.feeder.core.config
 
-// Import the specific createValue function from DataStoreValueSerialization
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
