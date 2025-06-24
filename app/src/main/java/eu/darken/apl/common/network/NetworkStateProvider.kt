@@ -6,7 +6,10 @@ import android.net.ConnectivityManager
 import android.net.LinkProperties
 import android.net.Network
 import android.net.NetworkCapabilities
-import android.net.NetworkCapabilities.*
+import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
+import android.net.NetworkCapabilities.NET_CAPABILITY_NOT_METERED
+import android.net.NetworkCapabilities.NET_CAPABILITY_VALIDATED
+import android.net.NetworkCapabilities.TRANSPORT_WIFI
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.net.ConnectivityManagerCompat
@@ -32,8 +35,8 @@ import javax.inject.Singleton
 
 @Singleton
 class NetworkStateProvider @Inject constructor(
-    @ApplicationContext private val context: Context,
-    @AppScope private val appScope: CoroutineScope,
+    @param:ApplicationContext private val context: Context,
+    @param:AppScope private val appScope: CoroutineScope,
     private val networkRequestBuilderProvider: NetworkRequestBuilderProvider
 ) {
     private val manager: ConnectivityManager

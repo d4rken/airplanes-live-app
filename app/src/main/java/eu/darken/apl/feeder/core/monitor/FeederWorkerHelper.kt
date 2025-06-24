@@ -21,7 +21,7 @@ import javax.inject.Singleton
 
 @Singleton
 class FeederWorkerHelper @Inject constructor(
-    @AppScope private val appScope: CoroutineScope,
+    @param:AppScope private val appScope: CoroutineScope,
     private val workManager: WorkManager,
     private val monitor: FeederMonitor,
     private val feederSettings: FeederSettings,

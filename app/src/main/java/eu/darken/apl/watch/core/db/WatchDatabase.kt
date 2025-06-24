@@ -28,7 +28,7 @@ import javax.inject.Singleton
 
 @Singleton
 class WatchDatabase @Inject constructor(
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
 ) {
     private val database by lazy {
         Room.databaseBuilder(
@@ -65,7 +65,7 @@ class WatchDatabase @Inject constructor(
             id = base.id,
             hexCode = hex,
         )
-        watchDao.insert(base, specific)
+        watchDao.insertAircraftWatch(base, specific)
         AircraftWatch(base, specific)
     }
 
@@ -79,7 +79,7 @@ class WatchDatabase @Inject constructor(
             id = base.id,
             callsign = callsign,
         )
-        watchDao.insert(base, specific)
+        watchDao.insertFlightWatch(base, specific)
         FlightWatch(base, specific)
     }
 
@@ -93,7 +93,7 @@ class WatchDatabase @Inject constructor(
             id = base.id,
             code = code,
         )
-        watchDao.insert(base, specific)
+        watchDao.insertSquawkWatch(base, specific)
         SquawkWatch(base, specific)
     }
 

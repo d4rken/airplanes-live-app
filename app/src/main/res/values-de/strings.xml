@@ -204,7 +204,7 @@
     <string name="watch_notification_alert_flight_title">Rufzeichen-Alarm</string>
     <string name="watch_notification_alert_flight_msg">%s ist in der Luft</string>
     <string name="watch_notification_alert_squawk_title">Transponder-Alarm</string>
-    <string name="watch_notification_alert_squawk_msg">Code %s wird von %d Flugzeugen übertragen.</string>
+    <string name="watch_notification_alert_squawk_msg">Code %1$s wird von %2$d Flugzeugen übertragen.</string>
     <string name="watch_settings_monitor_interval_title">Prüfintervall</string>
     <string name="watch_settings_monitor_interval_summary">Wie oft sollen wir prüfen?</string>
     <plurals name="watch_setting_check_interval_minutes">

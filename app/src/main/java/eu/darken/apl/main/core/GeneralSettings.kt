@@ -20,7 +20,7 @@ import eu.darken.apl.common.datastore.createValue as createJsonValue
 
 @Singleton
 class GeneralSettings @Inject constructor(
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     json: Json,
 ) : PreferenceScreenData {
 

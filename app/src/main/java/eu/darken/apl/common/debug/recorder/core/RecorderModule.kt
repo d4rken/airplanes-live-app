@@ -33,8 +33,8 @@ import javax.inject.Singleton
 
 @Singleton
 class RecorderModule @Inject constructor(
-    @ApplicationContext private val context: Context,
-    @AppScope private val appScope: CoroutineScope,
+    @param:ApplicationContext private val context: Context,
+    @param:AppScope private val appScope: CoroutineScope,
     private val dispatcherProvider: DispatcherProvider,
     private val debugSettings: DebugSettings,
 ) {
@@ -135,6 +135,7 @@ class RecorderModule @Inject constructor(
         log(TAG, INFO) { "Build.MANUFACTOR: ${Build.MANUFACTURER}" }
         log(TAG, INFO) { "Build.BRAND: ${Build.BRAND}" }
         log(TAG, INFO) { "Build.PRODUCT: ${Build.PRODUCT}" }
+        @Suppress("DEPRECATION")
         val versionInfo = "${pkgInfo.versionName} (${pkgInfo.versionCode})"
         log(TAG, INFO) { "App: ${context.packageName} - $versionInfo " }
         log(TAG, INFO) { "Build: ${BuildConfigWrap.FLAVOR}-${BuildConfigWrap.BUILD_TYPE}" }

@@ -12,7 +12,7 @@ import javax.inject.Singleton
 
 @Singleton
 class InstallId @Inject constructor(
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
 ) {
     private val installIDFile = File(context.filesDir, INSTALL_ID_FILENAME)
     val id: String by lazy {

@@ -38,8 +38,8 @@ import javax.inject.Singleton
 
 @Singleton
 class LocationManager2 @Inject constructor(
-    @AppScope private val scope: CoroutineScope,
-    @ApplicationContext private val context: Context,
+    @param:AppScope private val scope: CoroutineScope,
+    @param:ApplicationContext private val context: Context,
     private val locationManager: LocationManager,
     private val dispatchers: DispatcherProvider,
 ) {

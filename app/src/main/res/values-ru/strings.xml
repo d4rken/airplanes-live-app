@@ -220,7 +220,7 @@
     <string name="watch_notification_alert_flight_title">Уведомление о позывном</string>
     <string name="watch_notification_alert_flight_msg">%s в воздухе</string>
     <string name="watch_notification_alert_squawk_title">Уведомление о транспондере</string>
-    <string name="watch_notification_alert_squawk_msg">Код %s передается %d самолетом.</string>
+    <string name="watch_notification_alert_squawk_msg">Код %1$s передается %2$d самолетом.</string>
     <string name="watch_settings_monitor_interval_title">Интервал проверки</string>
     <string name="watch_settings_monitor_interval_summary">Как часто мы должны проверять?</string>
     <plurals name="watch_setting_check_interval_minutes">

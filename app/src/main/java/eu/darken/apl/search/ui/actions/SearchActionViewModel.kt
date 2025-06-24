@@ -1,10 +1,8 @@
 package eu.darken.apl.search.ui.actions
 
-import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
@@ -33,10 +31,9 @@ import javax.inject.Inject
 class SearchActionViewModel @Inject constructor(
     handle: SavedStateHandle,
     dispatcherProvider: DispatcherProvider,
-    @ApplicationContext private val context: Context,
-    private val aircraftRepo: AircraftRepo,
-    private val watchRepo: WatchRepo,
-    private val locationManager2: LocationManager2,
+    aircraftRepo: AircraftRepo,
+    watchRepo: WatchRepo,
+    locationManager2: LocationManager2,
 ) : ViewModel3(
     dispatcherProvider,
     tag = logTag("Search", "Action", "ViewModel")
