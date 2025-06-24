@@ -13,3 +13,4 @@ build/
 .externalNativeBuild
 .cxx
 .DS_Store
+.kotlin/sessions

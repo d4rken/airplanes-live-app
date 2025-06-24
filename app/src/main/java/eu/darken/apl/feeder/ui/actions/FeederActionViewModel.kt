@@ -12,6 +12,7 @@ import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.feeder.core.Feeder
 import eu.darken.apl.feeder.core.FeederRepo
 import eu.darken.apl.feeder.core.ReceiverId
+import eu.darken.apl.feeder.ui.add.NewFeederQR
 import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.map.core.toMapFeedId
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
+import kotlinx.serialization.json.Json
 import java.net.Inet4Address
 import java.net.InetAddress
 import java.time.Duration
@@ -36,6 +38,7 @@ class FeederActionViewModel @Inject constructor(
     dispatcherProvider: DispatcherProvider,
     private val feederRepo: FeederRepo,
     private val webpageTool: WebpageTool,
+    private val json: Json,
 ) : ViewModel3(
     dispatcherProvider,
     tag = logTag("Feeder", "Action", "Dialog", "ViewModel"),
@@ -132,6 +135,18 @@ class FeederActionViewModel @Inject constructor(
         log(tag) { "openGraphs1090()" }
         val feeder = state.first().feeder
         webpageTool.open("http://${feeder.config.address}/graphs1090")
+    }
+
+    fun generateQrCode() = launch {
+        log(tag) { "generateQrCode()" }
+        val feeder = state.first().feeder
+        val qr = NewFeederQR(
+            receiverId = feederId,
+            receiverLabel = feeder.label,
+            receiverIpv4Address = feeder.config.address
+        )
+        log(tag) { "generateQrCode(): $feeder -> $qr" }
+        events.emit(FeederActionEvents.ShowQrCode(qr))
     }
 
     data class State(

@@ -169,4 +169,20 @@ dependencies {
     implementation("androidx.room:room-ktx:2.7.1")
     annotationProcessor("androidx.room:room-compiler:2.7.1")
     kapt("androidx.room:room-compiler:2.7.1")
+
+    // QR code scanning
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
+
+    // QR code generation
+    implementation("com.google.zxing:core:3.5.3")
+
+    // CameraX
+    val cameraxVersion = "1.3.0"
+    implementation("androidx.camera:camera-core:${cameraxVersion}")
+    implementation("androidx.camera:camera-camera2:${cameraxVersion}")
+    implementation("androidx.camera:camera-lifecycle:${cameraxVersion}")
+    implementation("androidx.camera:camera-view:${cameraxVersion}")
+
+    // Guava for ListenableFuture
+    implementation("com.google.guava:guava:31.1-android")
 }

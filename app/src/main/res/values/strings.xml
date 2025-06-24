@@ -19,6 +19,7 @@
     <string name="common_photo_author_label">by %s</string>
     <string name="common_grant_permission_action">Grant permission</string>
     <string name="common_dismiss_action">Dismiss</string>
+    <string name="common_close_action">Close</string>
     <string name="common_internet_unavailable_message">Internet is not available.</string>
     <string name="common_list_select_all_action">Select all</string>
     <string name="common_show_on_map_action">Show on map</string>
@@ -111,6 +112,24 @@
     <string name="feeder_list_add_your_feeder_action">Add feeder</string>
     <string name="feeder_list_add_title">New feeder</string>
     <string name="feeder_list_add_message">Enter your feeders UUID and an optional label.</string>
+    <string name="feeder_list_label_hint">Label</string>
+    <string name="feeder_list_label_helper">Optional: A friendly name for your feeder</string>
+    <string name="feeder_list_feeder_id_hint">Feeder ID</string>
+    <string name="feeder_list_ip_address_hint">IP Address (optional)</string>
+    <string name="feeder_list_ip_address_explanation">Optional: Enter the IP address if tar1090 or graphs1090 is available under that address.</string>
+    <string name="feeder_list_quick_setup_title">Quick Setup</string>
+    <string name="feeder_list_quick_setup_description">Scan a QR code to automatically fill all fields</string>
+    <string name="feeder_list_feeder_id_helper">Required: Your feeder\'s UUID</string>
+    <string name="feeder_list_camera_error">Error starting camera: %s</string>
+    <string name="feeder_list_scan_qr_title">Scan QR Code</string>
+    <string name="feeder_list_camera_permission_required_title">Camera Permission Required</string>
+    <string name="feeder_list_camera_permission_required_message">Camera permission is required to scan QR codes.</string>
+    <string name="feeder_list_invalid_qr_code_title">Invalid QR Code</string>
+    <string name="feeder_list_invalid_qr_code_message">The scanned QR code is not in the expected format.</string>
+    <string name="feeder_list_feeder_added_title">Feeder Added</string>
+    <string name="feeder_list_feeder_added_message">The feeder has been added successfully.</string>
+    <string name="feeder_list_error_title">Error</string>
+    <string name="feeder_list_error_message">An error occurred while parsing the QR code data: %s</string>
     <string name="feeder_beast_stats_label">Beast stats</string>
     <string name="feeder_mlat_stats_label">MLAT stats</string>
     <string name="feeder_monitor_offline_label">Notify when offline</string>
@@ -120,6 +139,12 @@
     <string name="feeder_name_change_title">New name</string>
     <string name="feeder_name_change_body">Rename this feeder locally. This only affects how it is displayed on this device.</string>
     <string name="feeder_address_change_action">Set IP address</string>
+    <string name="feeder_address_change_title">Set IP Address</string>
+    <string name="feeder_address_change_body">Set the IP address or domain name where tar1090 or graphs1090 is accessible for this feeder.</string>
+    <string name="feeder_generate_qr_action">Generate QR Code</string>
+    <string name="feeder_qr_code_title">Feeder QR Code</string>
+    <string name="feeder_qr_code_description">Scan this QR code to add this feeder to another device</string>
+    <string name="feeder_qr_code_content_description">QR code for feeder sharing</string>
 
     <string name="feeder_remove_confirmation_title">Confirmation</string>
     <string name="feeder_remove_confirmation_message">Remove this feeder from the app?</string>

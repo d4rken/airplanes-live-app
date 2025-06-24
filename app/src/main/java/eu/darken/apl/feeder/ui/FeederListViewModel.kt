@@ -17,7 +17,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.isActive
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -53,15 +52,6 @@ class FeederListViewModel @Inject constructor(
             isRefreshing = isRefreshing,
         )
     }.asStateFlow()
-
-    fun addFeeder(label: String, rawId: String) = launch {
-        log(TAG) { "addFeeder($label,$rawId)" }
-
-        UUID.fromString(rawId) // ID check
-
-        feederRepo.addFeeder(rawId)
-        if (label.isNotBlank()) feederRepo.setLabel(rawId, label)
-    }
 
     fun refresh() = launch {
         log(TAG) { "refresh()" }
