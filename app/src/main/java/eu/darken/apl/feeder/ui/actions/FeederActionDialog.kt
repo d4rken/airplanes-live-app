@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.graphics.createBitmap
+import androidx.core.graphics.set
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -31,8 +33,7 @@ class FeederActionDialog : BottomSheetDialogFragment2() {
     override val vm: FeederActionViewModel by viewModels()
     override lateinit var ui: FeederActionDialogBinding
 
-    @Inject
-    lateinit var json: Json
+    @Inject lateinit var json: Json
 
     private val permissionlauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
 
@@ -153,10 +154,10 @@ class FeederActionDialog : BottomSheetDialogFragment2() {
     private fun createBitmapFromBitMatrix(matrix: BitMatrix): Bitmap {
         val width = matrix.width
         val height = matrix.height
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+        val bitmap = createBitmap(width, height, Bitmap.Config.RGB_565)
         for (x in 0 until width) {
             for (y in 0 until height) {
-                bitmap.setPixel(x, y, if (matrix[x, y]) Color.BLACK else Color.WHITE)
+                bitmap[x, y] = if (matrix[x, y]) Color.BLACK else Color.WHITE
             }
         }
         return bitmap

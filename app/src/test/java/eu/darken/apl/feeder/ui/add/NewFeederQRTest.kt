@@ -1,6 +1,7 @@
 package eu.darken.apl.feeder.ui.add
 
 import eu.darken.apl.common.serialization.SerializationModule
+import eu.darken.apl.feeder.core.config.FeederPosition
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import kotlinx.serialization.encodeToString
@@ -55,7 +56,8 @@ class NewFeederQRTest {
     fun `JSON serialization produces expected format`() {
         val feederQR = NewFeederQR(
             receiverId = "receiver789",
-            receiverLabel = "My Custom Feeder"
+            receiverLabel = "My Custom Feeder",
+            position = FeederPosition(latitude = 40.7128, longitude = -74.0060)
         )
 
         val jsonString = json.encodeToString(feederQR)
@@ -63,7 +65,11 @@ class NewFeederQRTest {
         jsonString.toComparableJson() shouldBe """
             {
                 "receiverId": "receiver789",
-                "receiverLabel": "My Custom Feeder"
+                "receiverLabel": "My Custom Feeder",
+                "position": {
+                    "latitude": 40.7128,
+                    "longitude": -74.0060
+                }
             }
         """.toComparableJson()
     }
@@ -147,7 +153,8 @@ class NewFeederQRTest {
     fun `URI can be parsed back to original data`() {
         val originalQR = NewFeederQR(
             receiverId = "roundtrip-test",
-            receiverLabel = "Round Trip Label"
+            receiverLabel = "Round Trip Label",
+            position = FeederPosition(latitude = 51.5074, longitude = -0.1278)
         )
 
         val uri = originalQR.toUri(json)
@@ -156,5 +163,7 @@ class NewFeederQRTest {
 
         parsedQR.receiverId shouldBe originalQR.receiverId
         parsedQR.receiverLabel shouldBe originalQR.receiverLabel
+        parsedQR.position?.latitude shouldBe originalQR.position?.latitude
+        parsedQR.position?.longitude shouldBe originalQR.position?.longitude
     }
 }

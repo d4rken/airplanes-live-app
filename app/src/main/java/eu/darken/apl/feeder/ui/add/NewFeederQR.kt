@@ -2,6 +2,7 @@ package eu.darken.apl.feeder.ui.add
 
 import android.net.Uri
 import eu.darken.apl.feeder.core.ReceiverId
+import eu.darken.apl.feeder.core.config.FeederPosition
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -12,6 +13,7 @@ data class NewFeederQR(
     @SerialName("receiverId") val receiverId: ReceiverId,
     @SerialName("receiverLabel") val receiverLabel: String? = null,
     @SerialName("receiverIpv4Address") val receiverIpv4Address: String? = null,
+    @SerialName("position") val position: FeederPosition? = null,
 ) {
     fun toUri(json: Json): Uri {
         val jsonData = json.encodeToString(this)

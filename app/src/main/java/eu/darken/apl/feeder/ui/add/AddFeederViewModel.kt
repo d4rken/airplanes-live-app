@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddFeederViewModel @Inject constructor(
-    private val handle: SavedStateHandle,
+    handle: SavedStateHandle,
     dispatcherProvider: DispatcherProvider,
     private val feederRepo: FeederRepo,
     private val feederEndpoint: FeederEndpoint,
@@ -53,7 +53,7 @@ class AddFeederViewModel @Inject constructor(
         val isValidInput = try {
             UUID.fromString(id.trim())
             id.trim().isNotBlank()
-        } catch (e: IllegalArgumentException) {
+        } catch (_: IllegalArgumentException) {
             false
         }
 
@@ -92,7 +92,7 @@ class AddFeederViewModel @Inject constructor(
                         val longitude = parts[1].toDouble()
                         FeederPosition(latitude = latitude, longitude = longitude)
                     } else null
-                } catch (e: NumberFormatException) {
+                } catch (_: NumberFormatException) {
                     null
                 }
                 if (position != null) {
@@ -181,6 +181,9 @@ class AddFeederViewModel @Inject constructor(
         updateReceiverId(feederQR.receiverId)
         updateReceiverLabel(feederQR.receiverLabel ?: "")
         updateReceiverIpAddress(feederQR.receiverIpv4Address ?: "")
+        feederQR.position?.let { position ->
+            updateReceiverPosition("${position.latitude}, ${position.longitude}")
+        }
 
         events.tryEmit(AddFeederEvents.StopCamera)
     }
