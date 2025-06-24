@@ -16,6 +16,7 @@ import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
 import eu.darken.apl.common.debug.logging.Logging.Priority.WARN
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
+import eu.darken.apl.common.http.HttpModule.UserAgent
 import eu.darken.apl.main.core.aircraft.AircraftHex
 import eu.darken.apl.watch.core.types.AircraftWatch
 import eu.darken.apl.watch.core.types.Watch
@@ -25,6 +26,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 class MapHandler @AssistedInject constructor(
     @Assisted private val webView: WebView,
     private val mapWebInterfaceFactory: MapWebInterface.Factory,
+    @UserAgent private val userAgent: String,
 ) : WebViewClient() {
 
     private lateinit var currentOptions: MapOptions
@@ -83,6 +85,7 @@ class MapHandler @AssistedInject constructor(
                 javaScriptCanOpenWindowsAutomatically = false
                 setGeolocationEnabled(true)
                 domStorageEnabled = true
+                userAgentString = userAgent
             }
             webChromeClient = object : WebChromeClient() {
                 override fun onGeolocationPermissionsShowPrompt(
