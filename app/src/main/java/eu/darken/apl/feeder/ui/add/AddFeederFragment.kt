@@ -17,13 +17,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.mlkit.vision.barcode.BarcodeScanner
-import com.google.mlkit.vision.barcode.BarcodeScannerOptions
-import com.google.mlkit.vision.barcode.BarcodeScanning
-import com.google.mlkit.vision.barcode.common.Barcode
-import com.google.mlkit.vision.common.InputImage
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.BinaryBitmap
+import com.google.zxing.DecodeHintType
+import com.google.zxing.MultiFormatReader
+import com.google.zxing.PlanarYUVLuminanceSource
+import com.google.zxing.ReaderException
+import com.google.zxing.common.HybridBinarizer
 import dagger.hilt.android.AndroidEntryPoint
 import eu.darken.apl.R
 import eu.darken.apl.common.debug.logging.log
@@ -32,6 +33,7 @@ import eu.darken.apl.common.uix.Fragment3
 import eu.darken.apl.common.viewbinding.viewBinding
 import eu.darken.apl.databinding.AddFeederFragmentBinding
 import eu.darken.apl.databinding.CameraPreviewLayoutBinding
+import java.util.EnumMap
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -44,7 +46,6 @@ class AddFeederFragment : Fragment3(R.layout.add_feeder_fragment) {
     private var cameraPreviewBinding: CameraPreviewLayoutBinding? = null
     private lateinit var cameraExecutor: ExecutorService
     private var cameraProvider: ProcessCameraProvider? = null
-    private var barcodeScanner: BarcodeScanner? = null
     private var isScanning = false
 
     private val requestCameraPermissionLauncher = registerForActivityResult(
@@ -63,11 +64,6 @@ class AddFeederFragment : Fragment3(R.layout.add_feeder_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         cameraExecutor = Executors.newSingleThreadExecutor()
-
-        val options = BarcodeScannerOptions.Builder()
-            .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-            .build()
-        barcodeScanner = BarcodeScanning.getClient(options)
 
         ui.toolbar.setNavigationOnClickListener { findNavController().popBackStack() }
 
@@ -155,7 +151,6 @@ class AddFeederFragment : Fragment3(R.layout.add_feeder_fragment) {
 
     override fun onDestroyView() {
         if (::cameraExecutor.isInitialized) cameraExecutor.shutdown()
-        barcodeScanner?.close()
         cameraProvider?.unbindAll()
         cameraPreviewBinding = null
         super.onDestroyView()
@@ -266,6 +261,12 @@ class AddFeederFragment : Fragment3(R.layout.add_feeder_fragment) {
 
     @ExperimentalGetImage
     private inner class QrCodeAnalyzer : ImageAnalysis.Analyzer {
+        private val reader = MultiFormatReader().apply {
+            val hints = EnumMap<DecodeHintType, Any>(DecodeHintType::class.java)
+            hints[DecodeHintType.POSSIBLE_FORMATS] = listOf(BarcodeFormat.QR_CODE)
+            setHints(hints)
+        }
+
         override fun analyze(imageProxy: ImageProxy) {
             try {
                 val mediaImage = imageProxy.image
@@ -274,25 +275,39 @@ class AddFeederFragment : Fragment3(R.layout.add_feeder_fragment) {
                     return
                 }
 
-                val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+                // Get the YUV data
+                val yBuffer = mediaImage.planes[0].buffer // Y plane contains the luminance data
+                val ySize = yBuffer.remaining()
+                val yuvData = ByteArray(ySize)
+                yBuffer.get(yuvData, 0, ySize)
 
-                barcodeScanner?.process(image)
-                    ?.addOnSuccessListener { barcodes ->
+                // Create a luminance source directly from the Y plane data
+                val source = PlanarYUVLuminanceSource(
+                    yuvData,
+                    mediaImage.width,
+                    mediaImage.height,
+                    0,
+                    0,
+                    mediaImage.width,
+                    mediaImage.height,
+                    false
+                )
 
-                        for (barcode in barcodes) {
-                            val rawValue = barcode.rawValue
-                            if (rawValue == null) continue
+                val bitmap = BinaryBitmap(HybridBinarizer(source))
 
-                            log(TAG) { "QR code detected: $rawValue" }
-                            vm.handleQrScan(rawValue)
+                try {
+                    val result = reader.decode(bitmap)
+                    val rawValue = result.text
 
-                            break
-                        }
-                    }
-                    ?.addOnFailureListener { e -> log(TAG) { "Barcode scanning failed: ${e.message}" } }
-                    ?.addOnCompleteListener { imageProxy.close() }
+                    log(TAG) { "QR code detected: $rawValue" }
+                    vm.handleQrScan(rawValue)
+                } catch (_: ReaderException) {
+                    // QR code not found in this frame
+                    log(TAG) { "No QR code found in this frame" }
+                }
             } catch (e: Exception) {
                 log(TAG) { "Error analyzing image: ${e.message}" }
+            } finally {
                 imageProxy.close()
             }
         }
