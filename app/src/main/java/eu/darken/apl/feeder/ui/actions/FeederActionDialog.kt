@@ -39,8 +39,7 @@ class FeederActionDialog : BottomSheetDialogFragment2() {
     override val vm: FeederActionViewModel by viewModels()
     override lateinit var ui: FeederActionDialogBinding
 
-    @Inject
-    lateinit var json: Json
+    @Inject lateinit var json: Json
 
     private val permissionlauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
 
