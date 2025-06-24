@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
-import kotlinx.serialization.json.Json
 import java.net.Inet4Address
 import java.net.InetAddress
 import java.time.Duration
@@ -38,7 +37,6 @@ class FeederActionViewModel @Inject constructor(
     dispatcherProvider: DispatcherProvider,
     private val feederRepo: FeederRepo,
     private val webpageTool: WebpageTool,
-    private val json: Json,
 ) : ViewModel3(
     dispatcherProvider,
     tag = logTag("Feeder", "Action", "Dialog", "ViewModel"),
@@ -143,7 +141,8 @@ class FeederActionViewModel @Inject constructor(
         val qr = NewFeederQR(
             receiverId = feederId,
             receiverLabel = feeder.label,
-            receiverIpv4Address = feeder.config.address
+            receiverIpv4Address = feeder.config.address,
+            position = feeder.config.position
         )
         log(tag) { "generateQrCode(): $feeder -> $qr" }
         events.emit(FeederActionEvents.ShowQrCode(qr))
