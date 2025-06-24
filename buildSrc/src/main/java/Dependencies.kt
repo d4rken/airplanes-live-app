@@ -8,17 +8,8 @@ private fun DependencyHandler.implementation(dependencyNotation: Any): Dependenc
 private fun DependencyHandler.testImplementation(dependencyNotation: Any): Dependency? =
     add("testImplementation", dependencyNotation)
 
-private fun DependencyHandler.kapt(dependencyNotation: Any): Dependency? =
-    add("kapt", dependencyNotation)
-
-private fun DependencyHandler.kaptTest(dependencyNotation: Any): Dependency? =
-    add("kaptTest", dependencyNotation)
-
 private fun DependencyHandler.androidTestImplementation(dependencyNotation: Any): Dependency? =
     add("androidTestImplementation", dependencyNotation)
-
-private fun DependencyHandler.kaptAndroidTest(dependencyNotation: Any): Dependency? =
-    add("kaptAndroidTest", dependencyNotation)
 
 private fun DependencyHandler.ksp(dependencyNotation: Any): Dependency? =
     add("ksp", dependencyNotation)
@@ -29,10 +20,10 @@ private fun DependencyHandler.kspTest(dependencyNotation: Any): Dependency? =
 private fun DependencyHandler.kspAndroidTest(dependencyNotation: Any): Dependency? =
     add("kspAndroidTest", dependencyNotation)
 
-private fun DependencyHandler.`testRuntimeOnly`(dependencyNotation: Any): Dependency? =
+private fun DependencyHandler.testRuntimeOnly(dependencyNotation: Any): Dependency? =
     add("testRuntimeOnly", dependencyNotation)
 
-private fun DependencyHandler.`debugImplementation`(dependencyNotation: Any): Dependency? =
+private fun DependencyHandler.debugImplementation(dependencyNotation: Any): Dependency? =
     add("debugImplementation", dependencyNotation)
 
 fun DependencyHandlerScope.addBase() {
@@ -99,7 +90,6 @@ fun DependencyHandlerScope.addWorker() {
     implementation("androidx.work:work-runtime-ktx:2.9.0")
     implementation("androidx.hilt:hilt-work:1.1.0")
     ksp("androidx.hilt:hilt-compiler:1.1.0")
-    ksp("com.google.auto:auto-common:1.2.2")
 }
 
 fun DependencyHandlerScope.addHttp() {
