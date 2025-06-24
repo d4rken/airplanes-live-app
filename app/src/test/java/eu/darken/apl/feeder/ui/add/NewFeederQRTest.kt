@@ -166,4 +166,31 @@ class NewFeederQRTest {
         parsedQR.position?.latitude shouldBe originalQR.position?.latitude
         parsedQR.position?.longitude shouldBe originalQR.position?.longitude
     }
+
+    @Test
+    fun `URI encoded JSON matches direct JSON encoding`() {
+        val feederQR = NewFeederQR(
+            receiverId = "complex-id-123",
+            receiverLabel = "Complex Feeder Name",
+            receiverIpv4Address = "192.168.1.100",
+            position = FeederPosition(latitude = 37.7749, longitude = -122.4194)
+        )
+
+        // Get direct JSON encoding
+        val directJson = json.encodeToString(feederQR)
+
+        // The expected URI string that can be copied by external reviewers
+        val expectedUriString =
+            "eu_darken_apl://feeder?data={\"receiverId\":\"complex-id-123\",\"receiverLabel\":\"Complex Feeder Name\",\"receiverIpv4Address\":\"192.168.1.100\",\"position\":{\"latitude\":37.7749,\"longitude\":-122.4194}}"
+
+        // Get URI and extract the JSON data
+        val uri = feederQR.toUri(json)
+
+        // Compare the generated URI with the expected literal URI
+        uri.toString() shouldBe expectedUriString
+
+        // Also verify the JSON data can be extracted and matches the direct encoding
+        val uriJsonData = uri.getQueryParameter("data")!!
+        uriJsonData.toComparableJson() shouldBe directJson.toComparableJson()
+    }
 }
