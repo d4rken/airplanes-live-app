@@ -1,12 +1,17 @@
 package eu.darken.apl.feeder.ui.actions
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
+import androidx.core.graphics.createBitmap
+import androidx.core.graphics.set
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -24,6 +29,9 @@ import eu.darken.apl.databinding.FeederActionDialogBinding
 import eu.darken.apl.databinding.QrCodeDialogBinding
 import eu.darken.apl.feeder.ui.add.NewFeederQR
 import kotlinx.serialization.json.Json
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -133,7 +141,9 @@ class FeederActionDialog : BottomSheetDialogFragment2() {
                 .setView(dialogBinding.root)
                 .create()
 
-
+            dialogBinding.shareButton.setOnClickListener {
+                shareQrCode(bitmap, qr)
+            }
 
             dialogBinding.closeButton.setOnClickListener {
                 dialog.dismiss()
@@ -153,12 +163,49 @@ class FeederActionDialog : BottomSheetDialogFragment2() {
     private fun createBitmapFromBitMatrix(matrix: BitMatrix): Bitmap {
         val width = matrix.width
         val height = matrix.height
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+        val bitmap = createBitmap(width, height, Bitmap.Config.RGB_565)
         for (x in 0 until width) {
             for (y in 0 until height) {
-                bitmap.setPixel(x, y, if (matrix[x, y]) Color.BLACK else Color.WHITE)
+                bitmap[x, y] = if (matrix[x, y]) Color.BLACK else Color.WHITE
             }
         }
         return bitmap
+    }
+
+    private fun shareQrCode(bitmap: Bitmap, qr: NewFeederQR) {
+        try {
+            val cachePath = File(requireContext().cacheDir, "images")
+            cachePath.mkdirs()
+
+            val fileName = "feeder_qr_${qr.receiverId}_${System.currentTimeMillis()}.png"
+            val file = File(cachePath, fileName)
+
+            FileOutputStream(file).use { stream ->
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            }
+
+            val contentUri: Uri = FileProvider.getUriForFile(
+                requireContext(),
+                "${requireContext().packageName}.provider",
+                file
+            )
+
+            val shareIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_STREAM, contentUri)
+                putExtra(Intent.EXTRA_TEXT, "Feeder QR Code: ${qr.receiverLabel ?: qr.receiverId}")
+                type = "image/png"
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.common_share_action)))
+
+        } catch (e: IOException) {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.common_error_label)
+                .setMessage("Failed to share QR code: ${e.message}")
+                .setPositiveButton(R.string.common_close_action) { dialog, _ -> dialog.dismiss() }
+                .show()
+        }
     }
 }
