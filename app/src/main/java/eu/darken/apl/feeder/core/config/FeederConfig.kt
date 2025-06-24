@@ -13,7 +13,11 @@ data class FeederConfig(
     @Contextual @SerialName("addedAt") val addedAt: Instant = Instant.now(),
     @SerialName("label") val label: String? = null,
     @SerialName("position") val position: FeederPosition? = null,
-    @Contextual @SerialName("offlineCheckTimeout") val offlineCheckTimeout: Duration? = null,
+    @Contextual @SerialName("offlineCheckTimeout") val offlineCheckTimeout: Duration? = DEFAULT_OFFLINE_LIMIT,
     @Contextual @SerialName("offlineCheckSnoozedAt") val offlineCheckSnoozedAt: Instant? = null,
     @SerialName("address") val address: String? = null,
-)
+) {
+    companion object {
+        val DEFAULT_OFFLINE_LIMIT = Duration.ofHours(12)
+    }
+}

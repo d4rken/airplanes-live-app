@@ -12,6 +12,7 @@ import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.feeder.core.Feeder
 import eu.darken.apl.feeder.core.FeederRepo
 import eu.darken.apl.feeder.core.ReceiverId
+import eu.darken.apl.feeder.core.config.FeederConfig
 import eu.darken.apl.feeder.ui.add.NewFeederQR
 import eu.darken.apl.map.core.MapOptions
 import eu.darken.apl.map.core.toMapFeedId
@@ -25,7 +26,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import java.net.Inet4Address
 import java.net.InetAddress
-import java.time.Duration
 import java.util.UUID
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -83,7 +83,7 @@ class FeederActionViewModel @Inject constructor(
         val newTimeout = if (state.first().feeder.config.offlineCheckTimeout != null) {
             null
         } else {
-            Duration.ofHours(12)
+            FeederConfig.DEFAULT_OFFLINE_LIMIT
         }
         feederRepo.setOfflineCheckTimeout(feederId, newTimeout)
     }
