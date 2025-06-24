@@ -1,0 +1,261 @@
+<resources>
+    <string name="app_name">airplanes.live</string>
+    <string name="label_settings">Настройки</string>
+    <string name="label_help">Помощь</string>
+
+    <string name="common_error_label">Ошибка</string>
+    <string name="common_accept_action">Принять</string>
+    <string name="common_share_action">Поделиться</string>
+    <string name="common_done_action">Готово</string>
+    <string name="common_save_action">Сохранить</string>
+    <string name="common_copy_action">Копировать</string>
+    <string name="common_continue_action">Продолжить</string>
+    <string name="common_cancel_action">Отменить</string>
+    <string name="common_refresh_action">Обновить</string>
+    <string name="common_reset_action">Сбросить</string>
+    <string name="common_add_action">Добавить</string>
+    <string name="common_remove_action">Удалить</string>
+    <string name="common_fullscreen_action">Полный экран</string>
+    <string name="common_photo_author_label">от %s</string>
+    <string name="common_grant_permission_action">Предоставить разрешение</string>
+    <string name="common_dismiss_action">Отклонить</string>
+    <string name="common_close_action">Закрыть</string>
+    <string name="common_internet_unavailable_message">Интернет недоступен.</string>
+    <string name="common_list_select_all_action">Выбрать все</string>
+    <string name="common_show_on_map_action">Показать на карте</string>
+
+    <string name="common_unavailable_label">Н/Д</string>
+    <string name="common_sponsor_action">Поддержать разработку</string>
+    <string name="common_sponsor_description">Поблагодарить и стимулировать дальнейшую разработку приложения.</string>
+
+    <string name="common_last_seen_label">Последний раз видели</string>
+    <string name="common_registration_label">Регистрация</string>
+    <string name="common_callsign_label">Позывной</string>
+    <string name="common_squawk_label">Сквок</string>
+    <string name="common_hex_label">Hex-код</string>
+    <string name="common_distance_label">Расстояние</string>
+    <string name="common_airframe_label">Планер</string>
+    <string name="common_start_feeding_action">Начать передачу данных</string>
+
+    <string name="generic_loading_label_0">Скоро™</string>
+    <string name="generic_loading_label_1">Передаем масло</string>
+    <string name="generic_loading_label_2">Загружаем больше ОЗУ</string>
+    <string name="generic_loading_label_3">Все еще быстрее iPhone</string>
+    <string name="generic_loading_label_4">Что это за тобой?</string>
+    <string name="generic_loading_label_5">Процессор на кофе-брейке</string>
+    <string name="generic_loading_label_6">Ждем данные от Пепе Сильвии</string>
+    <string name="generic_loading_label_7">Турбо-энкабулятор инициализируется</string>
+
+    <string name="debug_debuglog_size_label">Размер</string>
+    <string name="debug_debuglog_size_compressed_label">Сжатый размер</string>
+    <string name="debug_notification_channel_label">Уведомления отладки</string>
+    <string name="debug_debuglog_file_label">Записанный файл журнала</string>
+    <string name="debug_debuglog_recording_progress">Запись журнала отладки</string>
+    <string name="debug_debuglog_record_action">Записать журнал отладки</string>
+    <string name="debug_debuglog_stop_action">Остановить запись</string>
+    <string name="debug_debuglog_sensitive_information_message">Созданный файл содержит конфиденциальную информацию. Делитесь им только с доверенными лицами.</string>
+    <string name="settings_debuglog_explanation">Эта функция записывает все, что делает приложение, в файл для обмена. Созданный файл может содержать конфиденциальную информацию. Делитесь им только с доверенными лицами (например, разработчиком, который устраняет проблему).</string>
+
+    <string name="settings_privacy_policy_label">Политика конфиденциальности</string>
+    <string name="settings_privacy_policy_desc">Ответственное обращение с данными.</string>
+    <string name="settings_licenses_label">Лицензии</string>
+    <string name="general_thank_you_label">Спасибо</string>
+    <string name="settings_category_other_label">Другое</string>
+
+    <string name="general_settings_label">Общие</string>
+    <string name="general_settings_desc">Общие настройки, влияющие на все приложение.</string>
+
+    <string name="updatecheck_setting_enabled_label">Проверка обновлений</string>
+    <string name="updatecheck_setting_enabled_explanation">Разрешить этому приложению проверять обновления, чтобы сообщать вам о доступности новой версии.</string>
+
+    <string name="settings_category_ui_label">Пользовательский интерфейс</string>
+
+    <string name="ui_theme_mode_setting_label">Режим темы</string>
+    <string name="ui_theme_mode_setting_explanation">Режим, используемый для темы приложения (например, ночной или дневной).</string>
+    <string name="ui_theme_mode_dark_label">Темная</string>
+    <string name="ui_theme_mode_light_label">Светлая</string>
+    <string name="ui_theme_mode_system_label">Системная</string>
+
+    <string name="ui_theme_style_setting_label">Стиль темы</string>
+    <string name="ui_theme_style_setting_explanation">Цветовой стиль, используемый для темы приложения.</string>
+    <string name="ui_theme_style_default_label">По умолчанию</string>
+    <string name="ui_theme_style_materialyou_label">Material You</string>
+
+    <string name="settings_support_label">Поддержка</string>
+
+    <string name="documentation_label">Документация</string>
+    <string name="discord_label">Discord</string>
+    <string name="discord_description">Место для общения и вопросов.</string>
+    <string name="issue_tracker_label">Трекер проблем</string>
+    <string name="issue_tracker_description">Публичный трекер проблем для сообщений об ошибках и запросов функций.</string>
+
+    <string name="support_debuglog_label">Журнал отладки</string>
+    <string name="support_debuglog_desc">Записать все, что делает приложение, в текстовый файл, которым можно поделиться.</string>
+
+    <string name="changelog_label">Журнал изменений</string>
+    <string name="settings_acknowledgements_label">Благодарности</string>
+
+    <string name="welcome_body1">Это приложение-компаньон для участников сообщества airplanes.live!</string>
+    <string name="welcome_body2">airplanes.live - это управляемый сообществом трекер полетов с фидерами по всему миру. Он предоставляет открытый и нефильтрованный доступ к данным о мировом авиатрафике.</string>
+    <string name="welcome_body3">Рассмотрите возможность предоставления данных.</string>
+
+    <string name="privacy_body1">Это приложение не собирает и не продает пользовательские данные.</string>
+    <string name="privacy_body2">Требуется доступ к Интернету.</string>
+    <string name="privacy_body3">Наслаждайтесь приложением!</string>
+
+    <string name="feeder_page_label">Фидер</string>
+    <plurals name="feeder_yours_x_active_msg">
+        <item quantity="one">У вас %d активный фидер</item>
+        <item quantity="few">У вас %d активных фидера</item>
+        <item quantity="many">У вас %d активных фидеров</item>
+        <item quantity="other">У вас %d активных фидеров</item>
+    </plurals>
+    <string name="feeder_list_add_yours_now_msg">Добавьте свой первый фидер сейчас!</string>
+    <string name="feeder_list_add_your_feeder_action">Добавить фидер</string>
+    <string name="feeder_list_add_title">Новый фидер</string>
+    <string name="feeder_list_add_message">Введите UUID вашего фидера и необязательную метку.</string>
+    <string name="feeder_list_label_hint">Метка</string>
+    <string name="feeder_list_label_helper">Необязательно: Понятное имя для вашего фидера</string>
+    <string name="feeder_list_feeder_id_hint">ID фидера</string>
+    <string name="feeder_list_ip_address_hint">IP-адрес (необязательно)</string>
+    <string name="feeder_list_ip_address_explanation">Необязательно: Введите IP-адрес, если tar1090 или graphs1090 доступен по этому адресу.</string>
+    <string name="feeder_list_quick_setup_title">Быстрая настройка</string>
+    <string name="feeder_list_quick_setup_description">Отсканируйте QR-код для автоматического заполнения всех полей</string>
+    <string name="feeder_list_feeder_id_helper">Обязательно: UUID вашего фидера</string>
+    <string name="feeder_list_camera_error">Ошибка запуска камеры: %s</string>
+    <string name="feeder_list_scan_qr_title">Сканировать QR-код</string>
+    <string name="feeder_list_camera_permission_required_title">Требуется разрешение камеры</string>
+    <string name="feeder_list_camera_permission_required_message">Для сканирования QR-кодов требуется разрешение камеры.</string>
+    <string name="feeder_list_invalid_qr_code_title">Неверный QR-код</string>
+    <string name="feeder_list_invalid_qr_code_message">Отсканированный QR-код не в ожидаемом формате.</string>
+    <string name="feeder_list_feeder_added_title">Фидер добавлен</string>
+    <string name="feeder_list_feeder_added_message">Фидер успешно добавлен.</string>
+    <string name="feeder_list_error_title">Ошибка</string>
+    <string name="feeder_list_error_message">Произошла ошибка при анализе данных QR-кода: %s</string>
+    <string name="feeder_beast_stats_label">Статистика Beast</string>
+    <string name="feeder_mlat_stats_label">Статистика MLAT</string>
+    <string name="feeder_monitor_offline_label">Уведомлять, когда offline</string>
+    <string name="feeder_remove_action">Удалить фидер</string>
+    <string name="feeder_show_map_action">Показать фид на карте</string>
+    <string name="feeder_name_change_action">Переименовать</string>
+    <string name="feeder_name_change_title">Новое имя</string>
+    <string name="feeder_name_change_body">Переименовать этот фидер локально. Это влияет только на отображение на этом устройстве.</string>
+    <string name="feeder_address_change_action">Установить IP-адрес</string>
+    <string name="feeder_address_change_title">Установить IP-адрес</string>
+    <string name="feeder_address_change_body">Установите IP-адрес или доменное имя, где доступен tar1090 или graphs1090 для этого фидера.</string>
+    <string name="feeder_generate_qr_action">Создать QR-код</string>
+    <string name="feeder_qr_code_title">QR-код фидера</string>
+    <string name="feeder_qr_code_description">Отсканируйте этот QR-код, чтобы добавить этот фидер на другое устройство</string>
+    <string name="feeder_qr_code_content_description">QR-код для обмена фидером</string>
+
+    <string name="feeder_remove_confirmation_title">Подтверждение</string>
+    <string name="feeder_remove_confirmation_message">Удалить этот фидер из приложения?</string>
+    <string name="feeder_notification_channel_title">Монитор фидера</string>
+    <string name="feeder_monitor_offline_title">Обнаружены offline фидеры</string>
+    <string name="feeder_monitor_offline_message">Некоторые из ваших фидеров airplanes.live находятся offline: %s</string>
+    <string name="feeder_options_label">Опции</string>
+    <string name="feeder_startfeeding_msg">Еще не передаете данные в airplanes.live?\nНачните сейчас, это не ракетостроение 🚀.</string>
+
+    <string name="feeder_settings_title">Фидер</string>
+    <string name="feeder_settings_summary">Настройки, связанные с фидером, например интервал мониторинга.</string>
+    <string name="feeder_settings_monitor_interval_title">Интервал проверки</string>
+    <string name="feeder_settings_monitor_interval_summary">Как часто мы должны проверять фидер?</string>
+    <plurals name="feeder_setting_check_interval_minutes">
+        <item quantity="one">Каждую %d минуту.</item>
+        <item quantity="few">Каждые %d минуты.</item>
+        <item quantity="many">Каждые %d минут.</item>
+        <item quantity="other">Каждые %d минут.</item>
+    </plurals>
+    <string name="feeder_notification_snooze_action">Отложить</string>
+
+    <string name="map_page_label">Карта</string>
+
+    <string name="watch_list_page_label">Список наблюдения</string>
+    <string name="watch_list_add_title">Добавить новое наблюдение</string>
+    <plurals name="watch_list_yours_x_active_msg">
+        <item quantity="one">%d запись списка наблюдения</item>
+        <item quantity="few">%d записи списка наблюдения</item>
+        <item quantity="many">%d записей списка наблюдения</item>
+        <item quantity="other">%d записей списка наблюдения</item>
+    </plurals>
+
+    <string name="watch_list_list_addnew_msg">Следите за самолетом O.O!</string>
+    <string name="watch_list_add_watch_type_label_aircraft">Самолет (hex-код)</string>
+    <string name="watch_list_add_watch_type_label_squawk">Код транспондера (SQUAWK)</string>
+    <string name="watch_list_add_watch_type_label_flight">Рейс (позывной)</string>
+    <string name="watch_list_add_aircraft_title">Наблюдать за новым самолетом</string>
+    <string name="watch_list_add_aircraft_msg">Введите hex-код самолета, за которым хотите наблюдать.</string>
+    <string name="watch_list_add_squawk_title">Новое наблюдение за сквоком</string>
+    <string name="watch_list_add_squawk_msg">Введите код транспондера, за которым хотите наблюдать.</string>
+    <string name="watch_list_add_flight_title">Создать наблюдение за рейсом</string>
+    <string name="watch_list_add_flight_msg">Введите позывной, за которым хотите наблюдать.</string>
+    <string name="watch_list_item_squawk_subtitle">Наблюдение за кодом транспондера (сквок)</string>
+    <string name="watch_list_item_aircraft_subtitle">Наблюдаемый самолет</string>
+    <string name="watch_list_item_flight_subtitle">Наблюдение за позывным</string>
+    <string name="watch_list_spotted_never_label">Никогда</string>
+    <string name="watch_list_remove_action">Удалить наблюдение</string>
+    <string name="watch_list_remove_confirmation_title">Подтверждение</string>
+    <string name="watch_list_remove_confirmation_message">Удалить это наблюдение?</string>
+    <string name="watch_list_watch_add_label">Добавить в список наблюдения</string>
+    <string name="watch_list_watch_edit_label">Редактировать список наблюдения</string>
+    <string name="watch_list_show_all_action">Показать все</string>
+    <string name="watch_item_x_added">%s добавлен в список наблюдения</string>
+    <string name="watch_details_enable_notifications_label">Уведомлять при обнаружении</string>
+    <string name="watch_notification_channel_title">Уведомления списка наблюдения</string>
+    <string name="watch_notification_alert_aircraft_title">Уведомление о самолете</string>
+    <string name="watch_notification_alert_aircraft_msg">Самолет %s был обнаружен</string>
+    <string name="watch_notification_alert_flight_title">Уведомление о позывном</string>
+    <string name="watch_notification_alert_flight_msg">%s в воздухе</string>
+    <string name="watch_notification_alert_squawk_title">Уведомление о транспондере</string>
+    <string name="watch_notification_alert_squawk_msg">Код %s передается %d самолетом.</string>
+    <string name="watch_settings_monitor_interval_title">Интервал проверки</string>
+    <string name="watch_settings_monitor_interval_summary">Как часто мы должны проверять?</string>
+    <plurals name="watch_setting_check_interval_minutes">
+        <item quantity="one">Каждую %d минуту.</item>
+        <item quantity="few">Каждые %d минуты.</item>
+        <item quantity="many">Каждые %d минут.</item>
+        <item quantity="other">Каждые %d минут.</item>
+    </plurals>
+
+    <string name="watch_settings_title">Список наблюдения</string>
+    <string name="watch_settings_summary">Настройки, связанные со списком наблюдения, например интервал проверки.</string>
+
+    <string name="search_page_label">Поиск</string>
+    <string name="search_search_by_aircraft">Поиск по самолету</string>
+    <string name="search_aircraft_search_label">Поиск самолета</string>
+
+    <string name="search_location_prompt_title">Расстояние до самолета</string>
+    <string name="search_location_prompt_body">Результаты будут отсортированы по расстоянию от вас, если вы предоставите разрешение на местоположение.</string>
+    <string name="general_xdistance_away_label">%s в пути</string>
+    <string name="search_mode_all_hint">Поиск во всех категориях</string>
+    <string name="search_mode_hex_hint">Поиск HEX-кодов, например ABCDEF</string>
+    <string name="search_mode_callsign_hint">Поиск позывных, например FLGHRN</string>
+    <string name="search_mode_registration_hint">Поиск регистраций</string>
+    <string name="search_mode_squawk_hint">Поиск SQUAWK, например 7700</string>
+    <string name="search_mode_airframe_hint">Поиск типов планера, например A320</string>
+    <string name="search_mode_military_hint">Показать интересные самолеты</string>
+    <string name="search_mode_location_hint">Местоположение, например \'Берлин, Германия\'</string>
+    <string name="search_empty_title">Самолеты не найдены</string>
+    <string name="search_empty_body">Самолеты, соответствующие вашему поиску, в настоящее время не отслеживаются. Хотите видеть больше самолетов? Предоставляйте данные и помогайте заполнить небо!</string>
+    <string name="search_progress_title">Поиск</string>
+    <string name="search_progress_body">Найдено %d пока. Поиск продолжается…</string>
+    <string name="search_summary_x_aircraft">Найдено %d самолетов</string>
+
+    <string name="common_show_on_map">Показать на карте</string>
+    <string name="common_show_in_search">Показать в поиске</string>
+    <string name="watchlist_note_label">Заметка</string>
+    <string name="common_altitude_label">Высота</string>
+    <string name="common_speed_label">Скорость</string>
+    <string name="aircraft_details_datasource_x">Источник: %s</string>
+    <string name="aircraft_details_operator_unknown">Неизвестный оператор</string>
+    <string name="aircraft_details_description_unknown">Неизвестный самолет</string>
+    <string name="thumbnail_caption_by_x">от %s</string>
+    <string name="thumbnail_caption_prompt">Отправить фото</string>
+
+    <plurals name="result_x_items">
+        <item quantity="one">%s элемент</item>
+        <item quantity="few">%s элемента</item>
+        <item quantity="many">%s элементов</item>
+        <item quantity="other">%s элементов</item>
+    </plurals>
+</resources>
