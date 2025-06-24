@@ -8,4 +8,7 @@ interface FeederApi {
     @GET("feed")
     suspend fun getFeeder(@Query("id", encoded = true) id: String): FeedInfos
 
+    @GET("feed-status")
+    suspend fun getFeedStatus(): FeedStatus
+
 }
