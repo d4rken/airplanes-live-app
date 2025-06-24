@@ -67,6 +67,11 @@
     <string name="updatecheck_setting_enabled_label">Update-Prüfung</string>
     <string name="updatecheck_setting_enabled_explanation">Erlaube dieser App, nach Updates zu suchen, damit du informiert wirst, wenn eine neuere Version verfügbar ist.</string>
 
+    <string name="update_available_dialog_title">Neue Version verfügbar</string>
+    <string name="update_available_dialog_message">Eine neue Version der App ist verfügbar. Möchtest du die Versionshinweise anzeigen oder das Update herunterladen?</string>
+    <string name="update_available_show_action">Version anzeigen</string>
+    <string name="update_available_download_action">APK herunterladen</string>
+
     <string name="settings_category_ui_label">Benutzeroberfläche</string>
 
     <string name="ui_theme_mode_setting_label">Themenmodus</string>

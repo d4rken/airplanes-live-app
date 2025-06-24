@@ -68,6 +68,11 @@
     <string name="updatecheck_setting_enabled_label">Controllo aggiornamenti</string>
     <string name="updatecheck_setting_enabled_explanation">Consenti a questa app di controllare gli aggiornamenti per farti sapere se è disponibile una versione più recente.</string>
 
+    <string name="update_available_dialog_title">Nuova versione disponibile</string>
+    <string name="update_available_dialog_message">È disponibile una nuova versione dell\'app. Vuoi visualizzare le note di rilascio o scaricare l\'aggiornamento?</string>
+    <string name="update_available_show_action">Mostra versione</string>
+    <string name="update_available_download_action">Scarica APK</string>
+
     <string name="settings_category_ui_label">Interfaccia utente</string>
 
     <string name="ui_theme_mode_setting_label">Modalità tema</string>

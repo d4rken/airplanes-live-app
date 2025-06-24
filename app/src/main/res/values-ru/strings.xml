@@ -68,6 +68,11 @@
     <string name="updatecheck_setting_enabled_label">Проверка обновлений</string>
     <string name="updatecheck_setting_enabled_explanation">Разрешить этому приложению проверять обновления, чтобы сообщать вам о доступности новой версии.</string>
 
+    <string name="update_available_dialog_title">Доступна новая версия</string>
+    <string name="update_available_dialog_message">Доступна новая версия приложения. Хотите просмотреть примечания к выпуску или загрузить обновление?</string>
+    <string name="update_available_show_action">Показать версию</string>
+    <string name="update_available_download_action">Скачать APK</string>
+
     <string name="settings_category_ui_label">Пользовательский интерфейс</string>
 
     <string name="ui_theme_mode_setting_label">Режим темы</string>
