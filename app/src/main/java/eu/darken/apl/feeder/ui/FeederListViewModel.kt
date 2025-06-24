@@ -4,10 +4,13 @@ import androidx.lifecycle.SavedStateHandle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
+import eu.darken.apl.common.datastore.value
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.feeder.core.FeederRepo
+import eu.darken.apl.feeder.core.config.FeederSettings
+import eu.darken.apl.feeder.core.config.FeederSortMode
 import eu.darken.apl.feeder.ui.types.DefaultFeederVH
 import eu.darken.apl.feeder.ui.types.FeederHeaderVH
 import eu.darken.apl.map.core.AirplanesLive
@@ -26,6 +29,7 @@ class FeederListViewModel @Inject constructor(
     dispatcherProvider: DispatcherProvider,
     private val feederRepo: FeederRepo,
     private val webpageTool: WebpageTool,
+    private val feederSettings: FeederSettings,
 ) : ViewModel3(dispatcherProvider = dispatcherProvider) {
 
     private val refreshTimer = callbackFlow {
@@ -38,11 +42,17 @@ class FeederListViewModel @Inject constructor(
     val state = combine(
         refreshTimer,
         feederRepo.feeders,
-        feederRepo.isRefreshing
-    ) { _, feeders, isRefreshing ->
+        feederRepo.isRefreshing,
+        feederSettings.feederSortMode.flow
+    ) { _, feeders, isRefreshing, sortMode ->
         val offlineStates = feeders.associate { it.id to feederRepo.isOffline(it) }
 
-        val feederItems = feeders.map { feeder ->
+        val sortedFeeders = when (sortMode) {
+            FeederSortMode.BY_LABEL -> feeders.sortedBy { it.label }
+            FeederSortMode.BY_MESSAGE_RATE -> feeders.sortedByDescending { it.beastMessageRate }
+        }
+
+        val feederItems = sortedFeeders.map { feeder ->
             DefaultFeederVH.Item(
                 feeder = feeder,
                 isOffline = offlineStates[feeder.id]!!,
@@ -52,7 +62,15 @@ class FeederListViewModel @Inject constructor(
             )
         }
 
-        val headerItem = FeederHeaderVH.Item(hasOfflineFeeders = offlineStates.any { it.value })
+        val headerItem = FeederHeaderVH.Item(
+            hasOfflineFeeders = offlineStates.values.any { it },
+            currentSortMode = sortMode,
+            onSortModeSelected = { newSortMode ->
+                launch {
+                    feederSettings.feederSortMode.value(newSortMode)
+                }
+            }
+        )
 
         val allItems = listOf(headerItem) + feederItems
 
@@ -72,9 +90,9 @@ class FeederListViewModel @Inject constructor(
         webpageTool.open(AirplanesLive.URL_START_FEEDING)
     }
 
-    fun showFeedsOnMap(ids: Collection<FeederListAdapter.Item>) = launch {
-        log(tag) { "showFeedsOnMap($ids)" }
-        val ids = ids
+    fun showFeedsOnMap(items: Collection<FeederListAdapter.Item>) = launch {
+        log(TAG) { "showFeedsOnMap($items)" }
+        val ids = items
             .filterIsInstance<DefaultFeederVH.Item>()
             .map { it.feeder.id.toMapFeedId() }
             .toSet()
