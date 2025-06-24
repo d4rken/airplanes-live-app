@@ -117,6 +117,8 @@
     <string name="feeder_list_feeder_id_hint">ID alimentatore</string>
     <string name="feeder_list_ip_address_hint">Indirizzo IP (opzionale)</string>
     <string name="feeder_list_ip_address_explanation">Opzionale: Inserisci l\'indirizzo IP se tar1090 o graphs1090 è disponibile a quell\'indirizzo.</string>
+    <string name="feeder_list_position_hint">Posizione (opzionale)</string>
+    <string name="feeder_list_position_explanation">Opzionale: Inserisci la posizione nel formato latitudine, longitudine (es. 50.8006, 6.0619)</string>
     <string name="feeder_list_quick_setup_title">Configurazione rapida</string>
     <string name="feeder_list_quick_setup_description">Scansiona un codice QR per riempire automaticamente tutti i campi</string>
     <string name="feeder_list_feeder_id_helper">Richiesto: L\'UUID del tuo alimentatore</string>

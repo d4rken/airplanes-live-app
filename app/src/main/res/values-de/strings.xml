@@ -116,6 +116,8 @@
     <string name="feeder_list_feeder_id_hint">Feeder-ID</string>
     <string name="feeder_list_ip_address_hint">IP-Adresse (optional)</string>
     <string name="feeder_list_ip_address_explanation">Optional: Gib die IP-Adresse ein, wenn tar1090 oder graphs1090 unter dieser Adresse verfügbar ist.</string>
+    <string name="feeder_list_position_hint">Position (optional)</string>
+    <string name="feeder_list_position_explanation">Optional: Gib die Position im Format Breitengrad, Längengrad ein (z.B. 50.8006, 6.0619)</string>
     <string name="feeder_list_quick_setup_title">Schnelle Einrichtung</string>
     <string name="feeder_list_quick_setup_description">Scanne einen QR-Code, um alle Felder automatisch auszufüllen</string>
     <string name="feeder_list_feeder_id_helper">Erforderlich: Die UUID deines Feeders</string>

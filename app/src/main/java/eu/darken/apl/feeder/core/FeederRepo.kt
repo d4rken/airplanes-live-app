@@ -7,6 +7,7 @@ import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.feeder.core.api.FeederEndpoint
 import eu.darken.apl.feeder.core.config.FeederConfig
+import eu.darken.apl.feeder.core.config.FeederPosition
 import eu.darken.apl.feeder.core.config.FeederSettings
 import eu.darken.apl.feeder.core.stats.BeastStatsEntity
 import eu.darken.apl.feeder.core.stats.FeederStatsDatabase
@@ -194,6 +195,11 @@ class FeederRepo @Inject constructor(
     suspend fun setAddress(id: ReceiverId, address: String?) {
         log(TAG) { "setAddress($id,$address" }
         updateFeeder(id) { copy(address = address) }
+    }
+
+    suspend fun setPosition(id: ReceiverId, position: FeederPosition?) {
+        log(TAG) { "setPosition($id,$position)" }
+        updateFeeder(id) { copy(position = position) }
     }
 
     suspend fun setOfflineCheckSnoozedAt(id: ReceiverId, snoozedAt: Instant?) {
