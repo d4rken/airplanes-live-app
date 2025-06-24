@@ -124,6 +124,12 @@
     <string name="feeder_list_feeder_id_helper">Обязательно: UUID вашего фидера</string>
     <string name="feeder_list_camera_error">Ошибка запуска камеры: %s</string>
     <string name="feeder_list_scan_qr_title">Сканировать QR-код</string>
+    <string name="feeder_list_local_detection_title">Локальное Обнаружение</string>
+    <string name="feeder_list_local_detection_description">Обнаружить фидеры в той же сети</string>
+    <string name="feeder_list_detect_local_title">Обнаружить Локальный Фидер</string>
+    <string name="feeder_list_detecting_local_feeder">Обнаружение локального фидера...</string>
+    <string name="feeder_list_no_local_feeder_found">Локальный фидер не найден</string>
+    <string name="feeder_list_local_feeder_found">Локальный фидер обнаружен и поля заполнены</string>
     <string name="feeder_list_camera_permission_required_title">Требуется разрешение камеры</string>
     <string name="feeder_list_camera_permission_required_message">Для сканирования QR-кодов требуется разрешение камеры.</string>
     <string name="feeder_list_invalid_qr_code_title">Неверный QR-код</string>

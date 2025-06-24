@@ -73,6 +73,10 @@ class AddFeederFragment : Fragment3(R.layout.add_feeder_fragment) {
 
         ui.scanQrButton.setOnClickListener { startQrCodeScanning() }
 
+        ui.detectLocalButton.setOnClickListener {
+            vm.detectLocalFeeder()
+        }
+
         ui.feederId.doAfterTextChanged { text ->
             vm.updateReceiverId(text.toString())
         }
@@ -99,11 +103,12 @@ class AddFeederFragment : Fragment3(R.layout.add_feeder_fragment) {
             }
 
             // Handle loading state
-            val isEnabled = !state.isLoading
+            val isEnabled = !state.isLoading && !state.isDetectingLocal
             feederId.isEnabled = isEnabled
             feederLabel.isEnabled = isEnabled
             feederIpAddress.isEnabled = isEnabled
             scanQrButton.isEnabled = isEnabled
+            detectLocalButton.isEnabled = isEnabled
 
             // Handle button and progress indicator
             if (state.isLoading) {
@@ -116,11 +121,25 @@ class AddFeederFragment : Fragment3(R.layout.add_feeder_fragment) {
                 progressIndicator.visibility = View.GONE
                 addButton.isEnabled = state.isAddButtonEnabled
             }
+
+            // Handle local detection button state
+            if (state.isDetectingLocal) {
+                detectLocalButton.text = getString(R.string.feeder_list_detecting_local_feeder)
+            } else {
+                detectLocalButton.text = getString(R.string.feeder_list_detect_local_title)
+            }
         }
 
         vm.events.observeWith(ui) { event ->
             when (event) {
                 is AddFeederEvents.StopCamera -> stopCameraPreview()
+                is AddFeederEvents.ShowLocalDetectionResult -> {
+                    val message = when (event.result) {
+                        LocalDetectionResult.FOUND -> getString(R.string.feeder_list_local_feeder_found)
+                        LocalDetectionResult.NOT_FOUND -> getString(R.string.feeder_list_no_local_feeder_found)
+                    }
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                }
             }
         }
 

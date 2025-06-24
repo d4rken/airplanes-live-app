@@ -120,6 +120,12 @@
     <string name="feeder_list_quick_setup_description">Scanne einen QR-Code, um alle Felder automatisch auszufüllen</string>
     <string name="feeder_list_feeder_id_helper">Erforderlich: Die UUID deines Feeders</string>
     <string name="feeder_list_camera_error">Fehler beim Starten der Kamera: %s</string>
+    <string name="feeder_list_local_detection_title">Lokale Erkennung</string>
+    <string name="feeder_list_local_detection_description">Feeder im selben Netzwerk erkennen</string>
+    <string name="feeder_list_detect_local_title">Lokalen Feeder erkennen</string>
+    <string name="feeder_list_detecting_local_feeder">Erkenne lokalen Feeder...</string>
+    <string name="feeder_list_no_local_feeder_found">Kein lokaler Feeder gefunden</string>
+    <string name="feeder_list_local_feeder_found">Lokaler Feeder erkannt und Felder ausgefüllt</string>
     <string name="feeder_beast_stats_label">Beast-Statistiken</string>
     <string name="feeder_mlat_stats_label">MLAT-Statistiken</string>
     <string name="feeder_monitor_offline_label">Benachrichtigen, wenn offline</string>

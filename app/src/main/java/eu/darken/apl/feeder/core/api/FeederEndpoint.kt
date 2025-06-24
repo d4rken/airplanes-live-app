@@ -43,6 +43,11 @@ class FeederEndpoint @Inject constructor(
         }
     }
 
+    suspend fun getFeedStatus(): FeedStatus = withContext(dispatcherProvider.IO) {
+        log(TAG) { "getFeedStatus()" }
+        api.getFeedStatus()
+    }
+
     companion object {
         private val TAG = logTag("Feeder", "Endpoint")
     }

@@ -8,6 +8,7 @@ import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.flow.SingleEventFlow
 import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.feeder.core.FeederRepo
+import eu.darken.apl.feeder.core.api.FeederEndpoint
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
@@ -20,6 +21,7 @@ class AddFeederViewModel @Inject constructor(
     private val handle: SavedStateHandle,
     dispatcherProvider: DispatcherProvider,
     private val feederRepo: FeederRepo,
+    private val feederEndpoint: FeederEndpoint,
     private val json: Json,
 ) : ViewModel3(dispatcherProvider = dispatcherProvider) {
 
@@ -27,6 +29,7 @@ class AddFeederViewModel @Inject constructor(
     private val _receiverLabel = MutableStateFlow("")
     private val _receiverIpAddress = MutableStateFlow("")
     private val _isLoading = MutableStateFlow(false)
+    private val _isDetectingLocal = MutableStateFlow(false)
 
     val events = SingleEventFlow<AddFeederEvents>()
 
@@ -42,7 +45,8 @@ class AddFeederViewModel @Inject constructor(
         _receiverLabel,
         _receiverIpAddress,
         _isLoading,
-    ) { id, label, ipAddress, isLoading ->
+        _isDetectingLocal,
+    ) { id, label, ipAddress, isLoading, isDetectingLocal ->
         val isValidInput = try {
             UUID.fromString(id.trim())
             id.trim().isNotBlank()
@@ -54,8 +58,9 @@ class AddFeederViewModel @Inject constructor(
             receiverId = id,
             receiverLabel = label,
             receiverIpAddress = ipAddress,
-            isAddButtonEnabled = isValidInput && !isLoading,
+            isAddButtonEnabled = isValidInput && !isLoading && !isDetectingLocal,
             isLoading = isLoading,
+            isDetectingLocal = isDetectingLocal,
         )
     }.asStateFlow()
 
@@ -101,6 +106,32 @@ class AddFeederViewModel @Inject constructor(
         _receiverIpAddress.value = ipAddress
     }
 
+    fun detectLocalFeeder() = launch {
+        log(tag) { "detectLocalFeeder()" }
+        _isDetectingLocal.value = true
+
+        try {
+            val feedStatus = feederEndpoint.getFeedStatus()
+            log(tag) { "detectLocalFeeder(): Got feed status: $feedStatus" }
+
+            val beastClient = feedStatus.beastClients.firstOrNull()
+            if (beastClient != null) {
+                updateReceiverId(beastClient.uuid.toString())
+                updateReceiverIpAddress(beastClient.host)
+
+                feedStatus.mlatClients.firstOrNull()
+                    ?.takeIf { it.user.isNotBlank() }
+                    ?.let { updateReceiverLabel(it.user) }
+
+                events.tryEmit(AddFeederEvents.ShowLocalDetectionResult(LocalDetectionResult.FOUND))
+            } else {
+                events.tryEmit(AddFeederEvents.ShowLocalDetectionResult(LocalDetectionResult.NOT_FOUND))
+            }
+        } finally {
+            _isDetectingLocal.value = false
+        }
+    }
+
     fun handleQrScan(text: String) = launch {
         log(tag) { "handleQrScan($text)" }
 
@@ -133,6 +164,7 @@ class AddFeederViewModel @Inject constructor(
         val receiverIpAddress: String,
         val isAddButtonEnabled: Boolean,
         val isLoading: Boolean,
+        val isDetectingLocal: Boolean,
     )
 
 
