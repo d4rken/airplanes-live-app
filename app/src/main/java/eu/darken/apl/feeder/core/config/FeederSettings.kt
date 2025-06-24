@@ -27,6 +27,7 @@ class FeederSettings @Inject constructor(
         get() = context.dataStore
 
     val feederGroup = dataStore.createJsonValue("feeder.group", FeederGroup(), json)
+    val feederSortMode = dataStore.createJsonValue("feeder.sort.mode", FeederSortMode.BY_LABEL, json)
 
     val feederMonitorInterval = dataStore.createJsonValue("feeder.monitor.interval", DEFAULT_CHECK_INTERVAL, json)
     val lastUpdate = dataStore.createJsonValue("feeder.update.last", Instant.EPOCH, json)

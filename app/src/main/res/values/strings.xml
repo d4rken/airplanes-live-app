@@ -109,6 +109,9 @@
         <item quantity="other">You have %d active feeders</item>
     </plurals>
     <string name="feeder_list_add_yours_now_msg">Add your first feeder now!</string>
+    <string name="feeder_sort_mode_label">Sort by</string>
+    <string name="feeder_sort_mode_by_label">Label</string>
+    <string name="feeder_sort_mode_by_message_rate">Message rate</string>
     <string name="feeder_list_add_your_feeder_action">Add feeder</string>
     <string name="feeder_list_add_title">New feeder</string>
     <string name="feeder_list_add_message">Enter your feeders UUID and an optional label.</string>

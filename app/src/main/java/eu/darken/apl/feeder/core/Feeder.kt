@@ -20,4 +20,7 @@ data class Feeder(
     val id: ReceiverId
         get() = config.receiverId
 
+    val beastMessageRate: Double
+        get() = beastStats?.messageRate ?: 0.0
+
 }
