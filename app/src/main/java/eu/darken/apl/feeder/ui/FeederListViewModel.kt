@@ -58,6 +58,7 @@ class FeederListViewModel @Inject constructor(
 
         State(
             items = allItems,
+            feederCount = feederItems.size,
             isRefreshing = isRefreshing,
         )
     }.asStateFlow()
@@ -84,6 +85,7 @@ class FeederListViewModel @Inject constructor(
 
     data class State(
         val items: List<FeederListAdapter.Item>,
+        val feederCount: Int,
         val isRefreshing: Boolean = false,
     )
 
