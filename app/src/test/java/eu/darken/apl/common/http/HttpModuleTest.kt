@@ -28,6 +28,13 @@ class HttpModuleTest : BaseTest() {
     }
 
     @Test
+    fun `userAgent returns correct user-agent string`() {
+        val expectedUserAgent =
+            "${BuildConfigWrap.APPLICATION_ID}/${BuildConfigWrap.VERSION_NAME} (Android null; null)"
+        httpModule.userAgent() shouldBe expectedUserAgent
+    }
+
+    @Test
     fun `baseHttpClient sets correct user-agent header`() {
         mockWebServer.enqueue(MockResponse().setResponseCode(200))
 
@@ -37,8 +44,6 @@ class HttpModuleTest : BaseTest() {
         httpModule.baseHttpClient().newCall(request).execute()
 
         val recordedRequest = mockWebServer.takeRequest(5, TimeUnit.SECONDS)
-        val expectedUserAgent =
-            "${BuildConfigWrap.APPLICATION_ID}/${BuildConfigWrap.VERSION_NAME} (Android null; null)"
-        recordedRequest?.getHeader("User-Agent") shouldBe expectedUserAgent
+        recordedRequest?.getHeader("User-Agent") shouldBe httpModule.userAgent()
     }
 }

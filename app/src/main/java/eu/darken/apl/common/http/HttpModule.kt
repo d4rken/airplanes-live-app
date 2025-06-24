@@ -47,11 +47,23 @@ class HttpModule {
         }
     }
 
+    @Qualifier
+    @MustBeDocumented
+    @Retention(AnnotationRetention.RUNTIME)
+    annotation class UserAgent
+
+    @UserAgent
+    @Reusable
+    @Provides
+    fun userAgent(): String =
+        "${BuildConfigWrap.APPLICATION_ID}/${BuildConfigWrap.VERSION_NAME} (Android ${Build.VERSION.RELEASE}; ${Build.MODEL})"
+
     @Singleton
     @Provides
     fun baseHttpClient(
         @BaseCache cache: Cache? = null,
         loggingInterceptor: HttpLoggingInterceptor = loggingInterceptor(),
+        @UserAgent userAgent: String = userAgent(),
     ): OkHttpClient = OkHttpClient().newBuilder().apply {
         if (cache != null) {
             cache(cache)
@@ -61,9 +73,6 @@ class HttpModule {
         writeTimeout(20L, TimeUnit.SECONDS)
         retryOnConnectionFailure(true)
         addInterceptor(loggingInterceptor)
-
-        val userAgent =
-            "${BuildConfigWrap.APPLICATION_ID}/${BuildConfigWrap.VERSION_NAME} (Android ${Build.VERSION.RELEASE}; ${Build.MODEL})"
 
         addInterceptor { chain ->
             val request = chain.request().newBuilder().apply {
