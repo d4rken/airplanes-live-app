@@ -1,16 +1,16 @@
 package eu.darken.apl.main.ui.main
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.core.net.toUri
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_LABELED
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import eu.darken.apl.R
 import eu.darken.apl.common.datastore.valueBlocking
@@ -35,22 +35,27 @@ class MainFragment : Fragment3(R.layout.main_fragment) {
         }
 
         vm.newRelease.observeWith(ui) { release ->
-            Snackbar
-                .make(
-                    requireView(),
-                    "New release available",
-                    Snackbar.LENGTH_LONG
-                )
-                .setAction("Show") {
+            val apkUrl = release.assets.find { it.name.endsWith(".apk", ignoreCase = true) }?.downloadUrl
+
+            MaterialAlertDialogBuilder(requireContext()).apply {
+                setTitle(R.string.update_available_dialog_title)
+                setMessage(R.string.update_available_dialog_message)
+                setPositiveButton(R.string.update_available_show_action) { _, _ ->
                     val intent = Intent(Intent.ACTION_VIEW).apply {
-                        data = Uri.parse(release.htmlUrl)
+                        data = release.htmlUrl.toUri()
                     }
                     requireActivity().startActivity(intent)
                 }
-                .apply {
-                    anchorView = ui.bottomNavigation
+                if (apkUrl != null) {
+                    setNegativeButton(R.string.update_available_download_action) { _, _ ->
+                        val intent = Intent(Intent.ACTION_VIEW).apply {
+                            data = apkUrl.toUri()
+                        }
+                        requireActivity().startActivity(intent)
+                    }
                 }
-                .show()
+                setNeutralButton(R.string.common_dismiss_action) { _, _ -> }
+            }.show()
         }
 
         val navController: NavController = ui.bottomNavHost.getFragment<NavHostFragment>().navController

@@ -68,6 +68,11 @@
     <string name="updatecheck_setting_enabled_label">Update check</string>
     <string name="updatecheck_setting_enabled_explanation">Allow this app to check for updates to let you know if a newer version is available.</string>
 
+    <string name="update_available_dialog_title">New Release Available</string>
+    <string name="update_available_dialog_message">A new version of the app is available. Would you like to view the release notes or download the update?</string>
+    <string name="update_available_show_action">Show Release</string>
+    <string name="update_available_download_action">Download APK</string>
+
     <string name="settings_category_ui_label">User interface</string>
 
     <string name="ui_theme_mode_setting_label">Theme mod</string>

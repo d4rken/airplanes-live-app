@@ -68,6 +68,11 @@
     <string name="updatecheck_setting_enabled_label">Verificación de actualizaciones</string>
     <string name="updatecheck_setting_enabled_explanation">Permitir que esta aplicación verifique actualizaciones para informarte si hay una versión más nueva disponible.</string>
 
+    <string name="update_available_dialog_title">Nueva versión disponible</string>
+    <string name="update_available_dialog_message">Una nueva versión de la aplicación está disponible. ¿Te gustaría ver las notas de la versión o descargar la actualización?</string>
+    <string name="update_available_show_action">Mostrar versión</string>
+    <string name="update_available_download_action">Descargar APK</string>
+
     <string name="settings_category_ui_label">Interfaz de usuario</string>
 
     <string name="ui_theme_mode_setting_label">Modo de tema</string>

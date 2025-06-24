@@ -68,6 +68,11 @@
     <string name="updatecheck_setting_enabled_label">Vérification des mises à jour</string>
     <string name="updatecheck_setting_enabled_explanation">Permettre à cette application de vérifier les mises à jour pour vous informer si une version plus récente est disponible.</string>
 
+    <string name="update_available_dialog_title">Nouvelle version disponible</string>
+    <string name="update_available_dialog_message">Une nouvelle version de l\'application est disponible. Souhaitez-vous consulter les notes de version ou télécharger la mise à jour ?</string>
+    <string name="update_available_show_action">Afficher la version</string>
+    <string name="update_available_download_action">Télécharger l\'APK</string>
+
     <string name="settings_category_ui_label">Interface utilisateur</string>
 
     <string name="ui_theme_mode_setting_label">Mode de thème</string>
