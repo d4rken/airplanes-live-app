@@ -1,6 +1,7 @@
 package eu.darken.apl.common.http
 
 import android.content.Context
+import android.os.Build
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -8,6 +9,7 @@ import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import eu.darken.apl.common.BuildConfigWrap
 import eu.darken.apl.common.datastore.valueBlocking
 import eu.darken.apl.common.debug.autoreport.DebugSettings
 import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
@@ -51,12 +53,24 @@ class HttpModule {
         @BaseCache cache: Cache? = null,
         loggingInterceptor: HttpLoggingInterceptor = loggingInterceptor(),
     ): OkHttpClient = OkHttpClient().newBuilder().apply {
-        cache(cache)
+        if (cache != null) {
+            cache(cache)
+        }
         connectTimeout(20L, TimeUnit.SECONDS)
         readTimeout(20L, TimeUnit.SECONDS)
         writeTimeout(20L, TimeUnit.SECONDS)
         retryOnConnectionFailure(true)
         addInterceptor(loggingInterceptor)
+
+        val userAgent =
+            "${BuildConfigWrap.APPLICATION_ID}/${BuildConfigWrap.VERSION_NAME} (Android ${Build.VERSION.RELEASE}; ${Build.MODEL})"
+
+        addInterceptor { chain ->
+            val request = chain.request().newBuilder().apply {
+                header("User-Agent", userAgent)
+            }.build()
+            chain.proceed(request)
+        }
     }.build()
 
     @BaseCache

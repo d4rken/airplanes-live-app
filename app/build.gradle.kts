@@ -157,6 +157,9 @@ dependencies {
     addHttp()
     addTesting()
 
+    // MockWebServer for testing HTTP interactions
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.9.1")
+
     implementation("io.coil-kt:coil:2.7.0")
 
     implementation("net.swiftzer.semver:semver:1.3.0")
