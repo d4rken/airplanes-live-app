@@ -1,0 +1,251 @@
+<resources>
+    <string name="app_name">airplanes.live</string>
+    <string name="label_settings">Configuración</string>
+    <string name="label_help">Ayuda</string>
+
+    <string name="common_error_label">Error</string>
+    <string name="common_accept_action">Aceptar</string>
+    <string name="common_share_action">Compartir</string>
+    <string name="common_done_action">Hecho</string>
+    <string name="common_save_action">Guardar</string>
+    <string name="common_copy_action">Copiar</string>
+    <string name="common_continue_action">Continuar</string>
+    <string name="common_cancel_action">Cancelar</string>
+    <string name="common_refresh_action">Actualizar</string>
+    <string name="common_reset_action">Restablecer</string>
+    <string name="common_add_action">Añadir</string>
+    <string name="common_remove_action">Eliminar</string>
+    <string name="common_fullscreen_action">Pantalla completa</string>
+    <string name="common_photo_author_label">por %s</string>
+    <string name="common_grant_permission_action">Conceder permiso</string>
+    <string name="common_dismiss_action">Descartar</string>
+    <string name="common_close_action">Cerrar</string>
+    <string name="common_internet_unavailable_message">Internet no está disponible.</string>
+    <string name="common_list_select_all_action">Seleccionar todo</string>
+    <string name="common_show_on_map_action">Mostrar en el mapa</string>
+
+    <string name="common_unavailable_label">N/A</string>
+    <string name="common_sponsor_action">Patrocinar desarrollo</string>
+    <string name="common_sponsor_description">Di gracias e incentiva el desarrollo futuro de la aplicación.</string>
+
+    <string name="common_last_seen_label">Visto por última vez</string>
+    <string name="common_registration_label">Matrícula</string>
+    <string name="common_callsign_label">Indicativo</string>
+    <string name="common_squawk_label">Squawk</string>
+    <string name="common_hex_label">Código hex</string>
+    <string name="common_distance_label">Distancia</string>
+    <string name="common_airframe_label">Fuselaje</string>
+    <string name="common_start_feeding_action">Comenzar alimentación</string>
+
+    <string name="generic_loading_label_0">Pronto™</string>
+    <string name="generic_loading_label_1">Pasando la mantequilla</string>
+    <string name="generic_loading_label_2">Descargando más RAM</string>
+    <string name="generic_loading_label_3">Aún más rápido que un iPhone</string>
+    <string name="generic_loading_label_4">¿Qué es eso detrás de ti?</string>
+    <string name="generic_loading_label_5">La CPU está en pausa para el café</string>
+    <string name="generic_loading_label_6">Esperando datos de Pepe Silvia</string>
+    <string name="generic_loading_label_7">El encabulador turbo se está iniciando</string>
+
+    <string name="debug_debuglog_size_label">Tamaño</string>
+    <string name="debug_debuglog_size_compressed_label">Tamaño comprimido</string>
+    <string name="debug_notification_channel_label">Notificaciones de depuración</string>
+    <string name="debug_debuglog_file_label">Archivo de registro guardado</string>
+    <string name="debug_debuglog_recording_progress">Grabando registro de depuración</string>
+    <string name="debug_debuglog_record_action">Grabar registro de depuración</string>
+    <string name="debug_debuglog_stop_action">Detener grabación</string>
+    <string name="debug_debuglog_sensitive_information_message">El archivo generado contiene información sensible. Solo compártelo con partes de confianza.</string>
+    <string name="settings_debuglog_explanation">Esta función graba todo lo que hace la aplicación en un archivo compartible. El archivo generado puede contener información sensible. Solo compártelo con partes de confianza (por ejemplo, un desarrollador que esté solucionando un problema).</string>
+
+    <string name="settings_privacy_policy_label">Política de privacidad</string>
+    <string name="settings_privacy_policy_desc">Manejo responsable de datos.</string>
+    <string name="settings_licenses_label">Licencias</string>
+    <string name="general_thank_you_label">Gracias</string>
+    <string name="settings_category_other_label">Otro</string>
+
+    <string name="general_settings_label">General</string>
+    <string name="general_settings_desc">Ajustes generales que afectan toda la aplicación.</string>
+
+    <string name="updatecheck_setting_enabled_label">Verificación de actualizaciones</string>
+    <string name="updatecheck_setting_enabled_explanation">Permitir que esta aplicación verifique actualizaciones para informarte si hay una versión más nueva disponible.</string>
+
+    <string name="settings_category_ui_label">Interfaz de usuario</string>
+
+    <string name="ui_theme_mode_setting_label">Modo de tema</string>
+    <string name="ui_theme_mode_setting_explanation">El modo usado para el tema de la aplicación (por ejemplo, noche o día).</string>
+    <string name="ui_theme_mode_dark_label">Oscuro</string>
+    <string name="ui_theme_mode_light_label">Claro</string>
+    <string name="ui_theme_mode_system_label">Sistema</string>
+
+    <string name="ui_theme_style_setting_label">Estilo de tema</string>
+    <string name="ui_theme_style_setting_explanation">El estilo de color usado para el tema de la aplicación.</string>
+    <string name="ui_theme_style_default_label">Por defecto</string>
+    <string name="ui_theme_style_materialyou_label">Material You</string>
+
+    <string name="settings_support_label">Soporte</string>
+
+    <string name="documentation_label">Documentación</string>
+    <string name="discord_label">Discord</string>
+    <string name="discord_description">Un lugar para pasar el rato y hacer preguntas.</string>
+    <string name="issue_tracker_label">Rastreador de problemas</string>
+    <string name="issue_tracker_description">Un rastreador público de problemas para reportes de errores y solicitudes de características.</string>
+
+    <string name="support_debuglog_label">Registro de depuración</string>
+    <string name="support_debuglog_desc">Grabar todo lo que hace la aplicación en un archivo de texto que puedes compartir.</string>
+
+    <string name="changelog_label">Registro de cambios</string>
+    <string name="settings_acknowledgements_label">Reconocimientos</string>
+
+    <string name="welcome_body1">¡Esta es una aplicación compañera para miembros de la comunidad airplanes.live!</string>
+    <string name="welcome_body2">airplanes.live es un rastreador de vuelos impulsado por la comunidad con alimentadores en todo el mundo. Proporciona acceso abierto y sin filtros a datos de tráfico aéreo mundial.</string>
+    <string name="welcome_body3">Considera contribuir datos.</string>
+
+    <string name="privacy_body1">Esta aplicación no recopila ni vende datos de usuarios.</string>
+    <string name="privacy_body2">Se requiere acceso a Internet.</string>
+    <string name="privacy_body3">¡Disfruta la aplicación!</string>
+
+    <string name="feeder_page_label">Alimentador</string>
+    <plurals name="feeder_yours_x_active_msg">
+        <item quantity="one">Tienes %d alimentador activo</item>
+        <item quantity="other">Tienes %d alimentadores activos</item>
+    </plurals>
+    <string name="feeder_list_add_yours_now_msg">¡Añade tu primer alimentador ahora!</string>
+    <string name="feeder_list_add_your_feeder_action">Añadir alimentador</string>
+    <string name="feeder_list_add_title">Nuevo alimentador</string>
+    <string name="feeder_list_add_message">Ingresa el UUID de tu alimentador y una etiqueta opcional.</string>
+    <string name="feeder_list_label_hint">Etiqueta</string>
+    <string name="feeder_list_label_helper">Opcional: Un nombre amigable para tu alimentador</string>
+    <string name="feeder_list_feeder_id_hint">ID del alimentador</string>
+    <string name="feeder_list_ip_address_hint">Dirección IP (opcional)</string>
+    <string name="feeder_list_ip_address_explanation">Opcional: Ingresa la dirección IP si tar1090 o graphs1090 está disponible en esa dirección.</string>
+    <string name="feeder_list_quick_setup_title">Configuración rápida</string>
+    <string name="feeder_list_quick_setup_description">Escanea un código QR para llenar automáticamente todos los campos</string>
+    <string name="feeder_list_feeder_id_helper">Requerido: El UUID de tu alimentador</string>
+    <string name="feeder_list_camera_error">Error al iniciar la cámara: %s</string>
+    <string name="feeder_list_scan_qr_title">Escanear código QR</string>
+    <string name="feeder_list_camera_permission_required_title">Permiso de cámara requerido</string>
+    <string name="feeder_list_camera_permission_required_message">Se requiere permiso de cámara para escanear códigos QR.</string>
+    <string name="feeder_list_invalid_qr_code_title">Código QR inválido</string>
+    <string name="feeder_list_invalid_qr_code_message">El código QR escaneado no está en el formato esperado.</string>
+    <string name="feeder_list_feeder_added_title">Alimentador añadido</string>
+    <string name="feeder_list_feeder_added_message">El alimentador ha sido añadido exitosamente.</string>
+    <string name="feeder_list_error_title">Error</string>
+    <string name="feeder_list_error_message">Ocurrió un error al analizar los datos del código QR: %s</string>
+    <string name="feeder_beast_stats_label">Estadísticas Beast</string>
+    <string name="feeder_mlat_stats_label">Estadísticas MLAT</string>
+    <string name="feeder_monitor_offline_label">Notificar cuando esté desconectado</string>
+    <string name="feeder_remove_action">Eliminar alimentador</string>
+    <string name="feeder_show_map_action">Mostrar alimentación en el mapa</string>
+    <string name="feeder_name_change_action">Renombrar</string>
+    <string name="feeder_name_change_title">Nuevo nombre</string>
+    <string name="feeder_name_change_body">Renombrar este alimentador localmente. Esto solo afecta cómo se muestra en este dispositivo.</string>
+    <string name="feeder_address_change_action">Establecer dirección IP</string>
+    <string name="feeder_address_change_title">Establecer dirección IP</string>
+    <string name="feeder_address_change_body">Establecer la dirección IP o nombre de dominio donde tar1090 o graphs1090 es accesible para este alimentador.</string>
+    <string name="feeder_generate_qr_action">Generar código QR</string>
+    <string name="feeder_qr_code_title">Código QR del alimentador</string>
+    <string name="feeder_qr_code_description">Escanea este código QR para añadir este alimentador a otro dispositivo</string>
+    <string name="feeder_qr_code_content_description">Código QR para compartir alimentador</string>
+
+    <string name="feeder_remove_confirmation_title">Confirmación</string>
+    <string name="feeder_remove_confirmation_message">¿Eliminar este alimentador de la aplicación?</string>
+    <string name="feeder_notification_channel_title">Monitor de alimentador</string>
+    <string name="feeder_monitor_offline_title">Alimentadores desconectados detectados</string>
+    <string name="feeder_monitor_offline_message">Algunos de tus alimentadores airplanes.live están desconectados: %s</string>
+    <string name="feeder_options_label">Opciones</string>
+    <string name="feeder_startfeeding_msg">¿Aún no alimentas airplanes.live?\nComienza ahora, no es ciencia espacial 🚀.</string>
+
+    <string name="feeder_settings_title">Alimentador</string>
+    <string name="feeder_settings_summary">Configuraciones relacionadas con el alimentador, por ejemplo, intervalo de monitoreo.</string>
+    <string name="feeder_settings_monitor_interval_title">Intervalo de verificación</string>
+    <string name="feeder_settings_monitor_interval_summary">¿Con qué frecuencia deberíamos verificar el alimentador?</string>
+    <plurals name="feeder_setting_check_interval_minutes">
+        <item quantity="one">Cada %d minuto.</item>
+        <item quantity="other">Cada %d minutos.</item>
+    </plurals>
+    <string name="feeder_notification_snooze_action">Posponer</string>
+
+    <string name="map_page_label">Mapa</string>
+
+    <string name="watch_list_page_label">Lista de seguimiento</string>
+    <string name="watch_list_add_title">Añadir nuevo seguimiento</string>
+    <plurals name="watch_list_yours_x_active_msg">
+        <item quantity="one">%d entrada de lista de seguimiento</item>
+        <item quantity="other">%d entradas de lista de seguimiento</item>
+    </plurals>
+
+    <string name="watch_list_list_addnew_msg">¡Mantén el ojo en una aeronave O.O!</string>
+    <string name="watch_list_add_watch_type_label_aircraft">Aeronave (código hex)</string>
+    <string name="watch_list_add_watch_type_label_squawk">Código de transpondedor (SQUAWK)</string>
+    <string name="watch_list_add_watch_type_label_flight">Vuelo (indicativo)</string>
+    <string name="watch_list_add_aircraft_title">Seguir nueva aeronave</string>
+    <string name="watch_list_add_aircraft_msg">Ingresa el código hex de la aeronave que quieres seguir.</string>
+    <string name="watch_list_add_squawk_title">Nuevo seguimiento squawk</string>
+    <string name="watch_list_add_squawk_msg">Ingresa el código de transpondedor que quieres seguir.</string>
+    <string name="watch_list_add_flight_title">Crear seguimiento de vuelo</string>
+    <string name="watch_list_add_flight_msg">Ingresa el indicativo que quieres seguir.</string>
+    <string name="watch_list_item_squawk_subtitle">Seguimiento de código de transpondedor (squawk)</string>
+    <string name="watch_list_item_aircraft_subtitle">Aeronave seguida</string>
+    <string name="watch_list_item_flight_subtitle">Seguimiento de indicativo</string>
+    <string name="watch_list_spotted_never_label">Nunca</string>
+    <string name="watch_list_remove_action">Eliminar seguimiento</string>
+    <string name="watch_list_remove_confirmation_title">Confirmación</string>
+    <string name="watch_list_remove_confirmation_message">¿Eliminar este seguimiento?</string>
+    <string name="watch_list_watch_add_label">Añadir a lista de seguimiento</string>
+    <string name="watch_list_watch_edit_label">Editar lista de seguimiento</string>
+    <string name="watch_list_show_all_action">Mostrar todo</string>
+    <string name="watch_item_x_added">%s añadido a la lista de seguimiento</string>
+    <string name="watch_details_enable_notifications_label">Notificar cuando se detecte</string>
+    <string name="watch_notification_channel_title">Alertas de lista de seguimiento</string>
+    <string name="watch_notification_alert_aircraft_title">Alerta de aeronave</string>
+    <string name="watch_notification_alert_aircraft_msg">La aeronave %s ha sido detectada</string>
+    <string name="watch_notification_alert_flight_title">Alerta de indicativo</string>
+    <string name="watch_notification_alert_flight_msg">%s está en el aire</string>
+    <string name="watch_notification_alert_squawk_title">Alerta de transpondedor</string>
+    <string name="watch_notification_alert_squawk_msg">El código %s está siendo transmitido por %d aeronave.</string>
+    <string name="watch_settings_monitor_interval_title">Intervalo de verificación</string>
+    <string name="watch_settings_monitor_interval_summary">¿Con qué frecuencia deberíamos verificar?</string>
+    <plurals name="watch_setting_check_interval_minutes">
+        <item quantity="one">Cada %d minuto.</item>
+        <item quantity="other">Cada %d minutos.</item>
+    </plurals>
+
+    <string name="watch_settings_title">Lista de seguimiento</string>
+    <string name="watch_settings_summary">Configuraciones relacionadas con la lista de seguimiento, por ejemplo, intervalo de verificación.</string>
+
+    <string name="search_page_label">Búsqueda</string>
+    <string name="search_search_by_aircraft">Buscar por aeronave</string>
+    <string name="search_aircraft_search_label">Búsqueda de aeronave</string>
+
+    <string name="search_location_prompt_title">Distancia de aeronave</string>
+    <string name="search_location_prompt_body">Los resultados se ordenarán por su distancia desde ti si concedes permiso de ubicación.</string>
+    <string name="general_xdistance_away_label">%s de distancia</string>
+    <string name="search_mode_all_hint">Buscar todas las categorías</string>
+    <string name="search_mode_hex_hint">Buscar códigos HEX, por ejemplo ABCDEF</string>
+    <string name="search_mode_callsign_hint">Buscar indicativos, por ejemplo FLGHRN</string>
+    <string name="search_mode_registration_hint">Buscar matrículas</string>
+    <string name="search_mode_squawk_hint">Buscar SQUAWKs, por ejemplo 7700</string>
+    <string name="search_mode_airframe_hint">Buscar tipos de fuselaje, por ejemplo A320</string>
+    <string name="search_mode_military_hint">Mostrar aeronaves interesantes</string>
+    <string name="search_mode_location_hint">Ubicación, por ejemplo \'Berlín, Alemania\'</string>
+    <string name="search_empty_title">No se encontraron aeronaves</string>
+    <string name="search_empty_body">No hay aeronaves que coincidan con tu búsqueda siendo rastreadas actualmente. ¿Quieres ver más aviones? ¡Contribuye datos y ayuda a llenar los cielos!</string>
+    <string name="search_progress_title">Buscando</string>
+    <string name="search_progress_body">%d encontrados hasta ahora. Aún buscando…</string>
+    <string name="search_summary_x_aircraft">%d aeronaves encontradas</string>
+
+    <string name="common_show_on_map">Mostrar en el mapa</string>
+    <string name="common_show_in_search">Mostrar en búsqueda</string>
+    <string name="watchlist_note_label">Nota</string>
+    <string name="common_altitude_label">Altitud</string>
+    <string name="common_speed_label">Velocidad</string>
+    <string name="aircraft_details_datasource_x">Fuente: %s</string>
+    <string name="aircraft_details_operator_unknown">Operador desconocido</string>
+    <string name="aircraft_details_description_unknown">Aeronave desconocida</string>
+    <string name="thumbnail_caption_by_x">por %s</string>
+    <string name="thumbnail_caption_prompt">Enviar foto</string>
+
+    <plurals name="result_x_items">
+        <item quantity="one">%s elemento</item>
+        <item quantity="other">%s elementos</item>
+    </plurals>
+</resources>
