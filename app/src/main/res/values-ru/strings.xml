@@ -119,6 +119,8 @@
     <string name="feeder_list_feeder_id_hint">ID фидера</string>
     <string name="feeder_list_ip_address_hint">IP-адрес (необязательно)</string>
     <string name="feeder_list_ip_address_explanation">Необязательно: Введите IP-адрес, если tar1090 или graphs1090 доступен по этому адресу.</string>
+    <string name="feeder_list_position_hint">Позиция (необязательно)</string>
+    <string name="feeder_list_position_explanation">Необязательно: Введите позицию в формате широта, долгота (например, 50.8006, 6.0619)</string>
     <string name="feeder_list_quick_setup_title">Быстрая настройка</string>
     <string name="feeder_list_quick_setup_description">Отсканируйте QR-код для автоматического заполнения всех полей</string>
     <string name="feeder_list_feeder_id_helper">Обязательно: UUID вашего фидера</string>

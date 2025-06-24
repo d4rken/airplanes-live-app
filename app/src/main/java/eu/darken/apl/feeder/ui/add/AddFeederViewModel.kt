@@ -6,11 +6,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.flow.SingleEventFlow
+import eu.darken.apl.common.flow.combine
 import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.feeder.core.FeederRepo
 import eu.darken.apl.feeder.core.api.FeederEndpoint
+import eu.darken.apl.feeder.core.config.FeederPosition
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.serialization.json.Json
 import java.util.UUID
@@ -28,6 +29,7 @@ class AddFeederViewModel @Inject constructor(
     private val _receiverId = MutableStateFlow("")
     private val _receiverLabel = MutableStateFlow("")
     private val _receiverIpAddress = MutableStateFlow("")
+    private val _receiverPosition = MutableStateFlow("")
     private val _isLoading = MutableStateFlow(false)
     private val _isDetectingLocal = MutableStateFlow(false)
 
@@ -44,9 +46,10 @@ class AddFeederViewModel @Inject constructor(
         _receiverId,
         _receiverLabel,
         _receiverIpAddress,
+        _receiverPosition,
         _isLoading,
         _isDetectingLocal,
-    ) { id, label, ipAddress, isLoading, isDetectingLocal ->
+    ) { id, label, ipAddress, position, isLoading, isDetectingLocal ->
         val isValidInput = try {
             UUID.fromString(id.trim())
             id.trim().isNotBlank()
@@ -58,6 +61,7 @@ class AddFeederViewModel @Inject constructor(
             receiverId = id,
             receiverLabel = label,
             receiverIpAddress = ipAddress,
+            receiverPosition = position,
             isAddButtonEnabled = isValidInput && !isLoading && !isDetectingLocal,
             isLoading = isLoading,
             isDetectingLocal = isDetectingLocal,
@@ -79,6 +83,21 @@ class AddFeederViewModel @Inject constructor(
             }
             if (currentState.receiverIpAddress.isNotBlank()) {
                 feederRepo.setAddress(currentState.receiverId, currentState.receiverIpAddress)
+            }
+            if (currentState.receiverPosition.isNotBlank()) {
+                val position = try {
+                    val parts = currentState.receiverPosition.split(",").map { it.trim() }
+                    if (parts.size == 2) {
+                        val latitude = parts[0].toDouble()
+                        val longitude = parts[1].toDouble()
+                        FeederPosition(latitude = latitude, longitude = longitude)
+                    } else null
+                } catch (e: NumberFormatException) {
+                    null
+                }
+                if (position != null) {
+                    feederRepo.setPosition(currentState.receiverId, position)
+                }
             }
             popNavStack()
         } catch (e: Exception) {
@@ -106,6 +125,12 @@ class AddFeederViewModel @Inject constructor(
         _receiverIpAddress.value = ipAddress
     }
 
+    fun updateReceiverPosition(position: String) {
+        if (position == _receiverPosition.value || _isLoading.value) return
+        log(tag) { "updateReceiverPosition($position)" }
+        _receiverPosition.value = position
+    }
+
     fun detectLocalFeeder() = launch {
         log(tag) { "detectLocalFeeder()" }
         _isDetectingLocal.value = true
@@ -119,9 +144,12 @@ class AddFeederViewModel @Inject constructor(
                 updateReceiverId(beastClient.uuid.toString())
                 updateReceiverIpAddress(beastClient.host)
 
-                feedStatus.mlatClients.firstOrNull()
-                    ?.takeIf { it.user.isNotBlank() }
-                    ?.let { updateReceiverLabel(it.user) }
+                feedStatus.mlatClients.firstOrNull()?.let { mlatClient ->
+                    if (mlatClient.user.isNotBlank()) {
+                        updateReceiverLabel(mlatClient.user)
+                    }
+                    updateReceiverPosition("${mlatClient.latitude}, ${mlatClient.longitude}")
+                }
 
                 events.tryEmit(AddFeederEvents.ShowLocalDetectionResult(LocalDetectionResult.FOUND))
             } else {
@@ -162,10 +190,9 @@ class AddFeederViewModel @Inject constructor(
         val receiverId: String,
         val receiverLabel: String,
         val receiverIpAddress: String,
+        val receiverPosition: String,
         val isAddButtonEnabled: Boolean,
         val isLoading: Boolean,
         val isDetectingLocal: Boolean,
     )
-
-
 }

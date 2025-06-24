@@ -86,6 +86,9 @@ class AddFeederFragment : Fragment3(R.layout.add_feeder_fragment) {
         ui.feederIpAddress.doAfterTextChanged { text ->
             vm.updateReceiverIpAddress(text.toString())
         }
+        ui.feederPosition.doAfterTextChanged { text ->
+            vm.updateReceiverPosition(text.toString())
+        }
 
         ui.addButton.setOnClickListener {
             vm.addFeeder()
@@ -101,12 +104,16 @@ class AddFeederFragment : Fragment3(R.layout.add_feeder_fragment) {
             if (feederIpAddress.text.toString() != state.receiverIpAddress) {
                 feederIpAddress.setText(state.receiverIpAddress)
             }
+            if (feederPosition.text.toString() != state.receiverPosition) {
+                feederPosition.setText(state.receiverPosition)
+            }
 
             // Handle loading state
             val isEnabled = !state.isLoading && !state.isDetectingLocal
             feederId.isEnabled = isEnabled
             feederLabel.isEnabled = isEnabled
             feederIpAddress.isEnabled = isEnabled
+            feederPosition.isEnabled = isEnabled
             scanQrButton.isEnabled = isEnabled
             detectLocalButton.isEnabled = isEnabled
 
