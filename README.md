@@ -13,11 +13,10 @@ Features:
 
 * View aircraft on map
 * Search for aircraft by HEX, registration, airframe or SQUAWK code
-* View stats for your airplanes.live feeders (TODO)
-* Get notifications if a feeder goes offline (TODO)
-* Shortcuts to show the map from the POV of a specific feeder (TODO)
-* SQUAWK alerts: Notifications if specific SQUAWK codes are transmitted by aircraft (TODO)
-* ICAO alerts: Notifications if an aircraft with a specific ICAO identifier is airborne (TODO)
+* Get notifications if a feeder goes offline
+* Shortcuts to show the map from the POV of a specific feeder
+* SQUAWK alerts: Notifications if specific SQUAWK codes are transmitted by aircraft
+* ICAO alerts: Notifications if an aircraft with a specific ICAO identifier is airborne
 
 ## Screenshots
 
