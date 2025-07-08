@@ -11,7 +11,9 @@ import eu.darken.apl.common.lists.differ.setupDiffer
 import eu.darken.apl.common.lists.modular.ModularAdapter
 import eu.darken.apl.common.lists.modular.mods.DataBinderMod
 import eu.darken.apl.common.lists.modular.mods.TypedVHCreatorMod
+import eu.darken.apl.common.lists.selection.SelectableItem
 import eu.darken.apl.feeder.ui.types.DefaultFeederVH
+import eu.darken.apl.feeder.ui.types.FeederHeaderVH
 import javax.inject.Inject
 
 
@@ -25,6 +27,7 @@ class FeederListAdapter @Inject constructor() :
 
     init {
         addMod(DataBinderMod(data))
+        addMod(TypedVHCreatorMod({ data[it] is FeederHeaderVH.Item }) { FeederHeaderVH(it) })
         addMod(TypedVHCreatorMod({ data[it] is DefaultFeederVH.Item }) { DefaultFeederVH(it) })
     }
 
@@ -33,5 +36,8 @@ class FeederListAdapter @Inject constructor() :
         parent: ViewGroup
     ) : VH(layoutRes, parent), BindableVH<Item, VB>
 
-    interface Item : DifferItem
+    interface Item : DifferItem, SelectableItem {
+        override val itemSelectionKey: String?
+            get() = null
+    }
 }

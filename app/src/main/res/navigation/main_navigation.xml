@@ -18,6 +18,9 @@
         <action
             android:id="@+id/action_mainFragment_to_welcomeFragment"
             app:destination="@id/welcomeFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_addFeederFragment"
+            app:destination="@id/addFeederFragment" />
     </fragment>
 
     <fragment
@@ -42,6 +45,16 @@
             android:id="@+id/action_privacyFragment_to_mainFragment"
             app:destination="@id/mainFragment"
             app:popUpTo="@id/main_navigation" />
+    </fragment>
+    <fragment
+        android:id="@+id/addFeederFragment"
+        android:name="eu.darken.apl.feeder.ui.add.AddFeederFragment"
+        tools:layout="@layout/add_feeder_fragment">
+        <argument
+            android:name="qr_data"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
 </navigation>

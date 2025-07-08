@@ -5,6 +5,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.Logging.Priority.INFO
 import eu.darken.apl.common.debug.logging.log
+import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
 import eu.darken.apl.main.core.aircraft.SquawkCode
@@ -16,7 +17,10 @@ class CreateSquawkWatchViewModel @Inject constructor(
     handle: SavedStateHandle,
     dispatcherProvider: DispatcherProvider,
     private val watchRepo: WatchRepo,
-) : ViewModel3(dispatcherProvider = dispatcherProvider) {
+) : ViewModel3(
+    dispatcherProvider = dispatcherProvider,
+    tag = logTag("Squawk", "Create", "ViewModel")
+) {
 
     private val args by handle.navArgs<CreateSquawkWatchFragmentArgs>()
     val initSquawk: SquawkCode?
@@ -25,11 +29,11 @@ class CreateSquawkWatchViewModel @Inject constructor(
         get() = args.note
 
     init {
-        log(TAG, INFO) { "initSquawk=$initSquawk, initNote=$initNote" }
+        log(tag, INFO) { "initSquawk=$initSquawk, initNote=$initNote" }
     }
 
     fun create(code: SquawkCode, note: String) = launch {
-        log(TAG) { "create($code, $note)" }
+        log(tag) { "create($code, $note)" }
         watchRepo.createSquawk(code, note.trim())
         popNavStack()
     }

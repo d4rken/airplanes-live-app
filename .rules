@@ -1,0 +1,39 @@
+# Project rules
+
+You must obey the following instructions.
+
+## General project rules
+
+General rules that apply to the entire project.
+
+### Android/Kotlin Coding Guidelines
+
+* Prioritize **correctness** and **clarity**. Performance is secondary unless specified.
+* Only write comments to explain **why** something is done in a non-obvious way — no summaries.
+* Prefer adding to **existing files** unless it's a new logical component. Avoid unnecessary file fragmentation.
+* Avoid example/mock code unless explicitly requested.
+* Don't generate `README.md` files for modules or packages.
+* Don’t rename existing classes or files unless asked.
+* Extract user-facing text to `strings.xml`.
+* Organize new files by **feature**, not by layer (i.e., package by feature).
+
+## Project specific rules
+
+### About the Project
+
+The project is an open-source Android flight-tracking app called `airplanes.live` .
+It is a companion app for the ADS-B community `airplanes.live` which does flight-tracking and data sharing.
+
+### Context
+
+* XML based user interface.
+* Dagger/Hilt for DI.
+* Kotlin Coroutines & Flow.
+* Kotlinx.serialization for data.
+
+### Rules
+
+* Don’t create tests for the **user interface**.
+* **Do** write tests for anything related to **web APIs**.
+* **Do** write tests for data that is **serialized and stored** to avoid breaking user data.
+* When testing locally, use the FOSS debug flavor: `./gradlew :app:compileFossDebugKotlin --no-daemon`

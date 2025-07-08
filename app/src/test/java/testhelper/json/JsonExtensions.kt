@@ -1,8 +1,7 @@
 package testhelper.json
 
-import com.squareup.moshi.JsonReader
-import com.squareup.moshi.Moshi
-import okio.Buffer
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
 import okio.ByteString.Companion.encode
 import okio.buffer
 import okio.sink
@@ -10,15 +9,18 @@ import java.io.File
 
 
 fun String.toComparableJson(): String {
-    val value = Buffer().use {
-        it.writeUtf8(this)
-        val reader = JsonReader.of(it)
-        reader.readJsonValue()
+    val json = Json {
+        prettyPrint = true
+        prettyPrintIndent = "    "
+        isLenient = true
+        ignoreUnknownKeys = true
     }
 
-    val adapter = Moshi.Builder().build().adapter(Any::class.java).indent("    ")
+    // Parse the string to a JsonElement
+    val jsonElement = json.parseToJsonElement(this.trim())
 
-    return adapter.toJson(value)
+    // Format it with pretty printing
+    return json.encodeToString(JsonElement.serializer(), jsonElement)
 }
 
 fun String.writeToFile(file: File) = encode().let { text ->

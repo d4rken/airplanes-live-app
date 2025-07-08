@@ -1,6 +1,12 @@
-# Privacy policy
+---
+layout: plain
+permalink: /privacy
+title: "Privacy Policy"
+---
 
-This is the privacy policy for the Android app "Companion for airplanes.live".
+# Privacy Policy
+
+This is the privacy policy for the Android app "Companion for airplanes.live" by Matthias Urhahn (darken).
 
 ## Preamble
 

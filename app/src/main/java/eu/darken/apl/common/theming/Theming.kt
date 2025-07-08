@@ -27,7 +27,7 @@ import javax.inject.Singleton
 @Singleton
 class Theming @Inject constructor(
     private val application: Application,
-    @AppScope private val appScope: CoroutineScope,
+    @param:AppScope private val appScope: CoroutineScope,
     private val dispatcherProvider: DispatcherProvider,
     private val generalSettings: GeneralSettings,
 ) {
@@ -122,6 +122,7 @@ class Theming @Inject constructor(
                 log(TAG) { "Applying MATERIAL_YOU to $activity" }
 
                 DynamicColors.applyToActivityIfAvailable(activity)
+                @Suppress("DEPRECATION")
                 activity.window.statusBarColor = activity.getColorForAttr(android.R.attr.colorPrimaryDark)
             }
         }

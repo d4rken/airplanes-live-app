@@ -4,10 +4,12 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:8.6.0")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.25")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.47")
-        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.6.0")
+        classpath("com.android.tools.build:gradle:8.11.0")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.0")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:2.2.0")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.56.2")
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.8.9")
+        classpath("com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:2.2.0-2.0.2")
     }
 }
 
@@ -21,9 +23,3 @@ allprojects {
 tasks.register("clean").configure {
     delete("build")
 }
-
-//subprojects {
-//    tasks.matching { it.name.contains("kapt") }.configureEach {
-//        enabled = false
-//    }
-//}

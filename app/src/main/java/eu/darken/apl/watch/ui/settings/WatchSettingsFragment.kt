@@ -18,7 +18,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class WatchSettingsFragment : PreferenceFragment2() {
 
-    private val vdc: WatchSettingsViewModel by viewModels()
+    private val vm: WatchSettingsViewModel by viewModels()
 
     @Inject lateinit var watchSettings: WatchSettings
 
@@ -60,12 +60,11 @@ class WatchSettingsFragment : PreferenceFragment2() {
                     setTitle(R.string.watch_settings_monitor_interval_title)
                     setView(dialogLayout.root)
                     setPositiveButton(R.string.common_save_action) { _, _ ->
-                        settings.watchMonitorInterval.valueBlocking =
-                            Duration.ofMinutes(dialogLayout.slider.value.toLong())
+                        vm.updateWatchInterval(Duration.ofMinutes(dialogLayout.slider.value.toLong()))
                     }
                     setNegativeButton(R.string.common_cancel_action) { _, _ -> }
                     setNeutralButton(R.string.common_reset_action) { _, _ ->
-                        settings.watchMonitorInterval.valueBlocking = WatchSettings.DEFAULT_CHECK_INTERVAL
+                        vm.resetWatchInterval()
                     }
                 }.show()
                 true

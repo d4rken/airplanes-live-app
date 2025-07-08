@@ -17,7 +17,7 @@ class AirplanesLiveEndpointTest : BaseTest() {
         endpoint = AirplanesLiveEndpoint(
             baseClient = HttpModule().baseHttpClient(),
             dispatcherProvider = TestDispatcherProvider(),
-            moshiConverterFactory = HttpModule().moshiConverter(SerializationModule().moshi())
+            jsonConverterFactory = HttpModule().jsonConverter(SerializationModule().json())
         )
     }
 

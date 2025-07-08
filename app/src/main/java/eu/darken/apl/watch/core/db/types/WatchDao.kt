@@ -56,14 +56,21 @@ interface WatchDao {
     suspend fun updateNotification(watchId: WatchId, enabled: Boolean)
 
     @Transaction
-    suspend fun <T : WatchType> insert(base: BaseWatchEntity, related: T) {
+    suspend fun insertAircraftWatch(base: BaseWatchEntity, aircraft: AircraftWatchEntity) {
         insert(base)
-        when (related) {
-            is AircraftWatchEntity -> insert(related)
-            is FlightWatchEntity -> insert(related)
-            is SquawkWatchEntity -> insert(related)
-            else -> throw IllegalArgumentException("Unknown related entity type.")
-        }
+        insert(aircraft)
+    }
+
+    @Transaction
+    suspend fun insertFlightWatch(base: BaseWatchEntity, flight: FlightWatchEntity) {
+        insert(base)
+        insert(flight)
+    }
+
+    @Transaction
+    suspend fun insertSquawkWatch(base: BaseWatchEntity, squawk: SquawkWatchEntity) {
+        insert(base)
+        insert(squawk)
     }
 
     @Insert(onConflict = OnConflictStrategy.ABORT)

@@ -1,11 +1,14 @@
 package eu.darken.apl.feeder.core
 
+import eu.darken.apl.common.datastore.value
 import eu.darken.apl.common.debug.logging.Logging.Priority.INFO
 import eu.darken.apl.common.debug.logging.Logging.Priority.WARN
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
+import eu.darken.apl.common.network.NetworkStateProvider
 import eu.darken.apl.feeder.core.api.FeederEndpoint
 import eu.darken.apl.feeder.core.config.FeederConfig
+import eu.darken.apl.feeder.core.config.FeederPosition
 import eu.darken.apl.feeder.core.config.FeederSettings
 import eu.darken.apl.feeder.core.stats.BeastStatsEntity
 import eu.darken.apl.feeder.core.stats.FeederStatsDatabase
@@ -21,6 +24,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.time.Duration
+import java.time.Instant
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -30,6 +34,7 @@ class FeederRepo @Inject constructor(
     private val feederSettings: FeederSettings,
     private val feederEndpoint: FeederEndpoint,
     private val feederStatsDatabase: FeederStatsDatabase,
+    private val networkStateProvider: NetworkStateProvider,
 ) {
 
     private val refreshTrigger = MutableStateFlow(UUID.randomUUID())
@@ -113,28 +118,35 @@ class FeederRepo @Inject constructor(
         isRefreshing.value = true
 
         try {
-            val stats = feederEndpoint.getFeeder(ids.toSet())
+            val feedInfos = feederEndpoint.getFeedInfos(ids.toSet())
 
             feederSettings.feederGroup.update { group ->
                 val updatedConfigs = group.configs.map { config ->
-                    val mlatInfos = stats.mlatInfos.singleOrNull { it.uuid == config.receiverId }
+                    val infos = feedInfos[config.receiverId] ?: return@map config
+
+                    val mlatLabel = infos.mlat.firstOrNull()?.user?.takeIf { it.isNotEmpty() }
+
                     config.copy(
-                        user = mlatInfos?.user ?: config.user,
-                        position = mlatInfos?.position ?: config.position,
+                        label = when {
+                            config.label == null && mlatLabel != null -> mlatLabel
+                            else -> config.label
+                        },
+                        offlineCheckSnoozedAt = if (infos.beast.any()) null else config.offlineCheckSnoozedAt
                     )
-                }.toSet()
-                group.copy(configs = updatedConfigs)
+                }
+                group.copy(configs = updatedConfigs.toSet())
             }
 
-            stats.beastInfos
-                .map {
+            feedInfos.entries
+                .flatMap { (id, infos) -> infos.beast.map { id to it } }
+                .map { (id, beast) ->
                     BeastStatsEntity(
-                        receiverId = it.receiverId,
-                        positionRate = it.positionRate,
-                        positions = it.positions,
-                        messageRate = it.messageRate,
-                        bandwidth = it.bandwidth,
-                        connectionTime = it.connTime,
+                        receiverId = id,
+                        positionRate = beast.positionRate,
+                        positions = beast.positions,
+                        messageRate = beast.messageRate,
+                        bandwidth = beast.avgKBitsPerSecond,
+                        connectionTime = beast.connTime,
                         latency = 100,
                     )
                 }
@@ -143,20 +155,23 @@ class FeederRepo @Inject constructor(
                     feederStatsDatabase.beastStats.insert(it)
                 }
 
-            stats.mlatInfos
-                .map {
+            feedInfos.entries
+                .flatMap { (id, infos) -> infos.mlat.map { id to it } }
+                .map { (id, mlat) ->
                     MlatStatsEntity(
-                        receiverId = it.uuid,
-                        messageRate = it.messageRate,
-                        peerCount = it.peerCount,
-                        badSyncTimeout = it.badSyncTimeout,
-                        outlierPercent = it.outlierPercent,
+                        receiverId = id,
+                        messageRate = mlat.messageRate,
+                        peerCount = mlat.peerCount,
+                        badSyncTimeout = mlat.badSyncTimeout,
+                        outlierPercent = mlat.outlierPercent,
                     )
                 }
                 .forEach {
                     log(TAG) { "Updating mlat stats : $it" }
                     feederStatsDatabase.mlatStats.insert(it)
                 }
+
+            feederSettings.lastUpdate.value(Instant.now())
 
             delay(1000)
         } finally {
@@ -166,22 +181,79 @@ class FeederRepo @Inject constructor(
 
     suspend fun setOfflineCheckTimeout(id: ReceiverId, timeout: Duration?) {
         log(TAG) { "setOfflineCheckTimeout($id,$timeout)" }
-
-        feederSettings.feederGroup.update { group ->
-            group.copy(
-                configs = group.configs.map { config ->
-                    if (config.receiverId != id) {
-                        return@map config
-                    }
-                    config.copy(offlineCheckTimeout = timeout)
-                }.toSet()
+        updateFeeder(id) {
+            copy(
+                offlineCheckTimeout = timeout,
+                offlineCheckSnoozedAt = null,
             )
         }
     }
 
+    suspend fun setLabel(id: ReceiverId, label: String?) {
+        log(TAG) { "setLabel($id,$label" }
+        updateFeeder(id) { copy(label = label) }
+    }
+
+    suspend fun setAddress(id: ReceiverId, address: String?) {
+        log(TAG) { "setAddress($id,$address" }
+        updateFeeder(id) { copy(address = address) }
+    }
+
+    suspend fun setPosition(id: ReceiverId, position: FeederPosition?) {
+        log(TAG) { "setPosition($id,$position)" }
+        updateFeeder(id) { copy(position = position) }
+    }
+
+    suspend fun setOfflineCheckSnoozedAt(id: ReceiverId, snoozedAt: Instant?) {
+        log(TAG) { "setOfflineCheckSnoozedAt($id,$snoozedAt)" }
+        updateFeeder(id) { copy(offlineCheckSnoozedAt = snoozedAt) }
+    }
+
+    private suspend fun updateFeeder(id: ReceiverId, update: FeederConfig.() -> FeederConfig) {
+        feederSettings.feederGroup.update { group ->
+            val updatedConfigs = group.configs.map { config ->
+                if (config.receiverId == id) update(config) else config
+            }
+            group.copy(configs = updatedConfigs.toSet())
+        }
+    }
+
+    suspend fun isOffline(feeder: Feeder): Boolean {
+        // If internet is not available, don't consider feeders as offline
+        val networkState = networkStateProvider.networkState.first()
+        if (!networkState.isInternetAvailable) {
+            log(TAG) { "Internet is not available, not considering feeder as offline" }
+            return false
+        }
+
+        // If offline check is not enabled for this feeder, it's not considered offline
+        val offlineCheckTimeout = feeder.config.offlineCheckTimeout
+        if (offlineCheckTimeout == null) {
+            return false
+        }
+
+        // If the feeder has never been seen, it's not considered offline
+        val lastSeen = feeder.lastSeen
+        if (lastSeen == null) {
+            return false
+        }
+
+        // If the feeder is snoozed, it's not considered offline
+        if (feeder.config.offlineCheckSnoozedAt != null) {
+            return false
+        }
+
+        // Check if the time since the last update is not greater than the offlineCheckTimeout
+        val timeSinceUpdate = Duration.between(feederSettings.lastUpdate.value(), Instant.now())
+        if (timeSinceUpdate > offlineCheckTimeout) {
+            return false
+        }
+
+        // Check if the time since the feeder was last seen is greater than the offlineCheckTimeout
+        return Duration.between(lastSeen, Instant.now()) > offlineCheckTimeout
+    }
+
     companion object {
-        private const val ANYWHERE_PREFIX = "https://globe.airplanes.live/?feed="
         private val TAG = logTag("Feeder", "Repo")
     }
 }
-

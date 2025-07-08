@@ -1,9 +1,9 @@
 package eu.darken.apl.feeder.core.config
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class FeederGroup(
-    @Json(name = "configs") val configs: Set<FeederConfig> = emptySet(),
+    @SerialName("configs") val configs: Set<FeederConfig> = emptySet(),
 )

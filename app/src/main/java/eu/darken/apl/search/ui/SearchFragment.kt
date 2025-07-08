@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.selection.SelectionTracker
 import com.google.android.material.button.MaterialButtonToggleGroup
@@ -79,6 +80,7 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
                 searchInput.setText("")
                 vm.updateSearchText("")
             }
+            searchExtraAction.setOnClickListener { vm.searchPositionHome() }
         }
 
         val adapter = SearchAdapter()
@@ -119,7 +121,7 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
 
         }
 
-        vm.state.observe2(ui) { state ->
+        vm.state.observeWith(ui) { state ->
             adapter.update(state.items)
 
             searchInput.apply {
@@ -187,10 +189,11 @@ class SearchFragment : Fragment3(R.layout.search_fragment) {
                     searchLayout.isEnabled = true
                 }
             }
-            ui.searchOptionContainer.addOnButtonCheckedListener(modeListener)
+            searchExtraAction.isGone = state.input.mode != SearchViewModel.State.Mode.POSITION
+            searchOptionContainer.addOnButtonCheckedListener(modeListener)
         }
 
-        vm.events.observe2 { event ->
+        vm.events.observe { event ->
             when (event) {
                 SearchEvents.RequestLocationPermission -> {
                     locationPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)

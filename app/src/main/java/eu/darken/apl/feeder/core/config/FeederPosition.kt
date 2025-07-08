@@ -1,10 +1,10 @@
 package eu.darken.apl.feeder.core.config
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class FeederPosition(
-    @Json(name = "latitude") val latitude: Double,
-    @Json(name = "longitude") val longitude: Double,
+    @SerialName("latitude") val latitude: Double,
+    @SerialName("longitude") val longitude: Double,
 )

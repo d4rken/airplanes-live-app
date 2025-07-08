@@ -1,14 +1,19 @@
 package eu.darken.apl.common.datastore
 
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.*
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.floatPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 
 
-class DataStoreValue<T : Any?> constructor(
+class DataStoreValue<T : Any?>(
     private val dataStore: DataStore<Preferences>,
     private val key: Preferences.Key<*>,
     val reader: (Any?) -> T,

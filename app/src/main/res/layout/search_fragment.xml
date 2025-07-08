@@ -32,9 +32,10 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/search_layout"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
                 android:hint="@string/search_page_label"
                 android:textColorHint="?colorOnPrimary"
                 app:boxStrokeColor="?colorOnPrimary"
@@ -43,9 +44,10 @@
                 app:endIconTint="?colorOnPrimary"
                 app:hintTextColor="?colorOnPrimary"
                 app:layout_constraintBottom_toTopOf="@id/search_option_container"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/search_extra_action"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_goneMarginEnd="16dp"
                 app:startIconDrawable="@drawable/ic_airplane_search_24"
                 app:startIconTint="?colorOnPrimary">
 
@@ -59,6 +61,19 @@
                     android:maxLines="1"
                     android:textColor="?colorOnPrimary" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/search_extra_action"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:icon="@drawable/ic_crosshairs_gps_24"
+                app:iconTint="?colorOnPrimary"
+                app:layout_constraintBottom_toBottomOf="@id/search_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/search_layout"
+                tools:visibility="visible" />
 
             <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/search_option_container"

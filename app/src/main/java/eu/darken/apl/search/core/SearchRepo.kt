@@ -2,7 +2,6 @@ package eu.darken.apl.search.core
 
 import android.location.Location
 import androidx.core.text.isDigitsOnly
-import eu.darken.apl.common.coroutine.AppScope
 import eu.darken.apl.common.debug.logging.Logging.Priority.ERROR
 import eu.darken.apl.common.debug.logging.asLog
 import eu.darken.apl.common.debug.logging.log
@@ -17,7 +16,6 @@ import eu.darken.apl.main.core.aircraft.Registration
 import eu.darken.apl.main.core.aircraft.SquawkCode
 import eu.darken.apl.main.core.api.AirplanesLiveEndpoint
 import eu.darken.apl.main.core.api.getByLocation
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -29,7 +27,6 @@ import javax.inject.Singleton
 
 @Singleton
 class SearchRepo @Inject constructor(
-    @AppScope private val appScope: CoroutineScope,
     private val endpoint: AirplanesLiveEndpoint,
     private val aircraftRepo: AircraftRepo,
 ) {

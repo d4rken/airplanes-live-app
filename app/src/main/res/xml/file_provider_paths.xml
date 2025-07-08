@@ -3,4 +3,7 @@
     <external-cache-path
         name="debug_logs"
         path="debug/logs" />
+    <cache-path
+        name="images"
+        path="images" />
 </paths>

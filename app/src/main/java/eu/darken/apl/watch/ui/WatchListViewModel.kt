@@ -6,6 +6,7 @@ import eu.darken.apl.common.WebpageTool
 import eu.darken.apl.common.coroutine.DispatcherProvider
 import eu.darken.apl.common.debug.logging.Logging.Priority.INFO
 import eu.darken.apl.common.debug.logging.log
+import eu.darken.apl.common.debug.logging.logTag
 import eu.darken.apl.common.location.LocationManager2
 import eu.darken.apl.common.navigation.navArgs
 import eu.darken.apl.common.uix.ViewModel3
@@ -36,14 +37,17 @@ class WatchListViewModel @Inject constructor(
     private val webpageTool: WebpageTool,
     private val locationManager2: LocationManager2,
     private val aircraftRepo: AircraftRepo,
-) : ViewModel3(dispatcherProvider = dispatcherProvider) {
+) : ViewModel3(
+    dispatcherProvider = dispatcherProvider,
+    tag = logTag("Watch", "List", "ViewModel")
+) {
 
     private val args by handle.navArgs<WatchListFragmentArgs>()
     private val targetAircraft: Set<AircraftHex>?
         get() = args.targetAircraft?.toSet()
 
     init {
-        log(TAG, INFO) { "targetAircraft=$targetAircraft" }
+        log(tag, INFO) { "targetAircraft=$targetAircraft" }
     }
 
     private val refreshTimer = callbackFlow {
@@ -112,10 +116,10 @@ class WatchListViewModel @Inject constructor(
             items = items,
             isRefreshing = isRefreshing,
         )
-    }.asLiveData2()
+    }.asStateFlow()
 
     fun refresh() = launch {
-        log(TAG) { "refresh()" }
+        log(tag) { "refresh()" }
         watchMonitor.check()
     }
 

@@ -26,7 +26,7 @@ class SearchActionDialog : BottomSheetDialogFragment2() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        vm.state.observe2(ui) { state ->
+        vm.state.observeWith(ui) { state ->
             val aircraft = state.aircraft
 
             aircraftDetails.apply {
@@ -44,7 +44,7 @@ class SearchActionDialog : BottomSheetDialogFragment2() {
         ui.showMapAction.setOnClickListener { vm.showMap() }
         ui.addWatchAction.setOnClickListener { vm.showWatch() }
 
-        vm.events.observe2(ui) { event ->
+        vm.events.observeWith(ui) { event ->
 
         }
 

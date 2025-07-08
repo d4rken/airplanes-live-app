@@ -9,17 +9,17 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import dagger.hilt.android.AndroidEntryPoint
 import eu.darken.apl.R
-import eu.darken.apl.common.uix.Fragment2
+import eu.darken.apl.common.uix.Fragment3
 import eu.darken.apl.common.viewbinding.viewBinding
 import eu.darken.apl.databinding.SettingsFragmentBinding
 import kotlinx.parcelize.Parcelize
 
 @AndroidEntryPoint
-class SettingsFragment : Fragment2(R.layout.settings_fragment),
+class SettingsFragment : Fragment3(R.layout.settings_fragment),
     PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
-    private val vm: SettingsViewModel by viewModels()
-    private val ui: SettingsFragmentBinding by viewBinding()
+    override val vm: SettingsViewModel by viewModels()
+    override val ui: SettingsFragmentBinding by viewBinding()
 
     val toolbar: Toolbar
         get() = ui.toolbar

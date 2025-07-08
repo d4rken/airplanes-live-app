@@ -7,10 +7,12 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MapOptions(
+    val feeds: Set<MapFeedId> = emptySet(),
     val filter: Filter = Filter(),
     val rendering: Rendering = Rendering(),
     val toggles: Toggles = Toggles(),
 ) : Parcelable {
+
     @Parcelize
     data class Filter(
         val selected: Set<AircraftHex> = emptySet(),
@@ -33,6 +35,11 @@ data class MapOptions(
 
     fun createUrl(baseUrl: String = AirplanesLive.URL_GLOBE): String {
         val urlExtra = StringBuilder()
+
+        feeds
+            .takeIf { it.isNotEmpty() }
+            ?.joinToString(",")
+            ?.let { urlExtra.append("&feed=$it") }
 
         filter.apply {
             selected

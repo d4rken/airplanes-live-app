@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @Reusable
 class DeviceDetective @Inject constructor(
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) {
 
     fun isAndroidTV(): Boolean {
@@ -19,10 +19,9 @@ class DeviceDetective @Inject constructor(
         if (uiManager.currentModeType == Configuration.UI_MODE_TYPE_TELEVISION) return true
 
         val pm = context.packageManager
+        @Suppress("DEPRECATION")
         if (pm.hasSystemFeature(PackageManager.FEATURE_TELEVISION)) return true
-        if (pm.hasSystemFeature(PackageManager.FEATURE_LEANBACK)) return true
-
-        return false
+        return pm.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
     }
 
     private suspend fun checkManufactor(name: String): Boolean {

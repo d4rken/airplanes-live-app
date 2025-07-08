@@ -1,23 +1,26 @@
 package eu.darken.apl.common.http
 
 import android.content.Context
-import com.squareup.moshi.Moshi
+import android.os.Build
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import eu.darken.apl.common.datastore.value
+import eu.darken.apl.common.BuildConfigWrap
 import eu.darken.apl.common.datastore.valueBlocking
 import eu.darken.apl.common.debug.autoreport.DebugSettings
 import eu.darken.apl.common.debug.logging.Logging.Priority.VERBOSE
 import eu.darken.apl.common.debug.logging.log
 import eu.darken.apl.common.debug.logging.logTag
+import kotlinx.serialization.json.Json
 import okhttp3.Cache
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.Converter
 import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Qualifier
@@ -44,18 +47,39 @@ class HttpModule {
         }
     }
 
+    @Qualifier
+    @MustBeDocumented
+    @Retention(AnnotationRetention.RUNTIME)
+    annotation class UserAgent
+
+    @UserAgent
+    @Reusable
+    @Provides
+    fun userAgent(): String =
+        "${BuildConfigWrap.APPLICATION_ID}/${BuildConfigWrap.VERSION_NAME} (Android ${Build.VERSION.RELEASE}; ${Build.MODEL})"
+
     @Singleton
     @Provides
     fun baseHttpClient(
         @BaseCache cache: Cache? = null,
         loggingInterceptor: HttpLoggingInterceptor = loggingInterceptor(),
+        @UserAgent userAgent: String = userAgent(),
     ): OkHttpClient = OkHttpClient().newBuilder().apply {
-        cache(cache)
+        if (cache != null) {
+            cache(cache)
+        }
         connectTimeout(20L, TimeUnit.SECONDS)
         readTimeout(20L, TimeUnit.SECONDS)
         writeTimeout(20L, TimeUnit.SECONDS)
         retryOnConnectionFailure(true)
         addInterceptor(loggingInterceptor)
+
+        addInterceptor { chain ->
+            val request = chain.request().newBuilder().apply {
+                header("User-Agent", userAgent)
+            }.build()
+            chain.proceed(request)
+        }
     }.build()
 
     @BaseCache
@@ -68,7 +92,10 @@ class HttpModule {
 
     @Reusable
     @Provides
-    fun moshiConverter(moshi: Moshi): MoshiConverterFactory = MoshiConverterFactory.create(moshi)
+    fun jsonConverter(json: Json): Converter.Factory {
+        val contentType = "application/json".toMediaType()
+        return json.asConverterFactory(contentType)
+    }
 
     @Qualifier
     @MustBeDocumented
