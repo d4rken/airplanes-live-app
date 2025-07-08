@@ -25,7 +25,7 @@ data class FeedInfos(
     @Serializable
     data class Mlat(
         @SerialName("user") val user: String,
-        @Contextual @SerialName("uuid") val uuid: UUID,
+        @Contextual @SerialName("uuid") val uuid: UUID?,
         @SerialName("message_rate") val messageRate: Double,
         @SerialName("peer_count") val peerCount: Int,
         @SerialName("bad_sync_timeout") val badSyncTimeout: Long,
