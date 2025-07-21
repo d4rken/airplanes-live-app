@@ -18,6 +18,6 @@ data class FeederConfig(
     @SerialName("address") val address: String? = null,
 ) {
     companion object {
-        val DEFAULT_OFFLINE_LIMIT = Duration.ofHours(12)
+        val DEFAULT_OFFLINE_LIMIT = Duration.ofHours(48)
     }
 }
