@@ -74,7 +74,6 @@ fun DependencyHandlerScope.addBaseUI() {
     androidTestImplementation("androidx.navigation:navigation-testing:2.7.7")
 
     implementation("androidx.preference:preference-ktx:1.2.1")
-
     implementation("androidx.datastore:datastore-preferences:1.1.0")
 
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
