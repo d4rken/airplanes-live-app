@@ -9,11 +9,11 @@ import java.time.Duration
 class FeederConfigTest : BaseTest() {
 
     @Test
-    fun `FeederConfig has offline notifications enabled by default with 12 hour timeout`() {
+    fun `FeederConfig has offline notifications enabled by default with 48 hour timeout`() {
         val receiverId: ReceiverId = "test-receiver-id"
         val config = FeederConfig(receiverId = receiverId)
 
-        config.offlineCheckTimeout shouldBe Duration.ofHours(12)
+        config.offlineCheckTimeout shouldBe Duration.ofHours(48)
     }
 
     @Test
