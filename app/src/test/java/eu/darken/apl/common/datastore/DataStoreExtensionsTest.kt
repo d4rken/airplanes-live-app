@@ -1,14 +1,19 @@
 package eu.darken.apl.common.datastore
 
+import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -18,7 +23,7 @@ import java.io.File
 class DataStoreExtensionsTest : BaseTest() {
 
     private val testFile = File(IO_TEST_BASEDIR, DataStoreExtensionsTest::class.java.simpleName + ".preferences_pb")
-    private fun createDataStore(scope: TestScope) = PreferenceDataStoreFactory.create(
+    private fun createDataStore(scope: CoroutineScope): DataStore<Preferences> = PreferenceDataStoreFactory.create(
         scope = scope,
         produceFile = { testFile },
     )
@@ -28,11 +33,19 @@ class DataStoreExtensionsTest : BaseTest() {
         testFile.delete()
     }
 
-    @Test
-    fun `reading and writing strings`() = runTest {
-        val testStore = createDataStore(this)
+    private fun runTestWithStore(action: suspend DataStore<Preferences>.() -> Unit) = runTest {
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+        val testStore = createDataStore(scope)
+        try {
+            action(testStore)
+        } finally {
+            scope.cancel()
+        }
+    }
 
-        testStore.createValue<String?>(
+    @Test
+    fun `reading and writing strings`() = runTestWithStore {
+        createValue<String?>(
             key = "testKey",
             defaultValue = "default"
         ).apply {
@@ -41,7 +54,7 @@ class DataStoreExtensionsTest : BaseTest() {
             flow.first() shouldBe "default"
             valueBlocking shouldBe "default"
             value() shouldBe "default"
-            testStore.data.first()[stringPreferencesKey(keyName)] shouldBe null
+            data.first()[stringPreferencesKey(keyName)] shouldBe null
 
             update {
                 it shouldBe "default"
@@ -51,7 +64,7 @@ class DataStoreExtensionsTest : BaseTest() {
             valueBlocking shouldBe "newvalue"
             flow.first() shouldBe "newvalue"
             value() shouldBe "newvalue"
-            testStore.data.first()[stringPreferencesKey(keyName)] shouldBe "newvalue"
+            data.first()[stringPreferencesKey(keyName)] shouldBe "newvalue"
 
             update {
                 it shouldBe "newvalue"
@@ -59,7 +72,7 @@ class DataStoreExtensionsTest : BaseTest() {
             } shouldBe DataStoreValue.Updated("newvalue", "default")
 
             flow.first() shouldBe "default"
-            testStore.data.first()[stringPreferencesKey(keyName)] shouldBe null
+            data.first()[stringPreferencesKey(keyName)] shouldBe null
 
             value("newsecond")
             value() shouldBe "newsecond"
@@ -67,17 +80,15 @@ class DataStoreExtensionsTest : BaseTest() {
     }
 
     @Test
-    fun `reading and writing boolean`() = runTest {
-        val testStore = createDataStore(this)
-
-        testStore.createValue<Boolean>(
+    fun `reading and writing boolean`() = runTestWithStore {
+        createValue<Boolean>(
             key = "testKey",
             defaultValue = true
         ).apply {
             keyName shouldBe "testKey"
 
             flow.first() shouldBe true
-            testStore.data.first()[booleanPreferencesKey(keyName)] shouldBe null
+            data.first()[booleanPreferencesKey(keyName)] shouldBe null
 
             update {
                 it shouldBe true
@@ -85,7 +96,7 @@ class DataStoreExtensionsTest : BaseTest() {
             } shouldBe DataStoreValue.Updated(old = true, new = false)
 
             flow.first() shouldBe false
-            testStore.data.first()[booleanPreferencesKey(keyName)] shouldBe false
+            data.first()[booleanPreferencesKey(keyName)] shouldBe false
 
             update {
                 it shouldBe false
@@ -93,17 +104,17 @@ class DataStoreExtensionsTest : BaseTest() {
             } shouldBe DataStoreValue.Updated(old = false, new = true)
 
             flow.first() shouldBe true
-            testStore.data.first()[booleanPreferencesKey(keyName)] shouldBe null
+            data.first()[booleanPreferencesKey(keyName)] shouldBe null
         }
 
-        testStore.createValue<Boolean?>(
+        createValue<Boolean?>(
             key = "testKey2",
             defaultValue = null
         ).apply {
             keyName shouldBe "testKey2"
 
             flow.first() shouldBe null
-            testStore.data.first()[booleanPreferencesKey(keyName)] shouldBe null
+            data.first()[booleanPreferencesKey(keyName)] shouldBe null
 
             update {
                 it shouldBe null
@@ -111,7 +122,7 @@ class DataStoreExtensionsTest : BaseTest() {
             } shouldBe DataStoreValue.Updated(old = null, new = false)
 
             flow.first() shouldBe false
-            testStore.data.first()[booleanPreferencesKey(keyName)] shouldBe false
+            data.first()[booleanPreferencesKey(keyName)] shouldBe false
 
             update {
                 it shouldBe false
@@ -119,20 +130,18 @@ class DataStoreExtensionsTest : BaseTest() {
             } shouldBe DataStoreValue.Updated(old = false, new = null)
 
             flow.first() shouldBe null
-            testStore.data.first()[booleanPreferencesKey(keyName)] shouldBe null
+            data.first()[booleanPreferencesKey(keyName)] shouldBe null
         }
     }
 
     @Test
-    fun `reading and writing long`() = runTest {
-        val testStore = createDataStore(this)
-
-        testStore.createValue<Long?>(
+    fun `reading and writing long`() = runTestWithStore {
+        createValue<Long?>(
             key = "testKey",
             defaultValue = 9000L
         ).apply {
             flow.first() shouldBe 9000L
-            testStore.data.first()[longPreferencesKey(keyName)] shouldBe null
+            data.first()[longPreferencesKey(keyName)] shouldBe null
 
             update {
                 it shouldBe 9000L
@@ -140,7 +149,7 @@ class DataStoreExtensionsTest : BaseTest() {
             }
 
             flow.first() shouldBe 9001L
-            testStore.data.first()[longPreferencesKey(keyName)] shouldBe 9001L
+            data.first()[longPreferencesKey(keyName)] shouldBe 9001L
 
             update {
                 it shouldBe 9001L
@@ -148,21 +157,19 @@ class DataStoreExtensionsTest : BaseTest() {
             }
 
             flow.first() shouldBe 9000L
-            testStore.data.first()[longPreferencesKey(keyName)] shouldBe null
+            data.first()[longPreferencesKey(keyName)] shouldBe null
         }
     }
 
     @Test
-    fun `reading and writing integer`() = runTest {
-        val testStore = createDataStore(this)
-
-        testStore.createValue<Long?>(
+    fun `reading and writing integer`() = runTestWithStore {
+        createValue<Long?>(
             key = "testKey",
             defaultValue = 123
         ).apply {
 
             flow.first() shouldBe 123
-            testStore.data.first()[intPreferencesKey(keyName)] shouldBe null
+            data.first()[intPreferencesKey(keyName)] shouldBe null
 
             update {
                 it shouldBe 123
@@ -170,7 +177,7 @@ class DataStoreExtensionsTest : BaseTest() {
             }
 
             flow.first() shouldBe 44
-            testStore.data.first()[intPreferencesKey(keyName)] shouldBe 44
+            data.first()[intPreferencesKey(keyName)] shouldBe 44
 
             update {
                 it shouldBe 44
@@ -178,20 +185,18 @@ class DataStoreExtensionsTest : BaseTest() {
             }
 
             flow.first() shouldBe 123
-            testStore.data.first()[intPreferencesKey(keyName)] shouldBe null
+            data.first()[intPreferencesKey(keyName)] shouldBe null
         }
     }
 
     @Test
-    fun `reading and writing float`() = runTest {
-        val testStore = createDataStore(this)
-
-        testStore.createValue<Float?>(
+    fun `reading and writing float`() = runTestWithStore {
+        createValue<Float?>(
             key = "testKey",
             defaultValue = 3.6f
         ).apply {
             flow.first() shouldBe 3.6f
-            testStore.data.first()[floatPreferencesKey(keyName)] shouldBe null
+            data.first()[floatPreferencesKey(keyName)] shouldBe null
 
             update {
                 it shouldBe 3.6f
@@ -199,7 +204,7 @@ class DataStoreExtensionsTest : BaseTest() {
             }
 
             flow.first() shouldBe 15000f
-            testStore.data.first()[floatPreferencesKey(keyName)] shouldBe 15000f
+            data.first()[floatPreferencesKey(keyName)] shouldBe 15000f
 
             update {
                 it shouldBe 15000f
@@ -207,7 +212,7 @@ class DataStoreExtensionsTest : BaseTest() {
             }
 
             flow.first() shouldBe 3.6f
-            testStore.data.first()[floatPreferencesKey(keyName)] shouldBe null
+            data.first()[floatPreferencesKey(keyName)] shouldBe null
         }
     }
 
