@@ -18,6 +18,16 @@ Features:
 * SQUAWK alerts: Notifications if specific SQUAWK codes are transmitted by aircraft
 * ICAO alerts: Notifications if an aircraft with a specific ICAO identifier is airborne
 
+
+## Download
+
+| Source                                                                        | Status                                                                                                                                                                                                                                                     |
+|-------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Github (Release)](https://github.com/d4rken/airplanes-live-app/releases)     | ![](https://img.shields.io/github/v/release/d4rken/airplanes-live-app?display_name=release&logo=github&label=GitHub%20(Release)) ![](https://img.shields.io/github/downloads/d4rken/airplanes-live-app/latest/total?label=%20)                             |
+| [Github (Pre-Release)](https://github.com/d4rken/airplanes-live-app/releases) | ![](https://img.shields.io/github/v/release/d4rken/airplanes-live-app?include_prereleases&display_name=release&logo=github&label=GitHub%20(Pre-Release)) ![](https://img.shields.io/github/downloads-pre/d4rken/airplanes-live-app/latest/total?label=%20) |
+| [F-Droid (IzzyOnDroid)](https://apt.izzysoft.de/packages/eu.darken.apl/)      | ![](https://img.shields.io/endpoint?url=https://apt.izzysoft.de/fdroid/api/v1/shield/eu.darken.apl&label=IzzyOnDroid%20(latest))                                                                                                                           |
+
+
 ## Screenshots
 
 <img src="https://github.com/d4rken/airplanes-live-app/raw/main/.assets/screenshots/1.png" width="100"><img src="https://github.com/d4rken/airplanes-live-app/raw/main/.assets/screenshots/2.png" width="100"><img src="https://github.com/d4rken/airplanes-live-app/raw/main/.assets/screenshots/3.png" width="100"><img src="https://github.com/d4rken/airplanes-live-app/raw/main/.assets/screenshots/4.png" width="100">
